@@ -38,7 +38,7 @@ h3{font-family:Outfit;font-weight:700;font-size:10pt;line-height:1.2}
 p{color:${C.tinta}e0}
 p+p{margin-top:1.6mm}
 .pincel{font-family:Pincel;color:${C.coralTx}}
-.rec .in{gap:2.9mm}
+.rec .in{gap:2.6mm}
 .row{display:flex;gap:3mm}.row>*{flex:1;min-width:0}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:2.6mm}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2.4mm}
@@ -73,6 +73,35 @@ table.t td.num,table.t th.num{text-align:right;white-space:nowrap}
 .num-g{font-family:Outfit;font-weight:800;color:${C.turquesa};line-height:1}
 .sep{height:.35mm;background:${C.cocoEsc};border-radius:1mm}
 .small{font-size:7.4pt;color:${C.tinta}bb}
+/* ---------- pele dos materiais extras (.xt) ---------- */
+.xt{--acc:${C.berry};--acc2:${C.manga}}
+.xt.xt-pi{--acc:${C.coral};--acc2:${C.manga}}
+.xt.xt-wa{--acc:#0B7A5E;--acc2:#9ED43A}
+.pg.xt::before{content:'';position:absolute;right:0;top:0;width:100mm;height:90mm;background:radial-gradient(circle at 92% 6%,color-mix(in srgb,var(--acc) 16%,transparent),color-mix(in srgb,var(--acc2) 10%,transparent) 45%,transparent 70%)}
+.pg.xt::after{content:'';position:absolute;left:0;right:0;top:0;height:1.6mm;background:linear-gradient(90deg,var(--acc),var(--acc2) 55%,${C.turquesa})}
+.xt mark{background:linear-gradient(transparent 50%,color-mix(in srgb,var(--acc2) 60%,transparent) 50%,color-mix(in srgb,var(--acc) 30%,transparent) 94%,transparent 94%)}
+.xt table.t{box-shadow:0 .8mm 2.4mm rgba(18,52,50,.07)}
+.xt table.t th{background:linear-gradient(120deg,${C.turquesa},${C.turqEsc})}
+.xt .box{box-shadow:0 .6mm 2mm rgba(18,52,50,.06)}
+.xt .b-coco{background:linear-gradient(140deg,#FFFAF3,#FBEBD5)}
+.xt .b-berry{background:linear-gradient(140deg,#FDE4EF,#FFF1E4)}
+.xt .b-coral{background:linear-gradient(140deg,#FFE6E1,#FFF3D6)}
+.xt .b-turq{background:linear-gradient(140deg,#E2F2EF,#F3FAEC)}
+.xt .b-limao{background:linear-gradient(140deg,#EFF8DE,#FFF8E2)}
+.xt .b-manga{background:linear-gradient(140deg,#FFF2CC,#FFE6DA)}
+.xt .b-escuro{background:linear-gradient(135deg,${C.turquesa},${C.turqEsc} 65%,#0B3F3D);box-shadow:0 1.2mm 3.4mm rgba(9,82,79,.28)}
+.xt .call{box-shadow:0 .6mm 2mm rgba(18,52,50,.06)}
+.xt .c-dica{background:linear-gradient(140deg,#E2F2EF,#F2FAF6)}
+.xt .c-segredo{background:linear-gradient(140deg,#FFF2CC,#FFF8E8)}
+.xt .c-atencao{background:linear-gradient(140deg,#FFE6E1,#FFF4F0)}
+.xt .c-ok{background:linear-gradient(140deg,#EFF8DE,#F8FCEF)}
+.stat-g{border-radius:3.4mm;padding:3mm 3.2mm;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));box-shadow:0 1.2mm 3mm color-mix(in srgb,var(--a2) 35%,transparent)}
+.stat-g p{color:#fff}
+.stat-g .k{font-family:Outfit;font-weight:700;font-size:6.6pt;letter-spacing:.12em;text-transform:uppercase;opacity:.92}
+.stat-g .v{font-family:Outfit;font-weight:800;font-size:17pt;line-height:1.05;margin-top:.8mm}
+.stat-g .d{font-size:7.2pt;margin-top:.6mm;opacity:.95}
+.quote{position:relative;padding:3.4mm 4mm 3.4mm 9mm;border-radius:3.4mm;background:linear-gradient(140deg,#fff,#FFF6EA);box-shadow:0 .8mm 2.4mm rgba(18,52,50,.08);font-size:9pt;line-height:1.5}
+.quote::before{content:'“';position:absolute;left:2.4mm;top:-1.6mm;font-family:Outfit;font-weight:800;font-size:28pt;color:var(--acc,${C.coral})}
 `;
 
 /** Ondas da marca no rodapé de cada página. */

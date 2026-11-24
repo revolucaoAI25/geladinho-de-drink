@@ -47,13 +47,23 @@ for (const id of lista) {
   // as imagens usam ../img e ../fontes: o HTML fica em .build, irmão de img/ e fontes/
   await page.goto('file://' + arqHtml, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
+  // Blocos opcionais (.opc): saem, do menor para o maior data-p, só nas páginas em que não cabem.
+  await page.evaluate(() => {
+    for (const pg of document.querySelectorAll('.pg')) {
+      const inn = pg.querySelector('.in');
+      if (!inn) continue;
+      const opc = [...pg.querySelectorAll('.opc')].sort((a, b) => +a.dataset.p - +b.dataset.p);
+      while (inn.scrollHeight > inn.clientHeight + 1 && opc.length) opc.shift().remove();
+      pg.querySelectorAll('.opc-wrap').forEach((w) => { if (!w.children.length) w.remove(); });
+    }
+  });
   const estouros = await page.evaluate(() =>
     [...document.querySelectorAll('.pg')].flatMap((pg, i) => {
       const inn = pg.querySelector('.in');
       if (!inn) return [];
       const r = [];
       if (inn.scrollHeight > inn.clientHeight + 1) r.push(`pág ${i + 1}: conteúdo passa ${inn.scrollHeight - inn.clientHeight}px`);
-      if (inn.scrollWidth > inn.clientWidth + 1) r.push(`pág ${i + 1}: largura passa ${inn.scrollWidth - inn.clientWidth}px`);
+      if (pg.scrollWidth > pg.clientWidth + 1) r.push(`pág ${i + 1}: largura passa ${pg.scrollWidth - pg.clientWidth}px`);
       return r;
     }),
   );

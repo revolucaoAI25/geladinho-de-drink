@@ -2,20 +2,21 @@
 import { C, img, md, callout, lista, passos, tabela, cabeca, pagina } from '../base.mjs';
 import { calc2, VOLUME, EMBALAGEM } from './dados.mjs';
 import { RECEITAS_PI, CATS_PI } from './picoles-receitas.mjs';
-import { capaExtra, aberturaExtra, abertParte, receitaPg, categoriaPg, faixa, brl, preco } from './comum.mjs';
+import { capaExtra, aberturaExtra, abertParte, receitaPg, categoriaPg, faixa, brl, preco, usarPele, pele, destaques, fotosFaixa, citacao } from './comum.mjs';
 
 const MARCA = 'EXTRA · PICOLÉS E SACOLÉS ESPECIAIS';
 const NOME_TIPO = { picole: 'picolés de 80 ml', paleta: 'paletas de 110 ml', sacole: 'sacolés de 120 ml', sacoleG: 'sacolés de 200 ml' };
 
 export function picoles() {
   const P = [];
-  const pg = (c, o = {}) => P.push(pagina(c, { n: P.length + 1, marca: MARCA, ...o }));
+  usarPele('xt-pi');
+  const pg = (c, o = {}) => P.push(pagina(c, { n: P.length + 1, marca: MARCA, cls: pele(), ...o }));
   const cor = C.coralTx;
   const R = RECEITAS_PI.map((r, i) => ({ r, num: i + 1, k: calc2(r, CATS_PI.find((c) => c.id === r.cat).preco) }));
   const media = (cat) => { const a = R.filter(({ r }) => r.cat === cat).map(({ k }) => k); return { custo: a.reduce((s, k) => s + k.custoUn, 0) / a.length, preco: a.reduce((s, k) => s + k.preco, 0) / a.length }; };
 
-  P.push(capaExtra({ arquivo: 'capa-x2.jpg', eyebrow: 'Material extra', titulo: 'Picolés e Sacolés <span style="color:' + C.coralTx + '">Especiais</span>', destaque: 'para vender', sub: 'Picolé de fruta, cremoso com casquinha, **paleta mexicana recheada**, picolé de drink e sacolés que parecem de loja.', cor: C.coralCl, fotos: ['pi-paleta-de-morango-com-leite-condensado.jpg', 'pi-ninho-com-casquinha-de-chocolate.jpg', 'pi-sacole-tropical-em-3-camadas.jpg'], selo: '20<br>receitas' }));
-  P.push(aberturaExtra({ cor: C.coralCl, eyebrow: 'Material extra', titulo: 'Picolés e Sacolés Especiais para Vender', texto: 'O mesmo freezer, os mesmos ingredientes, **preço maior**. Picolé com casquinha e paleta recheada são vendidos por R$ 7 a R$ 12, e o cliente paga feliz porque **parece produto de sorveteria**.', itens: ['Picolé × paleta × sacolé: qual dá mais lucro', 'Equipamentos e quanto custam', 'Técnicas: palito, desenformar, **casquinha que endurece na hora**, recheio', '20 receitas com custo e preço', 'Onde vender e como revender'], foto: 'pi-paleta-de-ninho-com-creme-de-avela.jpg' }));
+  P.push(capaExtra({ arquivo: 'capa-x2.jpg', eyebrow: 'Material extra', titulo: 'Picolés e Sacolés <span style="color:' + C.coralTx + '">Especiais</span>', destaque: 'para vender', sub: 'Picolé de fruta, cremoso com casquinha, **paleta mexicana recheada**, picolé de drink e sacolés que parecem de loja.', cor: C.coralCl, fotos: ['pi-abertura.jpg', 'pi-ninho-com-casquinha-de-chocolate.jpg', 'pi-morango-com-pedacos.jpg'], selo: '20<br>receitas' }));
+  P.push(aberturaExtra({ cor: C.coralCl, eyebrow: 'Material extra', titulo: 'Picolés e Sacolés Especiais para Vender', texto: 'O mesmo freezer, os mesmos ingredientes, **preço maior**. Picolé com casquinha e paleta recheada são vendidos por R$ 7 a R$ 12, e o cliente paga feliz porque **parece produto de sorveteria**.', itens: ['Picolé × paleta × sacolé: qual dá mais lucro', 'Equipamentos e quanto custam', 'Técnicas: palito, desenformar, **casquinha que endurece na hora**, recheio', '20 receitas com custo e preço', 'Onde vender e como revender'], foto: 'pi-abertura.jpg' }));
 
   // ---------- COMPARAÇÃO ----------
   const mF = media('fruta'), mC = media('casquinha'), mP = media('paleta'), mS = media('sacole');
@@ -34,6 +35,7 @@ export function picoles() {
       <div class="box b-coral"><h3>A paleta ganha no lucro</h3><p style="font-size:8pt;margin-top:1mm">Lucro de <b>3 a 4 vezes o custo</b>. Ótima para eventos e revenda: o cliente compara com paleteria (R$ 10 a R$ 19).</p></div>
       <div class="box b-coco"><h3>O sacolé ganha na escala</h3><p style="font-size:8pt;margin-top:1mm">Não precisa de forma nem de desenformar: você faz <b>3 vezes mais</b> no mesmo tempo.</p></div>
     </div>
+    ${fotosFaixa(['pi-sacole-tropical-em-3-camadas.jpg', 'pi-morango-com-pedacos.jpg', 'pi-ninho-com-casquinha-de-chocolate.jpg'], 20)}
     <div style="margin-top:auto">${callout('segredo', 'Use os três juntos', 'Paleta no topo do cardápio (preço âncora), picolé no meio e sacolé como o “barato”. Quem ia levar um sacolé de R$ 5 leva um picolé de R$ 7 porque “é só R$ 2 a mais”.')}</div>`);
 
   // ================= PARTE 1 =================
@@ -65,6 +67,7 @@ export function picoles() {
       ['**Congelar 6 a 8 h** (drink: 10 h)', 'Picolé desenformado antes da hora quebra no meio'],
     ])}
     <div class="box b-coco"><h3>Sacolé × picolé: a mesma receita serve?</h3><p style="font-size:8pt;margin-top:1mm">Quase. Para transformar uma receita de sacolé em picolé: <b>tire 100 ml de água</b> e <b>junte 50 g a mais de fruta</b>. Nas de drink, use <b>⅔ da bebida</b>.</p></div>
+    ${fotosFaixa(['pi-manga-com-limao.jpg', 'pi-limao-siciliano.jpg', 'pi-abacaxi-com-coco.jpg'], 26)}
     <div style="margin-top:auto">${callout('atencao', 'Bolhas de ar', 'Depois de encher a forma, dê umas batidinhas na bancada: bolha de ar presa vira buraco no picolé e ponto de quebra.')}</div>`);
 
   pg(`
@@ -122,6 +125,22 @@ export function picoles() {
     ${tabela(['Embalagem', 'Custo/un', 'Passa a imagem de'], [['Saquinho transparente + etiqueta', '≈ R$ 0,15', 'artesanal caprichado'], ['Saquinho impresso com a sua marca', '≈ R$ 0,30', 'marca de sorveteria'], ['Caixinha para paleta', '≈ R$ 0,80', 'presente / doce fino']], [1])}
     <div style="margin-top:auto">${callout('atencao', 'Picolé de drink', 'Etiqueta com **“CONTÉM ÁLCOOL”** bem visível e cor diferente dos outros. Em eventos com crianças, deixe os de drink separados.')}</div>`);
 
+  pg(`
+    ${faixa(C.turquesa, '1.8', 'Diagnóstico')}
+    ${cabeca('', 'Picolé com problema? ==Veja a causa==')}
+    ${tabela(['Problema', 'Causa provável', 'Como corrigir'], [
+      ['Quebrou ao desenformar', 'Água quente demais ou pouco tempo de freezer', 'Água **morna**, 10 a 15 s; mínimo 6 a 8 h de freezer'],
+      ['Palito soltou', 'Palito colocado cedo demais; bebida demais', 'Espete quando estiver pastoso; drink até 3%'],
+      ['Palito torto', 'Forma sem tampa', 'Papel-alumínio furado ou forma com tampa'],
+      ['Buracos no picolé', 'Bolhas de ar', 'Bata a forma na bancada depois de encher'],
+      ['Casquinha grossa e escorrendo', 'Chocolate quente ou sem óleo de coco', '35 °C e 5 partes de chocolate para 1 de óleo'],
+      ['Casquinha não endurece', 'Picolé pouco gelado', 'Volte o picolé ao freezer 15 min antes do banho'],
+      ['Recheio da paleta vazou', 'Recheio encostou na borda; base pouco firme', 'Cordão no centro; 40 min de freezer antes do recheio'],
+      ['Grudou no saquinho', 'Embalou logo depois de desenformar', '15 min no freezer em papel-manteiga antes'],
+    ])}
+    ${destaques([['Desenformar', '10 a 15 s', 'em água morna', C.turquesa, C.turqEsc], ['Casquinha', '35 °C', 'chocolate + óleo de coco 5:1', '#6B4330', '#3B2216'], ['Paleta', '20 g', 'de recheio por unidade', C.coralTx, '#8E2219']])}
+    <div style="margin-top:auto">${callout('ok', 'Teste com 2 ou 3', 'Antes de uma fornada inteira, faça 2 ou 3 picolés de teste. Acertou o ponto, aí produza em quantidade.')}</div>`);
+
   // ================= PARTE 2 =================
   P.push(abertParte({ num: '02', titulo: 'As 20 receitas', resumo: 'Rendimento, custo por unidade e preço sugerido em cada uma. Volumes: **picolé 80 ml**, **paleta 110 ml**, **sacolé 120 ml** e **sacolé gigante 200 ml**.', itens: ['4 picolés de fruta', '4 cremosos com casquinha', '4 paletas recheadas', '3 picolés de drink', '5 sacolés especiais'], foto: 'pi-sacole-tropical-em-3-camadas.jpg', fundo: C.coralTx }));
 
@@ -147,7 +166,7 @@ export function picoles() {
   });
 
   // ================= PARTE 3 =================
-  P.push(abertParte({ num: '03', titulo: 'Vendendo picolés e paletas', resumo: 'Cardápio em escada, eventos, revenda para comércios e a caixa de presente: os caminhos que mais rendem com picolé.', itens: ['O cardápio em escada', 'Eventos e festas', 'Revenda para padarias e lanchonetes', 'Mensagens prontas'], foto: 'pi-paleta-de-morango-com-leite-condensado.jpg', fundo: C.turquesa }));
+  P.push(abertParte({ num: '03', titulo: 'Vendendo picolés e paletas', resumo: 'Cardápio em escada, eventos, revenda para comércios e a caixa de presente: os caminhos que mais rendem com picolé.', itens: ['O cardápio em escada', 'Eventos e festas', 'Revenda para padarias e lanchonetes', 'Capacidade de produção', 'Cardápio pronto e mensagens'], foto: 'pi-morango-com-casquinha-branca.jpg', fundo: C.turquesa }));
 
   pg(`
     ${faixa(cor, '3.1', 'Cardápio em escada')}
@@ -182,7 +201,38 @@ export function picoles() {
     <div style="margin-top:auto">${callout('segredo', 'Foto da caixa aberta', 'Seis paletas de cores diferentes lado a lado é a foto que mais vende no status. Tire uma bem feita e use o ano inteiro.')}</div>`);
 
   pg(`
-    ${faixa(cor, '3.4', 'Mensagens prontas')}
+    ${faixa(cor, '3.4', 'Produção')}
+    ${cabeca('', 'Quantos picolés ==você consegue fazer==', 'O limite do picolé é a forma, não a receita. Faça a conta antes de aceitar uma encomenda grande.')}
+    ${tabela(['Você tem', 'Por fornada (8 h)', 'Por dia (2 fornadas)', 'Por semana (5 dias)'], [
+      ['1 forma de 6', '6', '12', '60'],
+      ['3 formas de 6', '18', '36', '180'],
+      ['2 formas de paleta (4 cav.)', '8', '16', '80'],
+      ['1 forma de alumínio (12)', '12', '24 a 36*', '120 a 180'],
+    ], [1, 2, 3])}
+    <p class="small">* O alumínio congela mais rápido: dá para fazer 3 fornadas por dia.</p>
+    <div class="row">
+      <div class="box b-coco"><h3>Para uma encomenda de 50 paletas</h3><p style="font-size:8pt;margin-top:1mm">Com 2 formas de 4 cavidades: 7 fornadas, ou seja, <b>3 a 4 dias de produção</b>. Peça a encomenda com <b>uma semana</b> de antecedência.</p></div>
+      <div class="box b-coral"><h3>Sacolé não tem limite</h3><p style="font-size:8pt;margin-top:1mm">O sacolé especial não usa forma: o limite é só o espaço no freezer. Para volume, ele é o seu aliado.</p></div>
+    </div>
+    ${fotosFaixa(['pi-abertura.jpg', 'pi-chocolate-trufado.jpg', 'pi-coco-com-casquinha.jpg'], 28)}`);
+
+  pg(`
+    ${faixa(cor, '3.5', 'Cardápio pronto')}
+    <div style="flex:1;border-radius:4mm;overflow:hidden;background:linear-gradient(160deg,${C.coralTx},#7A1E16);color:#fff;display:flex;flex-direction:column">
+      <img src="${img('pi-abertura.jpg')}" style="width:100%;height:44mm;object-fit:cover"/>
+      <div style="padding:4mm 6mm 5mm;display:flex;flex-direction:column;flex:1">
+        <p class="pincel" style="color:${C.mangaSobreTurq};font-size:15pt;text-align:center">picolés &amp; paletas</p>
+        <p style="font-family:Outfit;font-weight:800;font-size:20pt;text-align:center;line-height:1;color:#fff">ARTESANAIS</p>
+        <div style="margin-top:3.4mm;display:flex;flex-direction:column;gap:1.5mm">
+          ${CATS_PI.filter((c) => c.id !== 'drink').map((c) => `<p style="font-family:Outfit;font-weight:700;font-size:7pt;letter-spacing:.18em;color:${C.mangaSobreTurq};margin-top:1mm">${c.nome.toUpperCase()}</p>${R.filter(({ r }) => r.cat === c.id).slice(0, 3).map(({ r, k }) => `<div style="display:flex;align-items:baseline;gap:2mm"><span style="font-family:Outfit;font-weight:700;font-size:8.8pt;color:#fff">${r.nome}</span><span style="flex:1;border-bottom:.3mm dotted #ffffff66"></span><span style="font-family:Outfit;font-weight:800;font-size:8.8pt;color:${C.mangaSobreTurq}">${preco(k.preco)}</span></div>`).join('')}`).join('')}
+        </div>
+        <div style="margin-top:auto;display:flex;gap:2mm">${[['Paleta + picolé', 'R$ 15'], ['Caixa 6 paletas', 'R$ 55'], ['Evento 50 paletas', 'R$ 400']].map(([a, b]) => `<div style="flex:1;border-radius:2.4mm;background:#ffffff1f;text-align:center;padding:1.6mm"><p style="font-size:6.8pt;color:#fff">${a}</p><p style="font-family:Outfit;font-weight:800;font-size:9pt;color:${C.mangaSobreTurq}">${b}</p></div>`).join('')}</div>
+      </div>
+    </div>
+    <p class="small" style="text-align:center">Os picolés de drink ficam num cardápio separado, só para adultos.</p>`);
+
+  pg(`
+    ${faixa(cor, '3.6', 'Mensagens prontas')}
     ${cabeca('', 'Copie, ajuste e ==envie hoje==')}
     ${[
       ['Lançamento das paletas', '“Chegaram as **paletas recheadas**! 🍓 Morango com leite condensado, Ninho com creme de avelã, maracujá com brigadeiro… R$ 10 cada. Recheio cremoso no meio, do jeitinho das paleterias. Quem quer?”'],
@@ -194,13 +244,15 @@ export function picoles() {
     <div style="margin-top:auto">${callout('dica', 'Vídeo da mordida', 'Para picolé com casquinha e paleta recheada, **vídeo vende mais que foto**: o barulho da casquinha e o recheio escorrendo fazem o trabalho.')}</div>`);
 
   pg(`
-    ${faixa(cor, '3.5', 'Checklist')}
+    ${faixa(cor, '3.7', 'Checklist')}
     ${cabeca('', 'Da primeira forma ==à primeira caixa vendida==')}
     <div class="box b-coral">${lista(['Comprei as formas, palitos e saquinhos de picolé', 'Fiz um picolé de fruta e acertei o ponto (não quebra, não escorrega)', 'Treinei a casquinha com 3 picolés', 'Fiz a primeira fornada de paletas recheadas', 'Testei a desenformagem e os 15 minutos antes de embalar', 'Etiquetei com sabor, data e alérgenos', 'Montei o cardápio em escada', 'Ofereci revenda para 2 comércios do bairro', 'Vendi a primeira caixa de paletas! 🎉'], 'ck')}</div>
+    <div style="margin-top:2mm">${fotosFaixa(['pi-abertura.jpg', 'pi-ninho-com-casquinha-de-chocolate.jpg', 'pi-morango-com-pedacos.jpg', 'pi-sacole-tropical-em-3-camadas.jpg'], 34)}</div>
     <div style="margin-top:auto;display:flex;gap:4mm;align-items:center">
       <img src="${img('bruna-retrato.jpg')}" style="width:26mm;height:26mm;border-radius:50%;object-fit:cover;flex-shrink:0"/>
       <div><p style="font-size:8.6pt">A primeira paleta recheada que eu vendi foi por R$ 10 numa festa de aniversário. No fim da noite, tinha 4 encomendas novas. Capriche no recheio: é ele que faz a pessoa voltar.</p><p class="pincel" style="font-size:14pt;margin-top:1mm">Bruna</p></div>
-    </div>`);
+    </div
+    <p class="small" style="font-size:6.4pt;text-align:center;margin-top:-1mm">Fotos de ingredientes e picolés: bancos de imagens de domínio público (CC0), via Openverse.</p>`);
 
   return P;
 }

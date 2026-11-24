@@ -2,19 +2,20 @@
 import { C, img, md, callout, lista, passos, tabela, cabeca, pagina } from '../base.mjs';
 import { calc2, VOLUME, EMBALAGEM } from './dados.mjs';
 import { RECEITAS_SA, CATS_SA } from './semalcool-receitas.mjs';
-import { capaExtra, aberturaExtra, abertParte, receitaPg, categoriaPg, faixa, brl, preco, temImg } from './comum.mjs';
+import { capaExtra, aberturaExtra, abertParte, receitaPg, categoriaPg, faixa, brl, preco, temImg, usarPele, pele, destaques, fotosFaixa, citacao } from './comum.mjs';
 
 const MARCA = 'EXTRA · 30 GELADINHOS GOURMET SEM ÁLCOOL';
 
 export function semAlcool() {
   const P = [];
-  const pg = (c, o = {}) => P.push(pagina(c, { n: P.length + 1, marca: MARCA, ...o }));
+  usarPele('xt-sa');
+  const pg = (c, o = {}) => P.push(pagina(c, { n: P.length + 1, marca: MARCA, cls: pele(), ...o }));
   const cor = C.berryTx;
   const R = RECEITAS_SA.map((r, i) => ({ r, num: i + 1, k: calc2(r, CATS_SA.find((c) => c.id === r.cat).preco) }));
   const ks = R.map((x) => x.k);
 
-  P.push(capaExtra({ arquivo: 'capa-x1.jpg', eyebrow: 'Material extra', titulo: '30 Geladinhos Gourmet <span style="color:' + C.berryTx + '">Sem Álcool</span>', destaque: 'para toda a família', sub: 'Cremosos, gourmet, de fruta e os clássicos de bairro, com **custo e preço calculados**.', cor: C.berryCl, fotos: ['sa-ninho-com-creme-de-avela.jpg', 'sa-morango-com-pedacos.jpg', 'sa-brigadeiro.jpg'], selo: '30<br>receitas' }));
-  P.push(aberturaExtra({ cor: C.berryCl, eyebrow: 'Material extra', titulo: '30 Geladinhos Gourmet Sem Álcool', texto: 'O geladinho de drink vende para adultos. O sem álcool vende para **todo mundo**: crianças, famílias, quem não bebe e quem vai dirigir. Com os dois no isopor, você **não perde nenhuma venda**.', itens: ['A ciência do geladinho cremoso (sem cristais de gelo)', 'A **Base Cremosa Mestra** e a **Base de Fruta Mestra**', 'Segurança com leite e ovos', '30 receitas com custo e preço', 'Onde e como vender para famílias'], foto: 'sa-ninho-trufado-com-morango.jpg' }));
+  P.push(capaExtra({ arquivo: 'capa-x1.jpg', eyebrow: 'Material extra', titulo: '30 Geladinhos Gourmet <span style="color:' + C.berryTx + '">Sem Álcool</span>', destaque: 'para toda a família', sub: 'Cremosos, gourmet, de fruta e os clássicos de bairro, com **custo e preço calculados**.', cor: C.berryCl, fotos: ['sa-morango-com-leite-condensado.jpg', 'sa-brigadeiro.jpg', 'sa-abertura.jpg'], selo: '30<br>receitas' }));
+  P.push(aberturaExtra({ cor: C.berryCl, eyebrow: 'Material extra', titulo: '30 Geladinhos Gourmet Sem Álcool', texto: 'O geladinho de drink vende para adultos. O sem álcool vende para **todo mundo**: crianças, famílias, quem não bebe e quem vai dirigir. Com os dois no isopor, você **não perde nenhuma venda**.', itens: ['A ciência do geladinho cremoso (sem cristais de gelo)', 'A **Base Cremosa Mestra** e a **Base de Fruta Mestra**', 'Segurança com leite e ovos', '30 receitas com custo e preço', 'Onde e como vender para famílias'], foto: 'sa-abertura.jpg' }));
 
   // ---------- POR QUE ----------
   pg(`
@@ -30,6 +31,7 @@ export function semAlcool() {
         ['Cardápio completo', 'Com os dois, o cliente faz um pedido só para a casa toda: drink para os adultos, sem álcool para as crianças.'],
       ].map(([t, d]) => `<div class="box b-berry"><h3>${t}</h3><p style="font-size:8pt;margin-top:.8mm">${md(d)}</p></div>`).join('')}
     </div>
+    ${destaques([['Custo de um de fruta', 'R$ 0,93', 'Limão com Hortelã', C.limaoTx, '#2F5A0A'], ['Preço de um cremoso', 'R$ 6', 'margem de 60 a 70%', C.berryTx, '#8A1A50'], ['Kit festa de 50', 'R$ 240', 'lucro ≈ R$ 135', C.turquesa, C.turqEsc]])}
     <div style="margin-top:auto">${callout('segredo', 'A conta que convence', 'Quem compra 3 geladinhos de drink para o casal muitas vezes leva **mais 3 sem álcool para os filhos**. Um pedido de R$ 21 vira um de R$ 39 sem esforço nenhum.')}</div>`);
 
   // ---------- SUMÁRIO ----------
@@ -43,11 +45,11 @@ export function semAlcool() {
       ['4', 'Venda para as famílias', 'A Parte 3 mostra onde vender, como montar kits de festa infantil e o combo que junta drink e sem álcool.'],
     ].map(([nn, t, d]) => `<div style="display:flex;gap:3mm;align-items:flex-start"><span class="num-g" style="font-size:20pt;width:8mm;color:${cor}">${nn}</span><div><h3>${t}</h3><p style="font-size:8.3pt">${md(d)}</p></div></div>`).join('')}
     <h2>Neste material</h2>
-    ${tabela(['Parte', 'Conteúdo', 'Págs.'], [['1', 'A ciência do geladinho cremoso, as bases mestras, segurança e técnicas', '5 a 12'], ['2', 'As 30 receitas, em 4 categorias', '13 a 48'], ['3', 'Vendendo para famílias: lugares, festas infantis, combos e preços', '49 em diante']], [2])}
+    ${tabela(['Parte', 'Conteúdo', 'Págs.'], [['1', 'A ciência do geladinho cremoso, as bases mestras, segurança, técnicas e diagnóstico', '5 a 13'], ['2', 'As 30 receitas, em 4 categorias', '14 a 49'], ['3', 'Vendendo para famílias: lugares, festas, cardápio, produção e dúvidas', '50 em diante']], [2])}
     <div style="margin-top:auto">${callout('dica', 'Tudo calculado', `Rendimento em saquinhos de **${VOLUME.sacole} ml** (6×24 cm). Custo com preços de supermercado de 2026 + R$ ${EMBALAGEM.sacole.toFixed(2).replace('.', ',')} de saquinho e etiqueta. Preço sugerido = preço praticado na categoria, sempre acima de **2,5× o custo**.`)}</div>`);
 
   // ================= PARTE 1 =================
-  P.push(abertParte({ num: '01', titulo: 'A ciência do geladinho cremoso', resumo: 'Por que alguns geladinhos ficam **cremosos como sorvete** e outros viram uma pedra de gelo? A resposta está no equilíbrio de 5 ingredientes, e você vai dominar isso agora.', itens: ['O que cada ingrediente faz', 'A Base Cremosa Mestra (cozida)', 'A Base de Fruta Mestra', 'Estabilizantes: quando vale usar', 'Segurança com leite e ovos', 'Técnicas de acabamento'], foto: 'sa-brigadeiro.jpg', fundo: C.turquesa }));
+  P.push(abertParte({ num: '01', titulo: 'A ciência do geladinho cremoso', resumo: 'Por que alguns geladinhos ficam **cremosos como sorvete** e outros viram uma pedra de gelo? A resposta está no equilíbrio de 5 ingredientes, e você vai dominar isso agora.', itens: ['O que cada ingrediente faz', 'A Base Cremosa Mestra (cozida)', 'A Base de Fruta Mestra', 'Estabilizantes: quando vale usar', 'Segurança com leite e ovos', 'Técnicas de acabamento'], foto: 'sa-parte1.jpg', fundo: C.turquesa }));
 
   pg(`
     ${faixa(C.turquesa, '1.1', 'O que faz ficar cremoso')}
@@ -60,6 +62,7 @@ export function semAlcool() {
       ['**Fibra da fruta**', 'Faz o mesmo papel nos frutados', 'Não coe (a não ser semente dura)'],
       ['**Ar**', 'Bater incorpora ar e deixa mais leve', '1 minuto de liquidificador'],
     ])}
+    ${fotosFaixa(['sa-parte1.jpg', 'sa-doce-de-leite.jpg', 'sa-beijinho-de-coco.jpg'], 30)}
     <div style="margin-top:auto">${callout('segredo', 'A regra de ouro', 'Todo geladinho cremoso precisa de **açúcar + gordura + sólidos**. Se tirar um deles (por exemplo, trocar leite integral por desnatado), a textura piora na hora.')}</div>`);
 
   pg(`
@@ -100,6 +103,7 @@ export function semAlcool() {
     <p class="small" style="text-align:center">+ 20 a 40 ml de suco de limão (realça cor e sabor)</p>
     ${tabela(['Tipo de fruta', 'Exemplos', 'Açúcar por litro'], [['Ácidas', 'limão, maracujá, abacaxi verde', '**180 a 220 g**'], ['Médias', 'morango, uva, kiwi, frutas vermelhas', '**150 a 170 g**'], ['Doces', 'manga, melancia, banana, açaí', '**100 a 130 g**']], [2])}
     ${passos(['Bata a fruta com metade da água e o açúcar.', 'Complete com água até 1 litro e junte o limão.', '**Prove gelado**: tem que estar mais doce e mais intenso do que um suco. O frio tira doçura.', 'Junte os pedaços que vão aparecer e encha mexendo a jarra.'])}
+    ${fotosFaixa(['sa-morango-com-pedacos.jpg', 'sa-manga.jpg', 'sa-maracuja.jpg', 'sa-uva.jpg'], 24)}
     <div style="margin-top:auto">${callout('dica', 'Teste da doçura', 'Coloque uma colher da mistura no congelador por 15 minutos e prove. Se estiver “sem graça”, falta açúcar ou fruta. É o jeito mais rápido de acertar uma fruta nova.')}</div>`);
 
   pg(`
@@ -137,6 +141,22 @@ export function semAlcool() {
     ].map(([t, d], i) => `<div style="display:flex;gap:3mm"><span class="num-g" style="font-size:16pt;color:${C.coralTx};width:7mm">${i + 1}</span><div><h3>${t}</h3><p style="font-size:8.2pt">${md(d)}</p></div></div>`).join('')}
     <div style="margin-top:auto">${callout('segredo', 'Quanto vale', 'Um geladinho com parede trufada ou listras custa **R$ 0,20 a R$ 0,40 a mais** e é vendido por **R$ 1 a R$ 2 a mais**. É o acabamento que transforma sacolé em geladinho gourmet.')}</div>`);
 
+  pg(`
+    ${faixa(C.turquesa, '1.8', 'Diagnóstico')}
+    ${cabeca('', 'Deu errado? ==Veja o que corrigir==', 'Os 8 problemas mais comuns dos cremosos e dos de fruta, e como resolver no próximo lote.')}
+    ${tabela(['Problema', 'Causa provável', 'Como corrigir'], [
+      ['Duro como pedra', 'Pouco açúcar ou leite desnatado', 'Siga a Base Mestra; use leite **integral**'],
+      ['“Arenoso”, com cristais', 'Base pouco cozida; congelou devagar', 'Ferva 5 min com o amido; não lote o freezer'],
+      ['Separou em camadas', 'Bateu pouco; base quente', 'Bata 1 min; encha só com a base fria'],
+      ['Gosto de amido', 'Amido demais ou cru', 'No máximo 25 g/L e sempre cozido'],
+      ['Talhou (com fruta ácida)', 'Leite quente + fruta ácida', 'Junte a fruta com tudo **gelado**'],
+      ['Sabor fraco no de fruta', 'Fruta verde ou pouca polpa', 'Fruta madura; prove gelado'],
+      ['Escureceu (banana, abacate)', 'Oxidação', 'Limão na mistura; encha e congele logo'],
+      ['Parede trufada quebrou toda', 'Camada grossa de chocolate', 'Camada fina, pincel e 10 min de freezer'],
+    ])}
+    ${fotosFaixa(['sa-brigadeiro.jpg', 'sa-ninho-trufado-com-morango.jpg', 'sa-pudim-de-leite.jpg'], 26)}
+    <div style="margin-top:auto">${callout('ok', 'Anote cada lote', 'Data, sabor, o que mudou e como ficou. Em 3 semanas você tem a **sua** receita no ponto, sem depender de sorte.')}</div>`);
+
   // ================= PARTE 2 =================
   P.push(abertParte({ num: '02', titulo: 'As 30 receitas', resumo: 'Cada receita traz medidas, rendimento, **custo por unidade** e **preço sugerido**. As cremosas usam a Base Mestra; as de fruta, a Base de Fruta.', itens: ['8 cremosos clássicos', '8 gourmet premium', '8 de frutas de verdade', '6 brasileiríssimos'], foto: 'sa-morango-com-pedacos.jpg', fundo: C.berryTx }));
 
@@ -162,7 +182,7 @@ export function semAlcool() {
   });
 
   // ================= PARTE 3 =================
-  P.push(abertParte({ num: '03', titulo: 'Vendendo para famílias', resumo: 'O sem álcool abre lugares e datas onde o de drink não entra. Aqui estão os melhores, com preço, kit e mensagem pronta.', itens: ['Onde vender', 'Kits de festa infantil', 'O Combo Família', 'Mensagens prontas'], foto: 'sa-ninho-com-creme-de-avela.jpg', fundo: C.turquesa }));
+  P.push(abertParte({ num: '03', titulo: 'Vendendo para famílias', resumo: 'O sem álcool abre lugares e datas onde o de drink não entra. Aqui estão os melhores, com preço, kit e mensagem pronta.', itens: ['Onde vender', 'Kits de festa infantil', 'O Combo Família', 'Mensagens prontas', 'Cardápio pronto e produção da semana', 'As perguntas das famílias'], foto: 'sa-parte3.jpg', fundo: C.turquesa }));
 
   pg(`
     ${faixa(cor, '3.1', 'Onde vender')}
@@ -210,14 +230,60 @@ export function semAlcool() {
     ].map(([t, m]) => `<div class="box b-coco" style="padding:2.6mm 3.2mm"><p class="eb" style="font-size:6.4pt;color:${C.turquesa}">${t}</p><p style="font-size:8.2pt;margin-top:1mm">${md(m)}</p></div>`).join('')}
     <div style="margin-top:auto">${callout('dica', 'Foto vende mais que texto', 'Mande sempre uma foto do geladinho **cortado ao meio** ou contra a luz. No sem álcool, a textura cremosa é o que dá vontade.')}</div>`);
 
+  const cardapio = [[17, 'R$ 5'], [19, 'R$ 5,50'], [18, 'R$ 5'], [1, 'R$ 6'], [2, 'R$ 6'], [3, 'R$ 6'], [9, 'R$ 7'], [10, 'R$ 7'], [13, 'R$ 7']].map(([nn]) => R[nn - 1]);
   pg(`
-    ${faixa(cor, '3.5', 'Checklist')}
+    ${faixa(cor, '3.5', 'Cardápio pronto')}
+    <div style="flex:1;border-radius:4mm;overflow:hidden;position:relative;background:linear-gradient(160deg,#B8236A,#7A1446);color:#fff;display:flex;flex-direction:column">
+      <img src="${img('sa-morango-com-leite-condensado.jpg')}" style="width:100%;height:46mm;object-fit:cover;opacity:.92"/>
+      <div style="padding:4mm 6mm 5mm;display:flex;flex-direction:column;flex:1">
+        <p class="pincel" style="color:${C.mangaSobreTurq};font-size:15pt;text-align:center">geladinhos</p>
+        <p style="font-family:Outfit;font-weight:800;font-size:21pt;text-align:center;line-height:1;color:#fff;letter-spacing:-.01em">GOURMET</p>
+        <p style="text-align:center;font-size:7.2pt;color:#ffffffe6;letter-spacing:.14em;margin-top:1mm">SEM ÁLCOOL · 120 ML · FEITOS COM LEITE E FRUTA DE VERDADE</p>
+        <div style="margin-top:3.4mm;display:flex;flex-direction:column;gap:1.6mm">
+          ${[['Frutas', cardapio.slice(0, 3)], ['Cremosos', cardapio.slice(3, 6)], ['Gourmet', cardapio.slice(6)]].map(([g, rs]) => `<p style="font-family:Outfit;font-weight:700;font-size:7pt;letter-spacing:.18em;color:${C.mangaSobreTurq};margin-top:1mm">${g.toUpperCase()}</p>${rs.map(({ r, k }) => `<div style="display:flex;align-items:baseline;gap:2mm"><span style="font-family:Outfit;font-weight:700;font-size:9.2pt;color:#fff">${r.nome}</span><span style="flex:1;border-bottom:.3mm dotted #ffffff66"></span><span style="font-family:Outfit;font-weight:800;font-size:9.2pt;color:${C.mangaSobreTurq}">${preco(k.preco)}</span></div>`).join('')}`).join('')}
+        </div>
+        <div style="margin-top:auto;display:flex;gap:2mm">${[['Caixa da semana', '10 por R$ 50'], ['Combo Família', '3 drink + 3 sem álcool R$ 34'], ['Festa infantil', '50 por R$ 240']].map(([a, b]) => `<div style="flex:1;border-radius:2.4mm;background:#ffffff1f;text-align:center;padding:1.6mm"><p style="font-size:6.8pt;color:#fff">${a}</p><p style="font-family:Outfit;font-weight:800;font-size:8.6pt;color:${C.mangaSobreTurq}">${b}</p></div>`).join('')}</div>
+      </div>
+    </div>
+    <p class="small" style="text-align:center">Mande como imagem no status ou imprima em A5 e cole no isopor. Troque os sabores conforme o seu estoque.</p>`);
+
+  pg(`
+    ${faixa(cor, '3.6', 'Produção da semana')}
+    ${cabeca('', 'Uma semana de produção ==organizada==', 'Para vender cerca de **100 geladinhos sem álcool por semana** com 2 sessões de cozinha.')}
+    ${tabela(['Dia', 'O que fazer', 'Rende'], [
+      ['**Segunda (noite)**', '2 Bases Cremosas Mestras → Ninho com Avelã, Brigadeiro e Paçoca', '≈ 32 un'],
+      ['**Terça**', 'Vender + fotos para o status', ''],
+      ['**Quarta (noite)**', '3 de fruta: Morango, Maracujá e Uva (sem fogão)', '≈ 26 un'],
+      ['**Quinta (noite)**', '1 Base Mestra → Ninho Trufado com Morango e Cookies', '≈ 22 un'],
+      ['**Sexta e sábado**', 'Entregas, ponto de venda e festas', ''],
+      ['**Domingo**', 'Contas, compras da semana e recompra', ''],
+    ], [2])}
+    ${destaques([['Horas de cozinha', '≈ 5 h', 'na semana inteira', C.turquesa, C.turqEsc], ['Unidades', '≈ 80 a 100', 'em 8 sabores', C.berryTx, '#8A1A50'], ['Lucro estimado', '≈ R$ 400', 'por semana, só no sem álcool', C.limaoTx, '#2F5A0A']])}
+    <div style="margin-top:auto">${callout('segredo', 'Uma panela, vários sabores', 'Cozinhar as bases em dobro e dividir em jarras economiza **metade do tempo** de fogão. É o segredo de quem produz muito sozinha.')}</div>`);
+
+  pg(`
+    ${faixa(cor, '3.7', 'Perguntas das famílias')}
+    ${cabeca('', 'O que as mães ==mais perguntam==', 'Tenha estas respostas na ponta da língua (e nas Respostas Rápidas do WhatsApp).')}
+    ${[
+      ['“Pode dar para criança pequena?”', 'Os sem álcool são feitos com leite, fruta e açúcar. Para crianças pequenas, prefira os **sem pedaços duros** (Ninho, Brigadeiro, Morango batido) e sempre com um adulto por perto.'],
+      ['“Tem lactose?”', 'Os cremosos têm leite. Para quem não pode, ofereça os de **fruta** (feitos com água), ou faça a Base Mestra com leite e creme **sem lactose**, que funcionam igual.'],
+      ['“Tem corante?”', 'A cor vem da fruta e do chocolate. É um ótimo argumento: **“só ingrediente de verdade”**.'],
+      ['“É muito doce?”', 'Congelado, o doce diminui. Para quem prefere menos doce, os de fruta ácida (limão, maracujá) são os mais equilibrados.'],
+      ['“Quanto tempo dura?”', 'No freezer, bem fechado, até 30 dias. Depois de derreter, não pode congelar de novo.'],
+      ['“Tem alergênicos?”', 'Está na etiqueta: leite, ovo, amendoim, glúten (biscoito) e traços de castanhas (creme de avelã), quando houver.'],
+    ].map(([q, a]) => `<div class="box b-coco" style="padding:2.4mm 3.2mm"><p style="font-family:Outfit;font-weight:800;font-size:9pt;color:${C.berryTx}">${q}</p><p style="font-size:8pt;margin-top:.8mm">${md(a)}</p></div>`).join('')}`);
+
+  pg(`
+    ${faixa(cor, '3.8', 'Checklist')}
     ${cabeca('', 'Do zero ao ==primeiro kit vendido==')}
     <div class="box b-berry">${lista(['Li a Parte 1 e fiz a Base Cremosa Mestra', 'Fiz 4 sabores de teste (2 cremosos e 2 de fruta)', 'Provei um de cada depois de congelado', 'Calculei custo e defini preços', 'Fiz etiquetas com alérgenos e “sem álcool” em destaque', 'Montei o cardápio misto e o Combo Família', 'Enviei a mensagem de lançamento', 'Ofereci o kit de festa infantil para 5 contatos', 'Vendi o primeiro kit! 🎉'], 'ck')}</div>
+    <div style="margin-top:2mm">${fotosFaixa(['sa-ninho-com-creme-de-avela.jpg', 'sa-morango-com-pedacos.jpg', 'sa-brigadeiro.jpg'], 30)}</div>
+    ${fotosFaixa(['sa-acai-com-banana.jpg', 'sa-cheesecake-de-frutas-vermelhas.jpg', 'sa-manga.jpg'], 30)}
     <div style="margin-top:auto;display:flex;gap:4mm;align-items:center">
       <img src="${img('bruna-retrato.jpg')}" style="width:26mm;height:26mm;border-radius:50%;object-fit:cover;flex-shrink:0"/>
       <div><p style="font-size:8.6pt">Quando comecei a levar os sem álcool junto, as vendas de fim de semana quase dobraram. As famílias compram para a casa toda, e voltam.</p><p class="pincel" style="font-size:14pt;margin-top:1mm">Bruna</p></div>
-    </div>`);
+    </div
+    <p class="small" style="font-size:6.4pt;text-align:center;margin-top:-1mm">Fotos de ingredientes e picolés: bancos de imagens de domínio público (CC0), via Openverse.</p>`);
 
   return P;
 }

@@ -1,6 +1,6 @@
 // Extra 3: Mensagens que Vendem no WhatsApp.
 import { C, img, md, callout, lista, passos, tabela, cabeca, pagina } from '../base.mjs';
-import { capaExtra, aberturaExtra, abertParte, faixa } from './comum.mjs';
+import { capaExtra, aberturaExtra, abertParte, faixa, usarPele, pele, destaques, fotosFaixa, citacao } from './comum.mjs';
 
 const MARCA = 'EXTRA · MENSAGENS QUE VENDEM NO WHATSAPP';
 const VERDE = '#0B7A5E';
@@ -23,7 +23,8 @@ const conversa = (linhas) => `<div style="background:#EFE7DD;border-radius:3.2mm
 
 export function whatsapp() {
   const P = [];
-  const pg = (c, o = {}) => P.push(pagina(c, { n: P.length + 1, marca: MARCA, ...o }));
+  usarPele('xt-wa');
+  const pg = (c, o = {}) => P.push(pagina(c, { n: P.length + 1, marca: MARCA, cls: pele(), ...o }));
   const cor = VERDE;
 
   P.push(capaExtra({ arquivo: 'capa-x3.jpg', eyebrow: 'Material extra', titulo: 'Mensagens que <span style="color:' + VERDE + '">Vendem</span> no WhatsApp', destaque: 'copie, cole e venda', sub: 'Mais de **60 mensagens prontas** para cada momento da venda: do lançamento à recompra, das objeções às encomendas de festa.', cor: '#D7F0E3', fotos: ['whats-1-patricia.jpg', 'whats-4-joyce.jpg', 'whats-2-larissa.jpg'], selo: '+60<br>mensagens' }));
@@ -40,7 +41,7 @@ export function whatsapp() {
     <div style="margin-top:auto">${callout('atencao', 'Personalize sempre', 'A mesma mensagem enviada igualzinha para 100 pessoas parece spam e o WhatsApp pode até **bloquear o seu número**. Nome da pessoa + um detalhe pessoal mudam tudo.')}</div>`);
 
   // ================= PARTE 1 =================
-  P.push(abertParte({ num: '01', titulo: 'O que faz uma mensagem vender', resumo: 'Antes das mensagens prontas, as **regras** que estão por trás delas. Com elas, você consegue escrever qualquer mensagem nova.', itens: ['As 5 regras', 'A anatomia de uma mensagem que vende', 'Os 8 erros que espantam cliente'], foto: '', fundo: VERDE }));
+  P.push(abertParte({ num: '01', titulo: 'O que faz uma mensagem vender', resumo: 'Antes das mensagens prontas, as **regras** que estão por trás delas. Com elas, você consegue escrever qualquer mensagem nova.', itens: ['As 5 regras', 'A anatomia de uma mensagem que vende', 'Os 8 erros que espantam cliente'], foto: 'wa-celular-1.jpg', fundo: VERDE }));
 
   pg(`
     ${faixa(cor, '1.1', 'As 5 regras')}
@@ -77,7 +78,7 @@ export function whatsapp() {
     <div style="margin-top:auto">${callout('atencao', 'Cuidado com envio em massa', 'Mandar a mesma mensagem para centenas de números que não salvaram o seu contato faz o WhatsApp **banir** o número. Use listas de transmissão (Parte 2) e mensagens personalizadas.')}</div>`);
 
   // ================= PARTE 2 =================
-  P.push(abertParte({ num: '02', titulo: 'WhatsApp Business em 20 minutos', resumo: 'O aplicativo é gratuito e tem ferramentas que fazem metade do trabalho por você: catálogo, mensagens automáticas, atalhos e etiquetas.', itens: ['Perfil profissional', 'Catálogo com foto e preço', 'Saudação e ausência automáticas', 'Respostas rápidas (atalhos)', 'Etiquetas e listas de transmissão'], foto: '', fundo: VERDE }));
+  P.push(abertParte({ num: '02', titulo: 'WhatsApp Business em 20 minutos', resumo: 'O aplicativo é gratuito e tem ferramentas que fazem metade do trabalho por você: catálogo, mensagens automáticas, atalhos e etiquetas.', itens: ['Perfil profissional', 'Catálogo com foto e preço', 'Saudação e ausência automáticas', 'Respostas rápidas (atalhos)', 'Etiquetas e listas de transmissão'], foto: 'wa-celular-2.jpg', fundo: VERDE }));
 
   pg(`
     ${faixa(cor, '2.1', 'Perfil e catálogo')}
@@ -125,7 +126,7 @@ export function whatsapp() {
     <div style="margin-top:auto">${callout('dica', 'Status × lista', 'O status alcança quem está curioso; a lista alcança quem já quer comprar. Use os dois.')}</div>`);
 
   // ================= PARTE 3 =================
-  P.push(abertParte({ num: '03', titulo: 'As mensagens prontas', resumo: 'Organizadas pelo **momento da venda**: do primeiro contato à encomenda de festa. Copie, troque o que está entre colchetes e envie.', itens: ['Lançamento e grupos', 'Status da semana', 'Atendimento e dúvidas', 'Objeções', 'Fechamento, entrega e pós-venda', 'Recompra e datas especiais', 'Festas, empresas e revenda', 'Clientes sumidos'], foto: '', fundo: VERDE }));
+  P.push(abertParte({ num: '03', titulo: 'As mensagens prontas', resumo: 'Organizadas pelo **momento da venda**: do primeiro contato à encomenda de festa. Copie, troque o que está entre colchetes e envie.', itens: ['Lançamento e grupos', 'Status da semana', 'Atendimento, dúvidas e objeções', 'Fechamento, entrega e pós-venda', 'Recompra e datas especiais', 'Festas, empresas e revenda', 'Clientes sumidos e áudio', 'Catálogo, Instagram e ticket maior'], foto: 'wa-celular-4.jpg', fundo: VERDE }));
 
   pg(`
     ${faixa(cor, '3.1', 'Lançamento')}
@@ -265,6 +266,42 @@ export function whatsapp() {
     ${tabela(['Regra do áudio', 'Por quê'], [['Até 30 segundos', 'Acima disso, poucos ouvem até o fim'], ['Nome da pessoa nos 3 primeiros segundos', 'Prende a atenção'], ['Sorria enquanto fala', 'Dá para ouvir o sorriso na voz'], ['Termine com o próximo passo', '“Me fala quantos”'], ['Mande uma foto logo depois', 'O áudio cria vontade, a foto fecha']])}
     <div style="margin-top:auto">${callout('segredo', 'Áudio para quem já é cliente', 'Para quem nunca comprou, comece por texto + foto. O áudio funciona melhor com quem já conhece você.')}</div>`);
 
+  pg(`
+    ${faixa(cor, '3.16', 'Catálogo')}
+    ${cabeca('', 'Textos prontos ==para o catálogo==', 'Copie no catálogo do WhatsApp Business: nome, preço e uma descrição que dá água na boca.')}
+    ${tabela(['Item', 'Descrição', 'Preço'], [
+      ['Caipirinha de Limão', 'O clássico em versão geladinho: limão fresco, pedacinhos da fruta e cachaça. 120 ml. **Contém álcool.**', 'R$ 7'],
+      ['Morango com Vodka', 'Morango batido com pedaços da fruta e vodka. Docinho e refrescante. 120 ml. **Contém álcool.**', 'R$ 7'],
+      ['Piña Colada', 'Abacaxi, leite de coco e rum: cremoso, com clima de praia. 120 ml. **Contém álcool.**', 'R$ 7'],
+      ['Combo 3 sabores', 'Escolha 3 sabores de drink. Perfeito para provar ou dividir.', 'R$ 18'],
+      ['Ninho com Creme de Avelã', 'Cremoso de leite Ninho com listras de creme de avelã. **Sem álcool.**', 'R$ 6'],
+      ['Kit Festa 20', '20 geladinhos sortidos, entregues congelados no isopor. Encomende com 3 dias de antecedência.', 'R$ 120'],
+    ], [2])}
+    ${callout('dica', 'A fórmula da descrição', '**O que é + o detalhe que dá vontade + tamanho + aviso.** Duas linhas bastam: catálogo com textão ninguém lê.')}
+    ${fotosFaixa(['sabor-caipirinha.jpg', 'sabor-morango.jpg', 'sabor-pina-colada.jpg', 'sabor-blue-lagoon.jpg'], 24)}`);
+
+  pg(`
+    ${faixa(cor, '3.17', 'Instagram')}
+    ${cabeca('', 'Bio e destaques que ==levam para o WhatsApp==', 'O Instagram atrai; o WhatsApp fecha. A bio e os destaques fazem a ponte.')}
+    <div class="row" style="align-items:stretch">
+      <div class="box b-coco"><p class="eb" style="color:${VERDE}">Bio pronta (3 linhas)</p><p style="font-size:8.6pt;margin-top:1.4mm;line-height:1.55">🍹 Geladinhos de drink e gourmet<br>📍 Entregas em [bairro/cidade]<br>👇 Peça pelo WhatsApp</p><p class="small" style="margin-top:1.4mm">No link da bio, use o link direto do seu WhatsApp (wa.me/55 + DDD + número).</p></div>
+      <div class="box b-turq"><p class="eb" style="color:${C.turquesa}">Destaques fixos</p><div style="margin-top:1.4mm">${lista(['**Cardápio**: sabores e preços', '**Festas**: kits e fotos de eventos', '**Clientes**: prints e fotos (com autorização)', '**Como pedir**: passo a passo e entrega'])}</div></div>
+    </div>
+    ${tabela(['Post', 'Legenda pronta'], [
+      ['Foto contra a luz', '“Esse é o de maracujá, e as sementinhas são de verdade 🍹 Pede o seu pelo WhatsApp (link na bio).”'],
+      ['Vídeo da produção', '“Fornada de sexta saindo! Qual sabor você levaria? Comenta aqui 👇”'],
+      ['Cliente feliz', '“Quando a cliente manda foto da festa… 💛 Obrigada, [nome]! Encomendas pelo WhatsApp.”'],
+    ])}
+    <div style="margin-top:auto">${callout('segredo', 'Comentou, ganhou mensagem', 'Toda pessoa que comentar ou responder um story recebe uma mensagem no privado: “Oi! Vi que você curtiu o de [sabor]. Quer que eu separe um?”')}</div>`);
+
+  pg(`
+    ${faixa(cor, '3.18', 'Ticket maior')}
+    ${cabeca('', 'Vendendo ==mais itens== no mesmo pedido', 'Cada pedido é a chance de vender mais um. Estas frases fazem isso sem forçar.')}
+    ${msg('Combo antes do avulso', 'Fica R$ 7 cada, mas **3 saem por R$ 18**: a maioria leva o combo para provar sabores diferentes 😊 Quer montar o seu?', 'Mostrar o combo primeiro faz ele parecer a escolha normal.')}
+    ${msg('Para a casa toda', 'Mais algum para as crianças ou para quem não bebe? Tenho os **sem álcool** de Ninho com creme de avelã e brigadeiro, R$ 6.', 'Lembra quem mais está em casa: o pedido de 1 pessoa vira o da família.')}
+    ${msg('Estoque para o fim de semana', 'Quer aproveitar e já deixar uns no freezer para o fim de semana? Duram até 30 dias 😉', 'O cliente compra hoje o que compraria depois, e você entrega uma vez só.')}
+    ${destaques([['Avulso', 'R$ 7', '1 geladinho', C.turquesa, C.turqEsc], ['Com combo', 'R$ 18', '3 sabores', '#0B7A5E', '#06523F'], ['Combo + sem álcool', 'R$ 30', 'pedido da família', C.coralTx, '#8E2219']])}`);
+
   // ================= PARTE 4 =================
   pg(`
     ${faixa(cor, '04', 'Rotina')}
@@ -277,12 +314,14 @@ export function whatsapp() {
     ], [2])}
     <h2>Os números que importam</h2>
     ${tabela(['Indicador', 'Como medir', 'Meta inicial'], [['Conversas por dia', 'chats novos ou respondidos', '10'], ['Taxa de fechamento', 'pedidos ÷ conversas', '30%'], ['Recompra', 'clientes que voltaram no mês ÷ total', '40%'], ['Ticket médio', 'faturamento ÷ pedidos', 'R$ 18 ou mais']], [2])}
+    ${fotosFaixa(['wa-celular-3.jpg', 'venda-condominio.jpg'], 30)}
     <div style="margin-top:auto">${callout('segredo', 'O que aumenta o ticket', 'Sempre ofereça o **combo** antes do avulso e pergunte “mais algum para as crianças?” no final. Só essas duas frases levam o ticket de R$ 7 para R$ 18 ou mais.')}</div>`);
 
   pg(`
     ${faixa(cor, '05', 'Checklist')}
     ${cabeca('', 'Seu WhatsApp ==pronto para vender==')}
     <div class="box" style="background:#E5F4EC">${lista(['Instalei o WhatsApp Business e completei o perfil', 'Montei o catálogo com fotos, preços e combos', 'Ativei a saudação e a mensagem de ausência', 'Cadastrei as 7 respostas rápidas', 'Criei as etiquetas (Novo, Pedido, Pago, Cliente, Festa)', 'Pedi para os contatos salvarem meu número', 'Mandei a mensagem de lançamento para 50 contatos', 'Programei os status da semana', 'Fiz a primeira recompra 3 dias depois da venda', 'Fechei a primeira encomenda de festa! 🎉'], 'ck')}</div>
+    ${fotosFaixa(['whats-5-camila.jpg', 'whats-3-renata.jpg', 'whats-6-fernanda.jpg'], 52)}
     <div style="margin-top:auto;display:flex;gap:4mm;align-items:center">
       <img src="${img('bruna-retrato.jpg')}" style="width:26mm;height:26mm;border-radius:50%;object-fit:cover;flex-shrink:0"/>
       <div><p style="font-size:8.6pt">No começo eu tinha vergonha de oferecer. Quando parei de “vender” e comecei a <b>conversar</b>, os pedidos vieram. Use as mensagens como ponto de partida e coloque o seu jeito nelas.</p><p class="pincel" style="font-size:14pt;margin-top:1mm">Bruna</p></div>
