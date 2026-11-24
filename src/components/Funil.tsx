@@ -159,10 +159,10 @@ export function Funil() {
   const irOferta = useCallback(() => ir('oferta', true), [ir]);
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip">
+    <div className="relative flex min-h-dvh flex-col overflow-x-clip">
       {passo !== 'abertura' && passo !== 'carregando' && <Topo passo={passo} />}
 
-      <div key={passo} className={animar ? 'animate-entra' : ''}>
+      <div key={passo} className={`flex-1 ${animar ? 'animate-entra' : ''}`}>
         {passo === 'abertura' && <Abertura seguir={() => ir('tempo')} />}
         {passo === 'tempo' && <Pergunta etapa="Pergunta 1 de 2" titulo="Quanto tempo você tem disponível para aprender?" opcoes={TEMPO} valor={resp.tempo} escolher={(v) => responder('tempo', v, 'desafio')} />}
         {passo === 'desafio' && (
@@ -927,7 +927,7 @@ function Confete() {
 
 function Rodape() {
   return (
-    <footer className="relative mt-14">
+    <footer className="relative mt-14 shrink-0">
       <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="block h-[56px] w-full" aria-hidden>
         <path d="M0 70 C200 20 380 110 600 60 S1000 20 1200 55 V120 H0Z" fill="#FFC538" />
         <path d="M0 90 C250 50 420 120 700 80 S1050 60 1200 85 V120 H0Z" fill="#FF6B5B" />
