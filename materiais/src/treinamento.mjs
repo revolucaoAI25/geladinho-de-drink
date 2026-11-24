@@ -1,6 +1,6 @@
 // Treinamento principal: Geladinhos de Drinks Lucrativos.
 import { C, img, md, callout, lista, passos, tabela, cabeca, pagina, capa, aberturaModulo, saquinho } from './base.mjs';
-import { RECEITAS, CATEGORIAS, calc, ML_UN, CUSTO_SAQUINHO } from './receitas.mjs';
+import { RECEITAS, CATEGORIAS, calc, ML_UN, CUSTO_SAQUINHO, ING } from './receitas.mjs';
 
 const brl = (n) => 'R$ ' + n.toFixed(2).replace('.', ',');
 const pct = (n) => n.toFixed(1).replace('.', ',') + '%';
@@ -118,9 +118,9 @@ export function treinamento() {
 
   pg(`
     ${cabeca('Módulo 1 · Compras', 'Lista de compras do ==primeiro lote==', 'Para fazer **3 sabores** (Limão, Maracujá e Morango com Vodka), cerca de **25 geladinhos**:')}
-    ${tabela(['Item', 'Quantidade', 'Preço aprox.'], [['Cachaça', '1 garrafa (700 ml)', 'R$ 18 a 25'], ['Vodka nacional', '1 garrafa (1 L)', 'R$ 30 a 40'], ['Açúcar refinado', '1 kg', 'R$ 5'], ['Limão-taiti', '12 unidades', 'R$ 6 a 8'], ['Maracujá', '5 unidades (ou 300 ml de polpa)', 'R$ 8 a 12'], ['Morango', '2 caixinhas (500 g)', 'R$ 10 a 14'], ['Saquinhos 6×24 cm', '1 pacote com 100', 'R$ 10 a 15']], [2])}
-    <div class="box b-escuro" style="display:flex;justify-content:space-between;align-items:center"><div><p style="font-family:Outfit;font-weight:700;font-size:10pt;color:#fff">Investimento total</p><p style="font-size:8pt">a cachaça e a vodka rendem mais lotes</p></div><p style="font-family:Outfit;font-weight:800;font-size:18pt;color:${C.manga}">≈ R$ 95</p></div>
-    ${callout('segredo', 'Segredo da Bruna', 'A bebida é o item mais caro, mas rende muito: **1 garrafa de 700 ml faz cerca de 5 lotes** (uns 40 geladinhos). No segundo lote, o seu custo cai bastante.')}
+    ${tabela(['Item', 'Quantidade', 'Preço aprox.'], [['Cachaça (tipo 51, Pitú)', '1 garrafa (965 ml)', 'R$ 18 a 23'], ['Vodka (tipo Smirnoff)', '1 garrafa (998 ml)', 'R$ 30 a 35'], ['Açúcar refinado', '1 kg', 'R$ 4,50 a 5,50'], ['Limão-taiti', '12 unidades (≈ 1,2 kg)', 'R$ 6 a 9'], ['Maracujá', '5 unidades (ou 300 ml de polpa)', 'R$ 8 a 12'], ['Morango', '2 bandejas de 250 g', 'R$ 14 a 20'], ['Saquinhos 6×24 cm', '1 pacote com 100', 'R$ 8 a 12']], [2])}
+    <div class="box b-escuro" style="display:flex;justify-content:space-between;align-items:center"><div><p style="font-family:Outfit;font-weight:700;font-size:10pt;color:#fff">Investimento total</p><p style="font-size:8pt">a cachaça e a vodka rendem mais lotes</p></div><p style="font-family:Outfit;font-weight:800;font-size:18pt;color:${C.manga}">≈ R$ 100</p></div>
+    ${callout('segredo', 'Segredo da Bruna', 'A bebida é o item mais caro, mas rende muito: **1 garrafa de 965 ml faz 8 lotes** (uns 65 geladinhos). No segundo lote, o seu custo cai bastante.')}
     <div class="g2" style="margin-top:auto">
       <div class="box b-coco"><h3>Bebida que funciona</h3><p style="font-size:8pt;margin-top:1mm">Marcas nacionais comuns. No geladinho, a diferença de sabor entre uma vodka cara e uma barata praticamente some.</p></div>
       <div class="box b-coco"><h3>Fruta que funciona</h3><p style="font-size:8pt;margin-top:1mm">Bem madura (mais sabor, menos açúcar). Polpa congelada também serve e sai mais barata fora de época.</p></div>
@@ -226,7 +226,7 @@ export function treinamento() {
       ${CATEGORIAS.map((c) => `<div style="break-inside:avoid;margin-bottom:3mm"><p style="font-family:Outfit;font-weight:800;font-size:7.4pt;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:1.6mm"><span style="width:3mm;height:3mm;border-radius:1mm;background:${c.cor}"></span>${c.nome}</p>
         ${RECEITAS.map((r, i) => [r, i]).filter(([r]) => r.cat === c.id).map(([r, i]) => { const k = calc(r); return `<div style="display:flex;justify-content:space-between;gap:1mm;padding:.8mm 0;border-bottom:.25mm dotted ${C.tinta}33"><span><b style="color:${C.coral}">${String(i + 1).padStart(2, '0')}</b> ${r.nome}</span><span style="color:${C.dinheiro};font-weight:700;white-space:nowrap">${brl(k.preco).replace(',00', '')}</span></div>`; }).join('')}</div>`).join('')}
     </div>
-    <div style="margin-top:auto">${callout('dica', 'Como ler as fichas', '**Teor final**: firme = congela como geladinho comum · **Custo/unid.**: ingredientes + saquinho e etiqueta, com preços de referência · **Venda por**: 3× o custo, nunca abaixo de R$ 7. Ajuste com os preços da sua região (Módulo 5).')}</div>`);
+    <div style="margin-top:auto">${callout('dica', 'Como ler as fichas', '**Teor final**: firme = congela como geladinho comum · **Custo/unid.**: ingredientes + saquinho e etiqueta, com preços de referência · **Venda por**: preço praticado na categoria, sempre acima de 2,5× o custo. Ajuste com os preços da sua região (Módulo 5).')}</div>`);
 
   let catAtual = '';
   RECEITAS.forEach((r, i) => {
@@ -302,29 +302,32 @@ export function treinamento() {
   add(aberturaModulo(5, 'Precificação e lucro', 'Preço errado é o motivo nº 1 de quem trabalha muito e não ganha. Aqui você aprende a calcular o custo real e o preço certo, sem chute.', ['A ficha de custo, passo a passo', 'Os custos escondidos', 'Quanto cobrar (e por que 3×)', 'Combos, kits e metas de faturamento'], 'venda-praia.jpg'));
 
   const ex = calc(RECEITAS[0]);
+  const DEZ = RECEITAS.filter((r) => r.foto).map(calc);
+  const CM = Math.round((DEZ.reduce((a, k) => a + k.custoUn, 0) / DEZ.length) * 10) / 10; // custo médio dos 10 mais vendidos
+  const mil = (n) => 'R$ ' + (Math.round(n / 10) * 10).toLocaleString('pt-BR');
   pg(`
     ${cabeca('Módulo 5 · Custo', 'Ficha de custo: ==Caipirinha de Limão==', 'Faça esta conta uma vez para cada sabor, com os preços que **você** pagou.')}
-    ${tabela(['Ingrediente', 'Usado', 'Custo'], [['Cachaça (R$ 20 a garrafa de 700 ml)', '120 ml', 'R$ 3,48'], ['Açúcar (R$ 5 o kg)', '180 g', 'R$ 0,90'], ['Limão (R$ 0,60 cada)', '8 limões', 'R$ 4,80'], ['Água filtrada', '650 ml', 'R$ 0,00'], ['**Total do lote**', '', `**${brl(ex.custo)}**`]], [1, 2])}
+    ${tabela(['Ingrediente (preço pago)', 'Usado', 'Custo'], [[`Cachaça (${brl(ING.cachaca.preco * 965).replace(/,\d\d$/, '')} a garrafa de 965 ml)`, '120 ml', brl(120 * ING.cachaca.preco)], [`Açúcar (${brl(ING.acucar.preco * 1000)} o kg)`, '180 g', brl(180 * ING.acucar.preco)], [`Limão (${brl(ING.limaoPedaco.preco)} cada, ≈ R$ 6/kg)`, '8 limões', brl(8 * ING.limaoPedaco.preco)], ['Água filtrada', '650 ml', 'R$ 0,00'], ['**Total do lote**', '', `**${brl(ex.custo)}**`]], [1, 2])}
     <div style="display:flex;gap:2.4mm">
       ${[
         ['Rende', `${ex.un} un`],
         ['Ingredientes/un', brl(ex.custo / ex.un)],
         ['+ saquinho e etiqueta', brl(CUSTO_SAQUINHO)],
         ['Custo final/un', brl(ex.custoUn)],
-      ].map(([a, b], i) => `<div style="flex:1;border-radius:3mm;padding:2.4mm;text-align:center;background:${i === 3 ? C.turquesa : C.coco};color:${i === 3 ? '#fff' : C.tinta}"><p style="font-size:6.4pt;font-family:Outfit;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.7">${a}</p><p style="font-family:Outfit;font-weight:800;font-size:11pt">${b}</p></div>`).join('')}
+      ].map(([a, b], i) => `<div style="flex:1;border-radius:3mm;padding:2.4mm;text-align:center;background:${i === 3 ? C.turquesa : C.coco};color:${i === 3 ? '#fff' : C.tinta}"><p style="font-size:6.4pt;font-family:Outfit;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.7;color:inherit">${a}</p><p style="font-family:Outfit;font-weight:800;font-size:11pt;color:${i === 3 ? C.manga : C.tinta}">${b}</p></div>`).join('')}
     </div>
     ${callout('segredo', 'A fórmula', '**Custo por unidade = (custo total do lote ÷ unidades) + saquinho e etiqueta.** Simples assim. Anote numa folha (ou use a Calculadora Automática de Lucros, se você adquiriu).')}
+    <h2>O mesmo trabalho, lucros diferentes</h2>
+    ${tabela(['Vendendo 100 unidades a', 'Faturamento', `Custo (${brl(CM)}/un)`, 'Lucro'], [5, 7, 9].map((v) => [`R$ ${v}`, mil(100 * v), mil(100 * CM), (v === 5 ? '' : '**') + mil(100 * (v - CM)) + (v === 5 ? '' : '**')]), [1, 2, 3])}
     <div style="margin-top:auto">${callout('atencao', 'Custos escondidos', 'Gás e energia do freezer, gelo do isopor, sacolinhas, transporte e as unidades que você dá para provar. Some **cerca de 10%** ao custo para cobrir tudo isso.')}</div>`);
 
   pg(`
     ${cabeca('Módulo 5 · Preço', 'Quanto ==cobrar==')}
-    <div class="box b-escuro" style="text-align:center"><p style="font-size:8pt">Regra de mercado para alimentos artesanais</p><p style="font-family:Outfit;font-weight:800;font-size:17pt;color:${C.manga};margin-top:.6mm">Preço = custo × 3 a 4</p><p style="font-size:7.8pt;margin-top:.6mm">Dá lucro de verdade e ainda cobre perdas e promoções.</p></div>
-    ${tabela(['Categoria', 'Custo médio', 'Preço sugerido'], [['Caipirinhas e vodka (frutados)', 'R$ 1,10 a 2,50', '**R$ 7 a 8**'], ['Tropicais com rum', 'R$ 1,30 a 3,30', '**R$ 7 a 10**'], ['Cremosos (batidas)', 'R$ 2,40 a 3,30', '**R$ 8 a 10**'], ['Gin e especiais de bar', 'R$ 2,30 a 3,90', '**R$ 9 a 12**']], [1, 2])}
+    <div class="box b-escuro" style="text-align:center"><p style="font-size:8pt">Regra de mercado para alimentos artesanais</p><p style="font-family:Outfit;font-weight:800;font-size:17pt;color:${C.manga};margin-top:.6mm">Preço = custo × 2,5 a 4</p><p style="font-size:7.8pt;margin-top:.6mm">Geladinho gourmet comum sai de R$ 5 a 8 no Brasil. O de drink, com bebida e 120 ml, fica no topo dessa faixa e acima.</p></div>
+    ${tabela(['Categoria', 'Custo por unidade', 'Preço sugerido'], CATEGORIAS.map((c) => { const ks = RECEITAS.filter((r) => r.cat === c.id).map(calc); const f = (a) => brl(Math.min(...a)).replace(',00', '') + (Math.min(...a) === Math.max(...a) ? '' : ' a ' + brl(Math.max(...a)).replace('R$ ', '').replace(',00', '')); return [c.nome, f(ks.map((k) => k.custoUn)), `**${f(ks.map((k) => k.preco))}**`]; }), [1, 2])}
     <h2>Como escolher o seu preço</h2>
-    ${lista(['**Pesquise** 3 vendedores de geladinho gourmet da sua região. Fique na mesma faixa ou um pouco acima: seu produto é diferente.', '**Praia e eventos** aceitam preço mais alto (R$ 8 a 12). **Condomínio e vizinhança**, no piso (R$ 7).', '**Nunca** venda abaixo de 2× o custo, nem em promoção.'])}
-    <h2>O mesmo trabalho, lucros diferentes</h2>
-    ${tabela(['Vendendo 100 unidades a', 'Faturamento', 'Custo (R$ 1,80/un)', 'Lucro'], [['R$ 5', 'R$ 500', 'R$ 180', 'R$ 320'], ['R$ 7', 'R$ 700', 'R$ 180', '**R$ 520**'], ['R$ 9', 'R$ 900', 'R$ 180', '**R$ 720**']], [1, 2, 3])}
-    <div style="margin-top:auto">${callout('dica', 'Preço redondo vende mais', 'R$ 7 é mais fácil de pagar (e de dar troco) que R$ 6,80. Arredonde sempre.')}</div>`);
+    ${lista(['**Pesquise** 3 vendedores de geladinho gourmet da sua região. Fique na mesma faixa ou um pouco acima: seu produto é diferente.', '**Praia, eventos e bares** aceitam R$ 1 a 3 a mais. **Condomínio e vizinhança** ficam no preço da tabela.', '**Nunca** venda abaixo de 2× o custo, nem em promoção.'])}
+    <p class="small" style="margin-top:auto">Preço redondo vende mais: R$ 7 é mais fácil de pagar (e de dar troco) que R$ 6,80.</p>`);
 
   pg(`
     ${cabeca('Módulo 5 · Combos', 'Combos e kits que ==aumentam o ticket==')}
@@ -336,8 +339,8 @@ export function treinamento() {
       ].map(([t, d, p, o]) => `<div class="box b-coco" style="text-align:center"><p class="eb" style="font-size:6.4pt">${t}</p><p style="font-size:7.8pt;margin-top:.6mm">${d}</p><p style="font-family:Outfit;font-weight:800;font-size:15pt;color:${C.coral}">${p}</p><p class="small">${o}</p></div>`).join('')}
     </div>
     <h2>Quanto dá para faturar</h2>
-    ${tabela(['Vendendo por dia', 'Por semana', 'Faturamento no mês', 'Lucro aprox. no mês'], [['10 un a R$ 7', '70 un', 'R$ 2.100', 'R$ 1.550'], ['15 un a R$ 7', '105 un', 'R$ 3.150', 'R$ 2.330'], ['25 un a R$ 7', '175 un', 'R$ 5.250', 'R$ 3.880']], [1, 2, 3])}
-    <p class="small">Considerando 30 dias de venda e custo médio de R$ 1,80 por unidade. Resultados variam conforme região, preço e dedicação.</p>
+    ${tabela(['Vendendo por dia', 'Por semana', 'Faturamento no mês', 'Lucro aprox. no mês'], [10, 15, 25].map((d) => [`${d} un a R$ 7,50`, `${d * 6} un`, mil(d * 26 * 7.5), mil(d * 26 * (7.5 - CM * 1.1))]), [1, 2, 3])}
+    <p class="small">Considerando 6 dias de venda por semana (26 no mês), preço médio de R$ 7,50, custo médio de ${brl(CM)} por unidade + 10% de custos escondidos. Resultados variam conforme região, preço e dedicação.</p>
     <div class="box b-turq"><h3>Orçamento de festa em 1 minuto</h3><p style="font-size:8pt;margin-top:1mm">Conte <b>2 geladinhos por adulto</b> (3 se for festa na piscina ou à tarde no calor). Festa de 40 adultos = 80 a 120 geladinhos. Cobre um sinal de <b>50% no Pix</b> para reservar a data e o restante na entrega.</p></div>
     <div style="margin-top:auto">${callout('segredo', 'Encomendas valem ouro', 'Uma festa de 80 geladinhos a R$ 6 = **R$ 480 numa entrega só**, sem ficar o dia inteiro vendendo. Ofereça encomendas desde a primeira semana.')}</div>`);
 

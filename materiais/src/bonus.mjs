@@ -155,7 +155,7 @@ export function bonus2() {
   pg(`
     ${faixa('02', 'Saquinhos')}
     ${cabeca('', 'Qual saquinho ==comprar==')}
-    ${tabela(['Medida', 'Volume', 'Pacote 100 un', 'Uso'], [['5 × 23 cm', '≈ 100 ml', 'R$ 8 a 12', 'Sacolé simples'], ['**6 × 24 cm**', '**≈ 120 ml**', '**R$ 10 a 15**', '**Gourmet (recomendado)**'], ['7 × 25 cm', '≈ 160 ml', 'R$ 12 a 18', 'Versão grande'], ['Com zip / fecho', '≈ 150 ml', 'R$ 25 a 40', 'Kits e presentes']], [2])}
+    ${tabela(['Medida', 'Volume', 'Pacote 100 un', 'Uso'], [['5 × 23 cm', '≈ 100 ml', 'R$ 6 a 9', 'Sacolé simples'], ['**6 × 24 cm**', '**≈ 120 ml**', '**R$ 7 a 11**', '**Gourmet (recomendado)**'], ['7 × 25 cm', '≈ 160 ml', 'R$ 10 a 14', 'Versão grande'], ['Com zip / fecho', '≈ 150 ml', 'R$ 25 a 40', 'Kits e presentes']], [2])}
     <div class="g2">
       <div class="box b-coco"><h3>Na hora de comprar, veja</h3><div style="margin-top:1.4mm">${lista(['“Próprio para alimentos”', 'Polietileno de **baixa densidade** (PEBD): mais macio e resistente ao frio', 'Transparente (cristal)', 'Espessura de pelo menos 0,06 mm'])}</div></div>
       <div class="box b-coco"><h3>Quanto comprar</h3><p style="font-size:8pt;margin-top:1.4mm">Para começar, <b>1 pacote de 100</b>. Quando estiver vendendo mais de 100 por semana, compre em <b>milheiro</b> (1.000 un): sai até 40% mais barato.</p></div>
@@ -216,7 +216,7 @@ export function bonus2() {
   pg(`
     ${faixa('07', 'Onde comprar')}
     ${cabeca('', 'Onde comprar ==e quanto custa==')}
-    ${tabela(['Item', 'Onde encontrar', 'Preço médio'], [['Saquinhos para geladinho', 'Loja de embalagens, atacadão, marketplaces', 'R$ 10 a 15 / 100'], ['Papel adesivo para etiquetas', 'Papelaria, marketplaces', 'R$ 15 / 10 folhas'], ['Seladora manual 20 cm', 'Marketplaces, loja de embalagens', 'R$ 60 a 90'], ['Funil de boca larga', 'Loja de utilidades', 'R$ 5 a 10'], ['Isopor 12 L', 'Supermercado, loja de pesca', 'R$ 30 a 45'], ['Gelo reciclável', 'Supermercado, marketplaces', 'R$ 5 a 8 cada'], ['Caixas e kraft', 'Loja de embalagens', 'R$ 1 a 3 cada']], [2])}
+    ${tabela(['Item', 'Onde encontrar', 'Preço médio'], [['Saquinhos para geladinho', 'Loja de embalagens, atacadão, marketplaces', 'R$ 7 a 11 / 100'], ['Papel adesivo para etiquetas', 'Papelaria, marketplaces', 'R$ 15 / 10 folhas'], ['Seladora manual 20 cm', 'Marketplaces, loja de embalagens', 'R$ 60 a 90'], ['Funil de boca larga', 'Loja de utilidades', 'R$ 5 a 10'], ['Isopor 12 L', 'Supermercado, loja de pesca', 'R$ 30 a 45'], ['Gelo reciclável', 'Supermercado, marketplaces', 'R$ 5 a 8 cada'], ['Caixas e kraft', 'Loja de embalagens', 'R$ 1 a 3 cada']], [2])}
     ${callout('dica', 'Compre perto de casa no começo', 'Na loja de embalagens do seu bairro você vê a espessura do saquinho antes de comprar. Depois que achar o ideal, compre em quantidade pela internet.')}
     <div class="box b-escuro" style="margin-top:auto;display:flex;justify-content:space-between;align-items:center"><div><p style="font-family:Outfit;font-weight:700;font-size:9.6pt;color:#fff">Kit inicial de embalagem</p><p style="font-size:7.8pt">100 saquinhos + etiquetas + funil + 1 isopor + 3 gelos</p></div><p style="font-family:Outfit;font-weight:800;font-size:16pt;color:${C.manga}">≈ R$ 85</p></div>`);
   return P;
@@ -251,7 +251,7 @@ export function bonus3() {
         ['2 tropicais com rum', 'Mojito e Piña Colada: clima de praia.'],
         ['1 com gin', 'Gin Tônica de Frutas Vermelhas: o “premium” do cardápio.'],
         ['1 cremoso', 'Batida de Coco: agrada quem não gosta de drink forte.'],
-        ['Faixa de preço', 'De R$ 7 a R$ 12: tem opção para todo bolso.'],
+        ['Faixa de preço', `De ${preco(Math.min(...DEZ.map(({ k }) => k.preco)))} a ${preco(Math.max(...DEZ.map(({ k }) => k.preco)))}: tem opção para todo bolso.`],
       ].map(([t, d]) => `<div class="box b-berry"><h3>${t}</h3><p style="font-size:8pt;margin-top:.8mm">${d}</p></div>`).join('')}
     </div>
     <div style="display:flex;gap:1.4mm;justify-content:center;align-items:flex-end;margin-top:auto">${DEZ.map(({ r }) => saquinho(r.cor, r.pedaco, 30)).join('')}</div>
@@ -300,8 +300,8 @@ export function bonus3() {
   const compra = (id) => {
     const q = soma[id];
     const s = {
-      cachaca: '1 garrafa de 700 ml', vodka: '1 garrafa de 1 L', rum: '1 garrafa de 700 ml', gin: '1 garrafa (sobra para outros lotes)', curacau: '1 garrafa pequena',
-      licorPessego: '1 garrafa pequena', acucar: '2 kg', sucoLimao: '≈ 18 limões', limaoPedaco: '4 limões', polpaMaracuja: '5 maracujás', morango: '1 caixa de 500 g',
+      cachaca: '1 garrafa de 965 ml', vodka: '1 garrafa de 998 ml', rum: '1 garrafa de 1 L', gin: '1 garrafa (sobra para outros lotes)', curacau: '1 garrafa pequena',
+      licorPessego: '1 garrafa pequena', acucar: '2 kg', sucoLimao: '≈ 18 limões', limaoPedaco: '4 limões', polpaMaracuja: '5 maracujás', morango: '2 bandejas de 250 g + 1 de reserva',
       melancia: '1 fatia grande (≈ 1,2 kg com casca)', abacaxi: '1 abacaxi pequeno', leiteCond: '2 latas/caixas de 395 g', leiteCoco: '2 vidros de 200 ml',
       frutasVermelhas: '1 pacote de 300 g', tonica: '1 lata de 350 ml + 1 de reserva', folha: '1 maço de hortelã', alecrim: '1 maço pequeno', sucoLaranja: '1 caixa de 1 L',
       nectarPessego: '1 caixa de 1 L', groselha: '1 garrafa pequena', leite: '1 caixa de 1 L', cocoRalado: '1 pacote de 50 g', agua: 'filtro / galão',
@@ -386,8 +386,8 @@ export function bonus4() {
       ${extra}`);
   };
 
-  dia(0, 'saber exatamente o que vai fazer e ter tudo em casa para o primeiro lote.', ['Ler o Módulo 1 (utensílios e compras) e o Módulo 2 (Fórmula Drink que Congela)', 'Escolher **3 sabores**: sugestão: Caipirinha de Limão, Caipirinha de Maracujá e Morango com Vodka', 'Conferir os utensílios que você já tem', 'Comprar ingredientes, **saquinhos 6×24**, funil e etiquetas (≈ R$ 95)', 'Limpar o freezer e deixar na temperatura mais fria'], `
-      ${tabela(['Compra do Dia 1', 'Preço aprox.'], [['Cachaça 700 ml + vodka 1 L', 'R$ 50 a 65'], ['Açúcar, limões, maracujás, morangos', 'R$ 30 a 40'], ['Saquinhos, funil, etiquetas', 'R$ 25 a 35']], [1])}
+  dia(0, 'saber exatamente o que vai fazer e ter tudo em casa para o primeiro lote.', ['Ler o Módulo 1 (utensílios e compras) e o Módulo 2 (Fórmula Drink que Congela)', 'Escolher **3 sabores**: sugestão: Caipirinha de Limão, Caipirinha de Maracujá e Morango com Vodka', 'Conferir os utensílios que você já tem', 'Comprar ingredientes, **saquinhos 6×24**, funil e etiquetas (≈ R$ 100)', 'Limpar o freezer e deixar na temperatura mais fria'], `
+      ${tabela(['Compra do Dia 1', 'Preço aprox.'], [['Cachaça 965 ml + vodka 998 ml', 'R$ 48 a 58'], ['Açúcar, limões, maracujás, morangos', 'R$ 32 a 45'], ['Saquinhos, funil, etiquetas', 'R$ 20 a 30']], [1])}
       ${callout('dica', 'Faça a lista no celular', 'Tire foto da lista de compras do Módulo 1 e leve ao mercado. Compre a bebida em atacadão: costuma sair 20 a 30% mais barato.')}
       <div style="margin-top:auto">${callout('atencao', 'Não compre tudo de uma vez', 'Nada de 10 sabores e caixas personalizadas agora. **Primeiro teste, depois invista.**')}</div>`);
 
@@ -414,7 +414,7 @@ export function bonus4() {
 
   dia(6, 'olhar os números, cuidar de quem já comprou e planejar a semana 2.', ['Somar vendas, custos e lucro da semana', 'Ver quais sabores venderam mais e quais sobraram', 'Mandar a **mensagem de recompra** para todos os clientes', 'Definir a meta da semana 2', 'Planejar a produção: 2 lotes por semana'], `
       <div class="box b-coco"><p class="eb" style="font-size:6.4pt;color:${C.turquesa}">Mensagem de recompra</p><p style="font-size:8.2pt;margin-top:1mm">“Oi, [nome]! O que achou do geladinho? 😍 Essa semana vou fazer [sabor novo] também. Quer que eu separe pra você?”</p></div>
-      <div class="box b-coco"><h3>A conta da semana</h3><p style="font-size:8pt;margin-top:1mm">Lucro = total vendido − (ingredientes + embalagens + gelo + transporte). Exemplo: vendeu 40 a R$ 7 = R$ 280; gastou R$ 95 → <b>lucro de R$ 185</b>, e ainda sobrou bebida para o próximo lote.</p></div>
+      <div class="box b-coco"><h3>A conta da semana</h3><p style="font-size:8pt;margin-top:1mm">Lucro = total vendido − (ingredientes + embalagens + gelo + transporte). Exemplo: vendeu 40 a R$ 7 = R$ 280; gastou R$ 100 → <b>lucro de R$ 180</b>, e ainda sobrou bebida para o próximo lote.</p></div>
       <div style="margin-top:auto">${callout('ok', 'Fim da primeira semana', 'Você saiu do zero, testou, precificou, divulgou e vendeu. Agora é repetir, melhorar e crescer.')}</div>`);
 
   pg(`
@@ -429,7 +429,7 @@ export function bonus4() {
     ${faixa('09', 'Metas')}
     ${cabeca('', 'Suas metas ==para o primeiro mês==')}
     ${tabela(['Semana', 'Meta de vendas', 'Foco'], [['1', '30 a 50 geladinhos', 'Lançar e testar'], ['2', '60 a 80', 'Recompra + 2 sabores novos'], ['3', '80 a 120', '1ª encomenda de festa'], ['4', '100 a 150', 'Ponto fixo + revenda']], [1])}
-    <div class="box b-escuro"><p style="font-size:8pt">Com 120 geladinhos por semana a R$ 7, em média:</p><p style="font-family:Outfit;font-weight:800;font-size:15pt;color:${C.manga};margin-top:.6mm">≈ R$ 3.300 de faturamento no mês</p><p style="font-size:7.4pt;margin-top:.6mm">Resultado depende da sua região, preço e dedicação.</p></div>
+    <div class="box b-escuro"><p style="font-size:8pt">Com 120 geladinhos por semana a R$ 7, em média:</p><p style="font-family:Outfit;font-weight:800;font-size:15pt;color:${C.manga};margin-top:.6mm">≈ R$ 3.600 de faturamento no mês</p><p style="font-size:8pt;margin-top:.4mm">e cerca de R$ 2.400 de lucro, já descontando ingredientes, embalagem e custos escondidos.</p><p style="font-size:7.4pt;margin-top:.6mm">Resultado depende da sua região, preço e dedicação.</p></div>
     <h2>Minhas metas</h2>
     ${['Quero vender por semana: ______ geladinhos', 'Quero faturar no mês: R$ ______', 'Meus 3 pontos de venda: ____________________', 'Minha 1ª encomenda até o dia: ___/___'].map((t) => `<p style="font-size:9pt;padding:1.6mm 0;border-bottom:.3mm solid ${C.cocoEsc}">${t}</p>`).join('')}
     <div style="margin-top:auto;display:flex;gap:3mm;align-items:center">

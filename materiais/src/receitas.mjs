@@ -1,49 +1,49 @@
 // As 30 receitas. Cada ingrediente: [texto exibido, id, quantidade na unidade do id].
 // O gerador calcula volume, teor alcoólico final, rendimento e custo por unidade a partir de ING.
 
-/** preco: R$ por unidade (ml, g ou un) · vol: ml que ocupa por unidade · abv: teor alcoólico (0 a 1). Preços de referência (supermercado, 2026). */
+/** preco: R$ por unidade (ml, g ou un) · vol: ml que ocupa por unidade · abv: teor alcoólico (0 a 1). Preços de referência: supermercado, novembro de 2026 (Cachaça 51 965 ml ≈ R$ 21, Smirnoff 998 ml ≈ R$ 32, Montilla 1 L ≈ R$ 35, Gin Rocks 1 L ≈ R$ 41). */
 export const ING = {
   agua: { preco: 0, vol: 1 },
   acucar: { preco: 0.005, vol: 0.62 },
   sal: { preco: 0, vol: 0 },
-  cachaca: { preco: 0.029, vol: 1, abv: 0.39 },
-  vodka: { preco: 0.035, vol: 1, abv: 0.375 },
-  rum: { preco: 0.04, vol: 1, abv: 0.38 },
-  gin: { preco: 0.08, vol: 1, abv: 0.4 },
+  cachaca: { preco: 0.022, vol: 1, abv: 0.39 },
+  vodka: { preco: 0.032, vol: 1, abv: 0.375 },
+  rum: { preco: 0.035, vol: 1, abv: 0.38 },
+  gin: { preco: 0.045, vol: 1, abv: 0.4 },
   tequila: { preco: 0.12, vol: 1, abv: 0.38 },
   licorLaranja: { preco: 0.064, vol: 1, abv: 0.3 },
-  curacau: { preco: 0.049, vol: 1, abv: 0.2 },
+  curacau: { preco: 0.055, vol: 1, abv: 0.2 },
   licorPessego: { preco: 0.05, vol: 1, abv: 0.18 },
   licorChoc: { preco: 0.057, vol: 1, abv: 0.17 },
   aperol: { preco: 0.073, vol: 1, abv: 0.11 },
   espumante: { preco: 0.047, vol: 1, abv: 0.115 },
-  vinho: { preco: 0.04, vol: 1, abv: 0.12 },
+  vinho: { preco: 0.025, vol: 1, abv: 0.12 },
   sucoLimao: { preco: 0.02, vol: 1 },
   sucoSiciliano: { preco: 0.035, vol: 1 },
   limaoPedaco: { preco: 0.6, vol: 25 },
-  polpaMaracuja: { preco: 0.015, vol: 1 },
-  morango: { preco: 0.02, vol: 1 },
-  frutasVermelhas: { preco: 0.04, vol: 1 },
+  polpaMaracuja: { preco: 0.025, vol: 1 },
+  morango: { preco: 0.03, vol: 1 },
+  frutasVermelhas: { preco: 0.07, vol: 1 },
   abacaxi: { preco: 0.011, vol: 1 },
-  kiwi: { preco: 0.025, vol: 1 },
-  melancia: { preco: 0.004, vol: 0.92 },
-  manga: { preco: 0.008, vol: 1 },
+  kiwi: { preco: 0.03, vol: 1 },
+  melancia: { preco: 0.006, vol: 0.92 },
+  manga: { preco: 0.011, vol: 1 },
   uva: { preco: 0.015, vol: 1 },
   sucoUva: { preco: 0.015, vol: 1 },
   sucoLaranja: { preco: 0.01, vol: 1 },
   nectarPessego: { preco: 0.008, vol: 1 },
-  groselha: { preco: 0.015, vol: 1 },
+  groselha: { preco: 0.02, vol: 1 },
   cranberry: { preco: 0.02, vol: 1 },
   leiteCond: { preco: 0.0177, vol: 0.77 },
   cremeLeite: { preco: 0.02, vol: 1 },
   leite: { preco: 0.005, vol: 1 },
-  leiteCoco: { preco: 0.025, vol: 1 },
-  aguaCoco: { preco: 0.008, vol: 1 },
-  cocoRalado: { preco: 0.05, vol: 0.5 },
-  chocPo: { preco: 0.06, vol: 0.6 },
+  leiteCoco: { preco: 0.03, vol: 1 },
+  aguaCoco: { preco: 0.009, vol: 1 },
+  cocoRalado: { preco: 0.09, vol: 0.5 },
+  chocPo: { preco: 0.07, vol: 0.6 },
   amendoim: { preco: 0.03, vol: 0.6 },
   tonica: { preco: 0.0143, vol: 1 },
-  folha: { preco: 0.13, vol: 0 },
+  folha: { preco: 0.1, vol: 0 },
   alecrim: { preco: 0.5, vol: 0 },
   maca: { preco: 1.5, vol: 110 },
   laranja: { preco: 1, vol: 130 },
@@ -100,8 +100,8 @@ export const RECEITAS = [
   {
     cat: 'caipi', nome: 'Caipirinha de Frutas Vermelhas', foto: null, cor: '#9C2350', pedaco: '#3A0F25', tempo: 15, nivel: 'Fácil',
     desc: 'Cor de vinho intensa e frutinhas inteiras: o sabor “premium” das caipirinhas.',
-    ing: [['400 g de mix de frutas vermelhas congeladas', 'frutasVermelhas', 400], ['400 ml de água filtrada gelada', 'agua', 400], ['180 g de açúcar', 'acucar', 180], ['30 ml de suco de limão', 'sucoLimao', 30], ['120 ml de cachaça', 'cachaca', 120]],
-    prep: ['Separe 100 g das frutas e bata o restante com a água e o açúcar.', 'Coe se quiser uma textura mais lisa (opcional).', 'Junte o limão, as frutas inteiras separadas e a cachaça.', 'Encha os saquinhos mexendo para distribuir as frutinhas.'],
+    ing: [['250 g de mix de frutas vermelhas congeladas', 'frutasVermelhas', 250], ['150 g de morangos', 'morango', 150], ['400 ml de água filtrada gelada', 'agua', 400], ['180 g de açúcar', 'acucar', 180], ['30 ml de suco de limão', 'sucoLimao', 30], ['120 ml de cachaça', 'cachaca', 120]],
+    prep: ['Separe 80 g das frutas vermelhas inteiras e bata o restante com os morangos, a água e o açúcar.', 'Coe se quiser uma textura mais lisa (opcional).', 'Junte o limão, as frutas inteiras separadas e a cachaça.', 'Encha os saquinhos mexendo para distribuir as frutinhas.'],
     dica: 'O mix congelado é mais barato que a fruta fresca e dá o mesmo resultado.',
   },
   // ---------------- VODKA ----------------
@@ -194,8 +194,8 @@ export const RECEITAS = [
   {
     cat: 'gin', nome: 'Gin Tônica de Frutas Vermelhas', foto: 'sabor-frutas-vermelhas.jpg', cor: '#7B1E4A', pedaco: '#3A0F25', tempo: 20, nivel: 'Médio',
     desc: 'O drink da moda em versão geladinho: frutas vermelhas, tônica e alecrim.',
-    ing: [['300 g de frutas vermelhas', 'frutasVermelhas', 300], ['400 ml de água tônica', 'tonica', 400], ['150 ml de água filtrada gelada', 'agua', 150], ['120 g de açúcar', 'acucar', 120], ['30 ml de suco de limão', 'sucoLimao', 30], ['2 ramos de alecrim', 'alecrim', 2], ['120 ml de gin', 'gin', 120]],
-    prep: ['Bata 200 g das frutas com a água e o açúcar e coe.', 'Junte a água tônica **devagar** (ela espuma) e o limão.', 'Acrescente as frutas inteiras restantes, o alecrim em pedacinhos e o gin.', 'Encha os saquinhos devagar, pela parede, para não espumar.'],
+    ing: [['200 g de frutas vermelhas congeladas', 'frutasVermelhas', 200], ['100 g de morangos', 'morango', 100], ['400 ml de água tônica', 'tonica', 400], ['150 ml de água filtrada gelada', 'agua', 150], ['120 g de açúcar', 'acucar', 120], ['30 ml de suco de limão', 'sucoLimao', 30], ['2 ramos de alecrim', 'alecrim', 2], ['120 ml de gin', 'gin', 120]],
+    prep: ['Bata os morangos e 120 g das frutas vermelhas com a água e o açúcar e coe.', 'Junte a água tônica **devagar** (ela espuma) e o limão.', 'Acrescente as frutas inteiras restantes, o alecrim em pedacinhos e o gin.', 'Encha os saquinhos devagar, pela parede, para não espumar.'],
     dica: 'O gás da tônica some no congelamento, mas o sabor amarguinho fica: é ele que dá cara de gin tônica.',
   },
   {
@@ -280,7 +280,10 @@ export const RECEITAS = [
 ];
 
 export const ML_UN = 120; // volume de cada geladinho
-export const CUSTO_SAQUINHO = 0.12; // saquinho + etiqueta, por unidade
+export const CUSTO_SAQUINHO = 0.14;
+/** Faixa praticada no Brasil (geladinho gourmet R$ 5 a 10; o de drink fica no topo) e markup mínimo. */
+export const PRECO_CAT = { caipi: 7, vodka: 7, rum: 7, cremoso: 8, gin: 9, especial: 9 };
+export const MARKUP_MIN = 2.5; // saquinho + etiqueta, por unidade
 
 /** Calcula volume, teor alcoólico, rendimento e custos da receita. */
 export function calc(r) {
@@ -295,6 +298,7 @@ export function calc(r) {
   const un = Math.floor(vol / ML_UN);
   const teor = (alc / vol) * 100;
   const custoUn = custo / un + CUSTO_SAQUINHO;
-  const preco = Math.max(7, Math.round((custoUn * 3) / 0.5) * 0.5);
+  // Preço de mercado da categoria, nunca abaixo de 2,5× o custo (margem mínima de 60%).
+  const preco = Math.max(PRECO_CAT[r.cat], Math.ceil((custoUn * MARKUP_MIN) / 0.5) * 0.5);
   return { vol: Math.round(vol), teor, un, custo, custoUn, preco };
 }
