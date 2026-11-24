@@ -49,7 +49,7 @@ function html(nome: string, t: string, bumps: string[] = []): string {
   const acesso = linkAcesso(t);
   const primeiro = nome.trim().split(/\s+/)[0] || '';
   const item = (id: string, titulo: string, desc: string) =>
-    `<tr><td style="padding:10px 0;border-bottom:1px solid #EFE9DC"><a href="${linkArquivo(id, t)}" style="color:#4E8A2E;font-weight:bold;font-size:15px;text-decoration:none">⬇ ${esc(titulo)}</a><br><span style="font-size:13px;color:#6b7572">${esc(desc)}</span></td></tr>`;
+    `<tr><td style="padding:10px 0;border-bottom:1px solid #EFE9DC"><a href="${linkArquivo(id, t)}" style="color:#4E8A2E;font-weight:bold;font-size:15px;text-decoration:none">${arquivoPorId(id)?.url ? '→' : '⬇'} ${esc(titulo)}</a><br><span style="font-size:13px;color:#6b7572">${esc(desc)}</span></td></tr>`;
   const grupo = (g: Grupo) => {
     const lista = ARQUIVOS.filter((a) => a.grupo === g && podeBaixar(a, bumps));
     if (!lista.length) return '';
@@ -124,7 +124,7 @@ export async function enviarBump(a: Acesso, bumpId: string, chave?: string): Pro
 <tr><td align="center" style="font-size:11px;letter-spacing:4px;color:#4E8A2E;font-weight:bold">GELADINHOS DE DRINKS LUCRATIVOS</td></tr>
 <tr><td align="center" style="padding-top:14px;font-size:22px;font-weight:bold;line-height:1.3">${primeiro ? `${esc(primeiro)}, seu` : 'Seu'} material extra chegou 🍹</td></tr>
 <tr><td align="center" style="padding-top:8px;font-size:16px;line-height:1.55;color:#3d4a47"><b>${esc(bump.nome)}</b></td></tr>
-${[...new Set(arqs.map((f) => f.titulo))].map((titulo) => `<tr><td style="padding:12px 0;border-bottom:1px solid #EFE9DC"><span style="font-weight:bold;font-size:15px;color:#263431">${esc(titulo)}</span><br>${arqs.filter((f) => f.titulo === titulo).map((f) => `<a href="${linkArquivo(f.id, t)}" style="color:#4E8A2E;font-size:14px;font-weight:bold">⬇ ${esc(f.desc)}</a>`).join(' &nbsp;·&nbsp; ')}</td></tr>`).join('')}
+${[...new Set(arqs.map((f) => f.titulo))].map((titulo) => `<tr><td style="padding:12px 0;border-bottom:1px solid #EFE9DC"><span style="font-weight:bold;font-size:15px;color:#263431">${esc(titulo)}</span><br>${arqs.filter((f) => f.titulo === titulo).map((f) => `<a href="${linkArquivo(f.id, t)}" style="color:#4E8A2E;font-size:14px;font-weight:bold">${f.url ? '→ Abrir' : '⬇'} ${esc(f.desc)}</a>`).join(' &nbsp;·&nbsp; ')}</td></tr>`).join('')}
 <tr><td align="center" style="padding-top:22px"><a href="${linkAcesso(t)}" style="background:#EF5B34;color:#ffffff;text-decoration:none;font-weight:bold;font-size:16px;padding:14px 26px;border-radius:14px;display:inline-block">Abrir minha área de downloads</a></td></tr>
 <tr><td style="padding-top:18px;font-size:13px;color:#6b7572;line-height:1.5">O treinamento e os 4 bônus chegam em outro e-mail (“Seu treinamento Geladinhos de Drinks chegou”). Guarde os dois.</td></tr>
 </table></td></tr></table></body></html>`;

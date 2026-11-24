@@ -1,0 +1,578 @@
+<title>Calculadora de Lucros</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: cabeçalho da marca, abas, e na aba principal duas colunas (receita | resultado fixo). Cores da marca Geladinhos de Drinks. */
+:root {
+  --bg: #FEF7EE; --surface: #FFFFFF; --surface-2: #FBEFDF; --line: #EEDFC8;
+  --fg: #123432; --muted: #4E6462; --accent: #0D6F6B; --accent-fg: #FFFFFF;
+  --coral: #C2362A; --manga: #FFC538; --manga-soft: #FFF2CC; --ok: #2F7A1E; --ok-soft: #EAF6DA; --warn: #8A5A00; --warn-soft: #FFF2CC; --bad: #B3261E; --bad-soft: #FDE4E1;
+  --hero: #0D6F6B; --hero-fg: #FFFFFF; --hero-num: #FFE08A;
+  --display: 'Outfit', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+  --body: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --r: 14px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0F1B1A; --surface: #162624; --surface-2: #1C302D; --line: #2A413E;
+  --fg: #EAF2F0; --muted: #A9BDBA; --accent: #3FB8AF; --accent-fg: #062321;
+  --coral: #FF8A7A; --manga: #FFC538; --manga-soft: #3A3014; --ok: #9ED43A; --ok-soft: #22331A; --warn: #FFD166; --warn-soft: #3A3014; --bad: #FF8A7A; --bad-soft: #3A1E1B;
+  --hero: #0B4F4C; --hero-fg: #FFFFFF; --hero-num: #FFE08A; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0F1B1A; --surface: #162624; --surface-2: #1C302D; --line: #2A413E;
+  --fg: #EAF2F0; --muted: #A9BDBA; --accent: #3FB8AF; --accent-fg: #062321;
+  --coral: #FF8A7A; --manga: #FFC538; --manga-soft: #3A3014; --ok: #9ED43A; --ok-soft: #22331A; --warn: #FFD166; --warn-soft: #3A3014; --bad: #FF8A7A; --bad-soft: #3A1E1B;
+  --hero: #0B4F4C; --hero-fg: #FFFFFF; --hero-num: #FFE08A; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 48px }
+.wrap { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: -.01em }
+h1 { font-size: clamp(26px, 5vw, 36px); line-height: 1.05; font-weight: 800 }
+h2 { font-size: 20px; font-weight: 800 }
+h3 { font-size: 15px; font-weight: 700 }
+p { margin: 0 }
+.eb { font-family: var(--display); font-weight: 700; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--coral) }
+.muted { color: var(--muted) }
+.small { font-size: 13px }
+.num { font-variant-numeric: tabular-nums }
+header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px }
+header.top .lead { max-width: 60ch; color: var(--muted); margin-top: 6px }
+.tabs { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px; width: fit-content; max-width: 100% }
+.tabs button { white-space: nowrap; flex-shrink: 0; font: 600 14px var(--body); border: 0; background: transparent; color: var(--fg); padding: 9px 16px; border-radius: 999px; cursor: pointer }
+.tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-fg) }
+.tabs button:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--manga); outline-offset: 2px }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0 }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 18px; align-items: start }
+@media (max-width: 820px) { .grid2 { grid-template-columns: 1fr } .grid2 > .res { order: -1 } }
+.res { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px) }
+@media (max-width: 820px) { .res { position: static } }
+label { font-weight: 600; font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 5px; min-width: 0 }
+input, select { font: 500 15px var(--body); color: var(--fg); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; width: 100%; min-width: 0 }
+input[type="number"] { font-variant-numeric: tabular-nums }
+.row { display: flex; gap: 10px; flex-wrap: wrap }
+.row > * { flex: 1 1 140px }
+.btn { font: 700 14px var(--body); border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); padding: 9px 14px; border-radius: 10px; cursor: pointer }
+.btn.pri { background: var(--accent); color: var(--accent-fg); border-color: transparent }
+.btn.ghost { background: transparent }
+.btn.del { background: transparent; border-color: transparent; color: var(--coral); padding: 6px 8px; font-size: 18px; line-height: 1 }
+.ing { display: grid; grid-template-columns: minmax(0, 1fr) 96px 40px 92px 34px; gap: 8px; align-items: center }
+.ing .u { font-size: 13px; color: var(--muted) }
+.ing .c { text-align: right; font-variant-numeric: tabular-nums; font-size: 14px }
+.ing-head { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+@media (max-width: 520px) { .ing { grid-template-columns: minmax(0, 1fr) 74px 34px 30px; } .ing .c { display: none } .ing-head .c { display: none } }
+.hero { background: var(--hero); color: var(--hero-fg); border-radius: var(--r); padding: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
+.hero .k { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .9 }
+.hero .v { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.1; font-variant-numeric: tabular-nums }
+.hero .v.big { color: var(--hero-num) }
+.kv { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px dashed var(--line); font-variant-numeric: tabular-nums }
+.kv:last-child { border-bottom: 0 }
+.pill { display: inline-flex; align-items: center; gap: 6px; font: 700 13px var(--body); padding: 5px 10px; border-radius: 999px }
+.pill.ok { background: var(--ok-soft); color: var(--ok) } .pill.warn { background: var(--warn-soft); color: var(--warn) } .pill.bad { background: var(--bad-soft); color: var(--bad) }
+.gauge { position: relative; height: 12px; border-radius: 999px; background: linear-gradient(90deg, #9ED43A 0 50%, #FFC538 50% 70%, #FF6B5B 70% 100%) }
+.gauge i { position: absolute; top: -5px; width: 4px; height: 22px; border-radius: 2px; background: var(--fg); transform: translateX(-2px) }
+.gauge-l { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums }
+.tip { background: var(--manga-soft); border-radius: 12px; padding: 12px 14px; font-size: 14px }
+.tip b { font-family: var(--display) }
+table { width: 100%; border-collapse: collapse; font-size: 14px }
+th { text-align: left; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 8px 6px; border-bottom: 1px solid var(--line) }
+td { padding: 6px; border-bottom: 1px solid var(--line); vertical-align: middle }
+td input { padding: 7px 9px; font-size: 14px }
+.tbl { overflow-x: auto }
+.tbl table { min-width: 620px }
+@media (max-width: 560px) {
+  .tbl table.precos { min-width: 0 } table.precos thead { display: none }
+  table.precos tr { display: grid; grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr); gap: 6px 8px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: center }
+  table.precos td { border: 0; padding: 0; width: auto !important }
+  table.precos td:first-child { grid-column: 1 / -1; font-weight: 700 }
+  table.precos td[data-l]::before { content: attr(data-l); display: block; font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 3px }
+  table.precos td.un { align-self: end; padding-bottom: 10px }
+  table.precos td:last-child { grid-column: 1 / -1; text-align: left !important; color: var(--muted); font-size: 13px }
+}
+.stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px }
+.stat > div { background: var(--surface-2); border-radius: 12px; padding: 14px }
+.stat .k { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.stat .v { font-family: var(--display); font-weight: 800; font-size: 24px; font-variant-numeric: tabular-nums }
+.stat .v.pos { color: var(--ok) }
+.dot { width: 12px; height: 12px; border-radius: 4px; display: inline-block; border: 1px solid var(--line); flex-shrink: 0 }
+.toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 18px); transform: translateX(-50%); background: var(--fg); color: var(--bg); font-weight: 600; padding: 10px 16px; border-radius: 999px; font-size: 14px }
+footer { color: var(--muted); font-size: 13px; text-align: center }
+@media (prefers-reduced-motion: no-preference) { .hero .v { transition: color .2s } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eb">Geladinhos de Drinks Lucrativos</p>
+      <h1>Calculadora de Lucros</h1>
+      <p class="lead">Escolha um sabor (ou monte o seu), coloque os preços que você pagou e veja na hora o custo de cada geladinho, o preço certo e quanto você lucra.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Seções">
+      <button role="tab" id="tab-sabor" aria-selected="true" data-tab="sabor">Calcular sabor</button>
+      <button role="tab" id="tab-precos" aria-selected="false" data-tab="precos">Meus preços</button>
+      <button role="tab" id="tab-metas" aria-selected="false" data-tab="metas">Metas</button>
+      <button role="tab" id="tab-combos" aria-selected="false" data-tab="combos">Combos e festas</button>
+    </div>
+  </header>
+
+  <!-- ============ CALCULAR SABOR ============ -->
+  <section id="p-sabor" role="tabpanel" aria-labelledby="tab-sabor">
+    <div class="grid2">
+      <div class="card">
+        <div class="row">
+          <label for="sel-receita">Receita
+            <select id="sel-receita"></select>
+          </label>
+          <label for="sel-tipo" style="flex:0 1 190px">Tamanho
+            <select id="sel-tipo">
+              <option value="sacole">Sacolé 120 ml</option>
+              <option value="sacoleG">Sacolé gigante 200 ml</option>
+              <option value="picole">Picolé 80 ml</option>
+              <option value="paleta">Paleta 110 ml</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <label for="nome-receita">Nome do sabor <input id="nome-receita" type="text" autocomplete="off"></label>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="ing ing-head"><span>Ingrediente</span><span>Quantidade</span><span></span><span class="c">Custo</span><span></span></div>
+          <div id="linhas" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div class="row" style="justify-content:space-between;align-items:center">
+            <button class="btn" id="add-ing" type="button" style="flex:0 0 auto">+ Ingrediente</button>
+            <p class="small muted num" id="vol-total" style="flex:0 1 auto;text-align:right"></p>
+          </div>
+        </div>
+        <div class="row">
+          <label for="rende-manual">Rende (unidades)<input id="rende-manual" type="number" min="1" step="1" placeholder="automático"></label>
+          <label for="emb">Embalagem por unidade (R$)<input id="emb" type="number" min="0" step="0.01"></label>
+          <label for="extras">Custos extras (%)<input id="extras" type="number" min="0" step="1" value="10"></label>
+        </div>
+        <p class="small muted">Custos extras cobrem gás, energia do freezer, gelo, transporte e as unidades dadas para provar. O treinamento recomenda 10%.</p>
+        <div class="row">
+          <button class="btn pri" id="salvar" type="button" style="flex:0 0 auto">Salvar em Minhas receitas</button>
+          <button class="btn ghost" id="excluir" type="button" style="flex:0 0 auto" hidden>Excluir esta receita</button>
+        </div>
+      </div>
+
+      <div class="res" style="display:flex;flex-direction:column;gap:14px">
+        <div class="hero">
+          <div><p class="k">Custo por unidade</p><p class="v num" id="r-custo">R$ 0,00</p></div>
+          <div><p class="k">Preço sugerido</p><p class="v big num" id="r-sug">R$ 0</p></div>
+          <div><p class="k">Rende</p><p class="v num" id="r-rende" style="font-size:22px">0</p></div>
+          <div><p class="k">Lucro por unidade</p><p class="v num" id="r-lucro-sug" style="font-size:22px">R$ 0,00</p></div>
+        </div>
+        <div class="card" style="gap:12px">
+          <h3>Escolha o seu preço</h3>
+          <p class="small muted" id="r-ref"></p>
+          <label for="meu-preco">Meu preço de venda (R$)<input id="meu-preco" type="number" min="0" step="0.5"></label>
+          <div>
+            <div class="kv"><span>Margem</span><b class="num" id="r-margem">0%</b></div>
+            <div class="kv"><span>Lucro por unidade</span><b class="num" id="r-lucro">R$ 0,00</b></div>
+            <div class="kv"><span>Lucro do lote inteiro</span><b class="num" id="r-lucro-lote">R$ 0,00</b></div>
+            <div class="kv"><span>Custo do lote</span><span class="num" id="r-custo-lote">R$ 0,00</span></div>
+          </div>
+          <p id="r-aviso"></p>
+        </div>
+        <div class="card" id="card-teor" style="gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h3>Vai congelar?</h3><span class="pill ok" id="r-teor-pill">Firme</span></div>
+          <div class="gauge" aria-hidden="true"><i id="r-teor-mark" style="left:0"></i></div>
+          <div class="gauge-l"><span>0%</span><span>5%</span><span>7%</span><span>10%</span></div>
+          <p class="small" id="r-teor-txt"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MEUS PREÇOS ============ -->
+  <section id="p-precos" role="tabpanel" aria-labelledby="tab-precos" hidden>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-end">
+        <div><h2>Meus preços</h2><p class="muted small" style="max-width:62ch">Os valores vêm preenchidos com preços de supermercado de 2026. Troque pelo que <b>você</b> pagou: o preço da embalagem e o tamanho dela. A calculadora faz o resto e guarda neste aparelho.</p></div>
+        <div class="row" style="flex:0 1 auto">
+          <input id="busca" type="search" placeholder="Buscar ingrediente" aria-label="Buscar ingrediente" style="flex:1 1 200px">
+          <button class="btn ghost" id="restaurar" type="button" style="flex:0 0 auto">Voltar aos preços de referência</button>
+        </div>
+      </div>
+      <div class="tbl"><table class="precos">
+        <thead><tr><th>Ingrediente</th><th>Embalagem</th><th>Unid.</th><th>Preço pago (R$)</th><th style="text-align:right">Custo por unid.</th></tr></thead>
+        <tbody id="tb-precos"></tbody>
+      </table></div>
+      <details>
+        <summary style="cursor:pointer;font-weight:700">Adicionar um ingrediente que não está na lista</summary>
+        <div class="row" style="margin-top:12px;align-items:flex-end">
+          <label for="novo-nome">Nome<input id="novo-nome" type="text"></label>
+          <label for="novo-qtd" style="flex:0 1 110px">Embalagem<input id="novo-qtd" type="number" min="0" step="1" value="1000"></label>
+          <label for="novo-un" style="flex:0 1 90px">Unid.<select id="novo-un"><option>ml</option><option>g</option><option>un</option></select></label>
+          <label for="novo-preco" style="flex:0 1 120px">Preço (R$)<input id="novo-preco" type="number" min="0" step="0.01"></label>
+          <label for="novo-abv" style="flex:0 1 120px">Teor alcoólico (%)<input id="novo-abv" type="number" min="0" max="100" step="0.5" value="0"></label>
+          <button class="btn pri" id="novo-add" type="button" style="flex:0 0 auto">Adicionar</button>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ============ METAS ============ -->
+  <section id="p-metas" role="tabpanel" aria-labelledby="tab-metas" hidden>
+    <div class="grid2">
+      <div class="card">
+        <h2>Quanto você vai ganhar</h2>
+        <div class="row">
+          <label for="m-preco">Preço médio de venda (R$)<input id="m-preco" type="number" min="0" step="0.5" value="7"></label>
+          <label for="m-custo">Custo médio por unidade (R$)<input id="m-custo" type="number" min="0" step="0.05" value="2.10"></label>
+        </div>
+        <div class="row">
+          <label for="m-dia">Vendas por dia<input id="m-dia" type="number" min="0" step="1" value="15"></label>
+          <label for="m-dias">Dias de venda por semana<input id="m-dias" type="number" min="1" max="7" step="1" value="6"></label>
+          <label for="m-fixos">Gastos fixos no mês (R$)<input id="m-fixos" type="number" min="0" step="10" value="100"></label>
+        </div>
+        <p class="small muted">Gastos fixos: gasolina, gelo, conta de luz a mais, taxa da maquininha. O custo médio vem da aba Calcular sabor (use o botão abaixo) ou do seu cardápio.</p>
+        <button class="btn" id="m-usar" type="button" style="width:fit-content">Usar o custo do sabor aberto</button>
+        <h2 style="margin-top:6px">Quanto você precisa vender</h2>
+        <label for="m-meta">Quero lucrar por mês (R$)<input id="m-meta" type="number" min="0" step="100" value="2000"></label>
+        <div class="tip" id="m-meta-txt"></div>
+      </div>
+      <div class="res card">
+        <div class="stat">
+          <div><p class="k">Vendas no mês</p><p class="v" id="m-un">0</p></div>
+          <div><p class="k">Faturamento</p><p class="v" id="m-fat">R$ 0</p></div>
+          <div><p class="k">Gastos</p><p class="v" id="m-gas">R$ 0</p></div>
+          <div><p class="k">Lucro no mês</p><p class="v pos" id="m-luc">R$ 0</p></div>
+        </div>
+        <div class="tbl"><table>
+          <thead><tr><th>Vendendo por dia</th><th style="text-align:right">Faturamento/mês</th><th style="text-align:right">Lucro/mês</th></tr></thead>
+          <tbody id="m-tab"></tbody>
+        </table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMBOS E FESTAS ============ -->
+  <section id="p-combos" role="tabpanel" aria-labelledby="tab-combos" hidden>
+    <div class="grid2">
+      <div class="card">
+        <h2>Combo</h2>
+        <div class="row">
+          <label for="c-qtd">Unidades no combo<input id="c-qtd" type="number" min="2" step="1" value="3"></label>
+          <label for="c-avulso">Preço avulso (R$)<input id="c-avulso" type="number" min="0" step="0.5" value="7"></label>
+          <label for="c-preco">Preço do combo (R$)<input id="c-preco" type="number" min="0" step="0.5" value="18"></label>
+          <label for="c-custo">Custo por unidade (R$)<input id="c-custo" type="number" min="0" step="0.05" value="2.10"></label>
+        </div>
+        <div id="c-res" style="display:flex;flex-direction:column;gap:0"></div>
+        <div class="tip" id="c-tip"></div>
+      </div>
+      <div class="card">
+        <h2>Orçamento de festa</h2>
+        <div class="row">
+          <label for="f-adultos">Adultos<input id="f-adultos" type="number" min="0" step="1" value="30"></label>
+          <label for="f-criancas">Crianças<input id="f-criancas" type="number" min="0" step="1" value="10"></label>
+        </div>
+        <div class="row">
+          <label for="f-calor">Festa no calor ou piscina?<select id="f-calor"><option value="0">Não</option><option value="1">Sim (+1 por adulto)</option></select></label>
+          <label for="f-preco">Preço por unidade no kit (R$)<input id="f-preco" type="number" min="0" step="0.5" value="6"></label>
+          <label for="f-custo">Custo por unidade (R$)<input id="f-custo" type="number" min="0" step="0.05" value="2.10"></label>
+        </div>
+        <div id="f-res" style="display:flex;flex-direction:column"></div>
+        <div class="tip" id="f-msg"></div>
+        <button class="btn" id="f-copiar" type="button" style="width:fit-content">Copiar mensagem do orçamento</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>Preços de referência: supermercados, novembro de 2026. Os valores são estimativas: confira os preços da sua região. Seus dados ficam só neste aparelho.</footer>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const RECEITAS = __RECEITAS__;
+// id: [nome, unidade, tamanho da embalagem, preço da embalagem, ml que ocupa por unidade, teor alcoólico]
+const ING = {
+  agua: ['Água filtrada', 'ml', 1000, 0, 1, 0],
+  acucar: ['Açúcar refinado', 'g', 1000, 5, 0.62, 0],
+  cachaca: ['Cachaça (tipo 51)', 'ml', 965, 21.23, 1, 39],
+  vodka: ['Vodka (tipo Smirnoff)', 'ml', 998, 31.94, 1, 37.5],
+  rum: ['Rum branco', 'ml', 1000, 35, 1, 38],
+  gin: ['Gin', 'ml', 1000, 45, 1, 40],
+  tequila: ['Tequila prata', 'ml', 750, 90, 1, 38],
+  licorLaranja: ['Licor de laranja (triple sec)', 'ml', 700, 44.8, 1, 30],
+  curacau: ['Licor curaçau blue', 'ml', 720, 39.6, 1, 20],
+  licorPessego: ['Licor de pêssego', 'ml', 720, 36, 1, 18],
+  licorChoc: ['Licor de chocolate', 'ml', 720, 41, 1, 17],
+  aperol: ['Aperol', 'ml', 750, 54.75, 1, 11],
+  espumante: ['Espumante brut', 'ml', 750, 35.25, 1, 11.5],
+  vinho: ['Vinho tinto seco', 'ml', 1000, 25, 1, 12],
+  sucoLimao: ['Suco de limão-taiti (≈ 30 ml por limão)', 'ml', 1000, 20, 1, 0],
+  sucoSiciliano: ['Suco de limão-siciliano', 'ml', 1000, 35, 1, 0],
+  limaoPedaco: ['Limão inteiro', 'un', 1, 0.6, 25, 0],
+  polpaMaracuja: ['Polpa de maracujá', 'ml', 1000, 25, 1, 0],
+  morango: ['Morango', 'g', 1000, 30, 1, 0],
+  frutasVermelhas: ['Frutas vermelhas congeladas', 'g', 300, 21, 1, 0],
+  abacaxi: ['Abacaxi (polpa)', 'g', 1000, 11, 1, 0],
+  kiwi: ['Kiwi', 'g', 1000, 30, 1, 0],
+  melancia: ['Melancia sem casca', 'g', 1000, 6, 0.92, 0],
+  manga: ['Manga (polpa)', 'g', 1000, 11, 1, 0],
+  uva: ['Uva sem semente', 'g', 1000, 15, 1, 0],
+  sucoUva: ['Suco de uva integral', 'ml', 1000, 15, 1, 0],
+  sucoLaranja: ['Suco de laranja', 'ml', 1000, 10, 1, 0],
+  nectarPessego: ['Néctar de pêssego', 'ml', 1000, 8, 1, 0],
+  groselha: ['Xarope de groselha', 'ml', 500, 10, 1, 0],
+  cranberry: ['Suco de cranberry', 'ml', 1000, 20, 1, 0],
+  leiteCond: ['Leite condensado', 'g', 395, 7, 0.77, 0],
+  cremeLeite: ['Creme de leite', 'g', 200, 4, 1, 0],
+  leite: ['Leite integral', 'ml', 1000, 5, 1, 0],
+  leiteCoco: ['Leite de coco', 'ml', 200, 6, 1, 0],
+  aguaCoco: ['Água de coco', 'ml', 1000, 9, 1, 0],
+  cocoRalado: ['Coco ralado', 'g', 50, 4.5, 0.5, 0],
+  chocPo: ['Chocolate em pó 50%', 'g', 200, 13, 0.6, 0],
+  amendoim: ['Amendoim torrado', 'g', 500, 15, 0.6, 0],
+  tonica: ['Água tônica', 'ml', 350, 5, 1, 0],
+  folha: ['Folhas de hortelã / manjericão', 'un', 40, 4, 0, 0],
+  alecrim: ['Ramo de alecrim', 'un', 8, 4, 0, 0],
+  maca: ['Maçã', 'un', 1, 1.5, 110, 0],
+  laranja: ['Laranja', 'un', 1, 1, 130, 0],
+  canelaPau: ['Canela em pau', 'un', 10, 3, 0, 0],
+  canela: ['Canela em pó', 'g', 30, 6, 0, 0],
+  ninho: ['Leite em pó Ninho', 'g', 380, 22, 0.6, 0],
+  avela: ['Creme de avelã', 'g', 350, 17.5, 0.8, 0],
+  cobertura: ['Chocolate fracionado', 'g', 1000, 45, 0, 0],
+  oleoCoco: ['Óleo de coco', 'g', 200, 16, 0, 0],
+  maisena: ['Amido de milho', 'g', 200, 6.5, 0.6, 0],
+  oreo: ['Biscoito recheado (tipo Oreo)', 'g', 90, 4.5, 0.5, 0],
+  biscoitoMaisena: ['Biscoito maisena', 'g', 200, 5, 0.5, 0],
+  pacoca: ['Paçoca', 'g', 1100, 29.7, 0.6, 0],
+  doceLeite: ['Doce de leite', 'g', 400, 12, 0.77, 0],
+  goiabada: ['Goiabada', 'g', 300, 7, 0.75, 0],
+  requeijao: ['Requeijão cremoso', 'g', 200, 9, 1, 0],
+  creamCheese: ['Cream cheese', 'g', 150, 9, 1, 0],
+  ovo: ['Ovo (gema)', 'un', 12, 10.8, 18, 0],
+  banana: ['Banana (sem casca)', 'g', 1000, 7, 0.9, 0],
+  acai: ['Polpa de açaí', 'g', 1000, 35, 1, 0],
+  iogurte: ['Iogurte natural', 'g', 170, 3.2, 1, 0],
+  milho: ['Milho verde (escorrido)', 'g', 170, 4.4, 0.9, 0],
+  abacate: ['Abacate (polpa)', 'g', 1000, 13, 0.95, 0],
+  cafe: ['Café solúvel', 'g', 50, 12, 0, 0],
+  granulado: ['Granulado de chocolate', 'g', 150, 6, 0, 0],
+  flocosArroz: ['Flocos de arroz crocantes', 'g', 100, 4, 0.4, 0],
+};
+const VOL = { sacole: 120, sacoleG: 200, picole: 80, paleta: 110 };
+const EMB = { sacole: 0.14, sacoleG: 0.2, picole: 0.22, paleta: 0.3 };
+
+// ---------- armazenamento (só neste aparelho) ----------
+const guardar = (k, v) => { try { localStorage.setItem('calc:' + k, JSON.stringify(v)); } catch (e) {} };
+const ler = (k, d) => { try { const v = localStorage.getItem('calc:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
+let precos = ler('precos', {});       // id -> [qtd, preco]
+let extrasIng = ler('ingExtras', {}); // id -> [nome, un, qtd, preco, vol, abv]
+let minhas = ler('minhas', []);       // receitas salvas
+const todos = () => ({ ...ING, ...extrasIng });
+const ing = (id) => { const b = todos()[id]; if (!b) return null; const p = precos[id]; return { id, nome: b[0], un: b[1], qtd: p ? p[0] : b[2], preco: p ? p[1] : b[3], vol: b[4], abv: b[5] }; };
+const porUnid = (i) => (i.qtd > 0 ? i.preco / i.qtd : 0);
+
+// ---------- formato ----------
+const brl = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const brl0 = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+const pct = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
+const $ = (s) => document.querySelector(s);
+const el = (t, a = {}, ...c) => { const e = document.createElement(t); Object.entries(a).forEach(([k, v]) => (k === 'class' ? (e.className = v) : k.startsWith('on') ? e.addEventListener(k.slice(2), v) : e.setAttribute(k, v))); c.forEach((x) => e.append(x)); return e; };
+const toast = (t) => { const x = $('#toast'); x.textContent = t; x.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (x.hidden = true), 2200); };
+
+// ---------- abas ----------
+document.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => abrir(b.dataset.tab)));
+function abrir(t) {
+  document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
+  ['sabor', 'precos', 'metas', 'combos'].forEach((x) => ($('#p-' + x).hidden = x !== t));
+  if (t === 'precos') tabelaPrecos();
+  guardar('aba', t);
+}
+
+// ---------- receita aberta ----------
+let atual = null; // { nome, tipo, linhas: [[id, q]], rende, emb, extras, chave }
+
+function opcoesReceitas() {
+  const s = $('#sel-receita'); s.innerHTML = '';
+  if (minhas.length) { const g = el('optgroup', { label: 'Minhas receitas' }); minhas.forEach((r, i) => g.append(el('option', { value: 'm' + i }, r.nome))); s.append(g); }
+  const grupos = {}; RECEITAS.forEach((r, i) => (grupos[r.g] = grupos[r.g] || []).push([r, i]));
+  Object.entries(grupos).forEach(([g, rs]) => { const og = el('optgroup', { label: g }); rs.forEach(([r, i]) => og.append(el('option', { value: 'r' + i }, r.n))); s.append(og); });
+  s.append(el('option', { value: 'novo' }, '+ Criar receita do zero'));
+}
+function carregar(chave) {
+  if (chave === 'novo') atual = { nome: 'Meu sabor', tipo: 'sacole', linhas: [['agua', 500], ['acucar', 150]], rende: null, emb: EMB.sacole, extras: 10, chave: 'novo' };
+  else if (chave[0] === 'm') { const r = minhas[+chave.slice(1)]; atual = { ...JSON.parse(JSON.stringify(r)), chave }; }
+  else { const r = RECEITAS[+chave.slice(1)]; atual = { nome: r.n, tipo: r.t, linhas: r.i.map((x) => [...x]), rende: null, emb: EMB[r.t], extras: 10, mercado: r.p, chave }; }
+  $('#sel-receita').value = chave; $('#sel-tipo').value = atual.tipo; $('#nome-receita').value = atual.nome;
+  $('#rende-manual').value = atual.rende || ''; $('#emb').value = atual.emb; $('#extras').value = atual.extras;
+  $('#excluir').hidden = chave[0] !== 'm';
+  $('#meu-preco').value = '';
+  linhas(); calcular(); guardar('aberta', chave);
+}
+function linhas() {
+  const box = $('#linhas'); box.innerHTML = '';
+  const lista = Object.entries(todos()).sort((a, b) => a[1][0].localeCompare(b[1][0], 'pt-BR'));
+  atual.linhas.forEach((ln, idx) => {
+    const sel = el('select', { 'aria-label': 'Ingrediente ' + (idx + 1), id: 'ing-' + idx });
+    lista.forEach(([id, b]) => sel.append(el('option', { value: id }, b[0])));
+    sel.value = ln[0];
+    sel.addEventListener('change', () => { ln[0] = sel.value; un.textContent = ing(ln[0]).un; calcular(); });
+    const q = el('input', { type: 'number', min: '0', step: 'any', value: String(ln[1]), 'aria-label': 'Quantidade', id: 'qtd-' + idx });
+    q.addEventListener('input', () => { ln[1] = parseFloat(q.value) || 0; calcular(); });
+    const un = el('span', { class: 'u' }, ing(ln[0])?.un || '');
+    const c = el('span', { class: 'c', 'data-c': idx }, '');
+    const del = el('button', { class: 'btn del', type: 'button', 'aria-label': 'Remover ingrediente', onclick: () => { atual.linhas.splice(idx, 1); linhas(); calcular(); } }, '×');
+    box.append(el('div', { class: 'ing' }, sel, q, un, c, del));
+  });
+}
+$('#add-ing').addEventListener('click', () => { atual.linhas.push(['acucar', 100]); linhas(); calcular(); $('#ing-' + (atual.linhas.length - 1)).focus(); });
+$('#sel-receita').addEventListener('change', (e) => carregar(e.target.value));
+$('#sel-tipo').addEventListener('change', (e) => { atual.tipo = e.target.value; atual.emb = EMB[atual.tipo]; $('#emb').value = atual.emb; calcular(); });
+$('#nome-receita').addEventListener('input', (e) => (atual.nome = e.target.value));
+$('#rende-manual').addEventListener('input', (e) => { atual.rende = parseInt(e.target.value) || null; calcular(); });
+$('#emb').addEventListener('input', (e) => { atual.emb = parseFloat(e.target.value) || 0; calcular(); });
+$('#extras').addEventListener('input', (e) => { atual.extras = parseFloat(e.target.value) || 0; calcular(); });
+$('#meu-preco').addEventListener('input', calcular);
+
+let ultimo = { custoUn: 2.1 };
+function calcular() {
+  let vol = 0, alc = 0, custo = 0;
+  atual.linhas.forEach(([id, q], idx) => {
+    const i = ing(id); if (!i) return;
+    const c = q * porUnid(i); custo += c; vol += q * i.vol; alc += q * i.vol * (i.abv / 100);
+    const cel = document.querySelector(`[data-c="${idx}"]`); if (cel) cel.textContent = brl(c);
+  });
+  const auto = Math.floor(vol / VOL[atual.tipo]);
+  const un = atual.rende || auto || 1;
+  const custoLote = custo * (1 + (atual.extras || 0) / 100);
+  const custoUn = custoLote / un + (atual.emb || 0);
+  const minimo = Math.ceil((custoUn * 2.5) / 0.5) * 0.5;
+  const sug = Math.max(atual.mercado || 0, atual.mercado ? minimo : Math.ceil((custoUn * 3) / 0.5) * 0.5);
+  const meu = parseFloat($('#meu-preco').value) || sug;
+  const lucro = meu - custoUn, margem = meu > 0 ? (lucro / meu) * 100 : 0;
+  ultimo = { custoUn, preco: meu };
+  $('#vol-total').textContent = `Volume da mistura: ${Math.round(vol).toLocaleString('pt-BR')} ml · rende ${auto} de ${VOL[atual.tipo]} ml`;
+  $('#r-custo').textContent = brl(custoUn);
+  $('#r-sug').textContent = brl(sug).replace(',00', '');
+  $('#r-rende').textContent = `${un} un`;
+  $('#r-lucro-sug').textContent = brl(sug - custoUn);
+  $('#meu-preco').placeholder = String(sug).replace('.', ',');
+  $('#r-ref').innerHTML = (atual.mercado ? `Preço praticado para este sabor: <b>${brl(atual.mercado).replace(',00', '')}</b>. ` : 'Sugestão: 3× o custo. ') + `Mínimo seguro (2,5× o custo): <b>${brl(minimo).replace(',00', '')}</b>.`;
+  $('#r-margem').textContent = pct(margem);
+  $('#r-lucro').textContent = brl(lucro);
+  $('#r-lucro-lote').textContent = brl(lucro * un);
+  $('#r-custo-lote').textContent = brl(custoLote + (atual.emb || 0) * un);
+  const av = $('#r-aviso');
+  if (meu < custoUn * 2) { av.className = 'pill bad'; av.textContent = 'Abaixo de 2× o custo: prejuízo escondido. Suba o preço.'; }
+  else if (meu < custoUn * 2.5) { av.className = 'pill warn'; av.textContent = 'Margem apertada. O ideal é a partir de 2,5× o custo.'; }
+  else { av.className = 'pill ok'; av.textContent = 'Preço saudável: cobre perdas e dá lucro de verdade.'; }
+  const teor = vol > 0 ? (alc / vol) * 100 : 0;
+  $('#card-teor').hidden = teor === 0;
+  if (teor > 0) {
+    $('#r-teor-mark').style.left = Math.min(100, (teor / 10) * 100) + '%';
+    const p = $('#r-teor-pill');
+    if (teor <= 5.5) { p.className = 'pill ok'; p.textContent = `Firme · ${pct(teor)}`; $('#r-teor-txt').textContent = 'Congela firme no freezer de casa (−18 °C).'; }
+    else if (teor <= 7) { p.className = 'pill warn'; p.textContent = `Macio · ${pct(teor)}`; $('#r-teor-txt').textContent = 'Fica com textura de raspadinha. Para firmar, use menos bebida ou mais base.'; }
+    else { p.className = 'pill bad'; p.textContent = `Não congela · ${pct(teor)}`; $('#r-teor-txt').textContent = 'Bebida demais: vira um slush mole. Reduza a bebida (Módulo 2 do treinamento).'; }
+    if (atual.tipo === 'picole' || atual.tipo === 'paleta') $('#r-teor-txt').textContent += ' No palito, prefira até 3,5% para não escorregar.';
+  }
+}
+$('#salvar').addEventListener('click', () => {
+  const r = { nome: atual.nome || 'Meu sabor', tipo: atual.tipo, linhas: atual.linhas.map((x) => [...x]), rende: atual.rende, emb: atual.emb, extras: atual.extras, mercado: atual.mercado || null };
+  let i = atual.chave && atual.chave[0] === 'm' ? +atual.chave.slice(1) : -1;
+  if (i >= 0) minhas[i] = r; else { minhas.push(r); i = minhas.length - 1; }
+  guardar('minhas', minhas); opcoesReceitas(); carregar('m' + i); toast('Salvo em Minhas receitas');
+});
+let confirmarExcluir = false;
+$('#excluir').addEventListener('click', () => {
+  if (!confirmarExcluir) { confirmarExcluir = true; $('#excluir').textContent = 'Toque de novo para excluir'; setTimeout(() => { confirmarExcluir = false; $('#excluir').textContent = 'Excluir esta receita'; }, 3000); return; }
+  minhas.splice(+atual.chave.slice(1), 1); guardar('minhas', minhas); opcoesReceitas(); carregar('r0'); toast('Receita excluída');
+});
+
+// ---------- meus preços ----------
+function tabelaPrecos() {
+  const tb = $('#tb-precos'); tb.innerHTML = '';
+  const f = ($('#busca').value || '').toLowerCase();
+  Object.keys(todos()).map(ing).filter((i) => i.preco > 0 || i.id !== 'agua').filter((i) => !f || i.nome.toLowerCase().includes(f)).sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR')).forEach((i) => {
+    const q = el('input', { type: 'number', min: '0', step: 'any', value: String(i.qtd), 'aria-label': 'Tamanho da embalagem de ' + i.nome, id: 'pq-' + i.id });
+    const p = el('input', { type: 'number', min: '0', step: '0.01', value: i.preco.toFixed(2), 'aria-label': 'Preço pago por ' + i.nome, id: 'pp-' + i.id });
+    const u = el('td', { class: 'num', style: 'text-align:right' }, '');
+    const atualiza = () => { precos[i.id] = [parseFloat(q.value) || 0, parseFloat(p.value) || 0]; guardar('precos', precos); const x = ing(i.id); u.textContent = x.un === 'un' ? brl(porUnid(x)) + ' / un' : brl(porUnid(x) * (x.un === 'g' ? 1000 : 1000)) + (x.un === 'g' ? ' / kg' : ' / litro'); };
+    q.addEventListener('input', atualiza); p.addEventListener('input', atualiza);
+    const x = i; u.textContent = x.un === 'un' ? brl(porUnid(x)) + ' / un' : brl(porUnid(x) * 1000) + (x.un === 'g' ? ' / kg' : ' / litro');
+    tb.append(el('tr', {}, el('td', {}, i.nome + (i.abv ? ` · ${String(i.abv).replace('.', ',')}%` : '')), el('td', { style: 'width:120px', 'data-l': 'Embalagem' }, q), el('td', { class: 'un' }, i.un), el('td', { style: 'width:130px', 'data-l': 'Preço pago (R$)' }, p), u));
+  });
+}
+$('#busca').addEventListener('input', tabelaPrecos);
+let confirmarRest = false;
+$('#restaurar').addEventListener('click', () => {
+  if (!confirmarRest) { confirmarRest = true; $('#restaurar').textContent = 'Toque de novo para confirmar'; setTimeout(() => { confirmarRest = false; $('#restaurar').textContent = 'Voltar aos preços de referência'; }, 3000); return; }
+  precos = {}; guardar('precos', precos); tabelaPrecos(); calcular(); confirmarRest = false; $('#restaurar').textContent = 'Voltar aos preços de referência'; toast('Preços de referência restaurados');
+});
+$('#novo-add').addEventListener('click', () => {
+  const nome = $('#novo-nome').value.trim(); const preco = parseFloat($('#novo-preco').value);
+  if (!nome || !(preco >= 0)) { toast('Preencha o nome e o preço'); return; }
+  const un = $('#novo-un').value; const abv = parseFloat($('#novo-abv').value) || 0;
+  const id = 'x' + Date.now().toString(36);
+  extrasIng[id] = [nome, un, parseFloat($('#novo-qtd').value) || 1, preco, un === 'un' ? 0 : un === 'g' ? 0.8 : 1, abv];
+  guardar('ingExtras', extrasIng); $('#novo-nome').value = ''; $('#novo-preco').value = '';
+  tabelaPrecos(); linhas(); toast('Ingrediente adicionado');
+});
+
+// ---------- metas ----------
+const mIds = ['m-preco', 'm-custo', 'm-dia', 'm-dias', 'm-fixos', 'm-meta'];
+function metas() {
+  const v = Object.fromEntries(mIds.map((id) => [id, parseFloat($('#' + id).value) || 0]));
+  const dias = v['m-dias'] * 52 / 12;
+  const un = v['m-dia'] * dias;
+  const fat = un * v['m-preco'], gas = un * v['m-custo'] + v['m-fixos'], luc = fat - gas;
+  $('#m-un').textContent = Math.round(un).toLocaleString('pt-BR');
+  $('#m-fat').textContent = brl0(fat); $('#m-gas').textContent = brl0(gas); $('#m-luc').textContent = brl0(luc);
+  const tb = $('#m-tab'); tb.innerHTML = '';
+  [5, 10, 15, 20, 30, 50].forEach((d) => { const u = d * dias; tb.append(el('tr', {}, el('td', {}, `${d} por dia`), el('td', { class: 'num', style: 'text-align:right' }, brl0(u * v['m-preco'])), el('td', { class: 'num', style: 'text-align:right;font-weight:700' }, brl0(u * (v['m-preco'] - v['m-custo']) - v['m-fixos'])))); });
+  const lu = v['m-preco'] - v['m-custo'];
+  const t = $('#m-meta-txt');
+  if (lu <= 0) t.textContent = 'Com esse preço não sobra lucro por unidade. Suba o preço ou reduza o custo.';
+  else { const precisa = (v['m-meta'] + v['m-fixos']) / lu; const porDia = precisa / dias; t.innerHTML = `Para lucrar <b>${brl0(v['m-meta'])}</b> por mês, venda <b>${Math.ceil(precisa).toLocaleString('pt-BR')} geladinhos</b>: cerca de <b>${Math.ceil(porDia)} por dia</b>, ${v['m-dias']} dias por semana.`; }
+  guardar('metas', v);
+}
+mIds.forEach((id) => $('#' + id).addEventListener('input', metas));
+$('#m-usar').addEventListener('click', () => { $('#m-custo').value = ultimo.custoUn.toFixed(2); $('#m-preco').value = ultimo.preco; metas(); toast('Custo e preço do sabor aberto aplicados'); });
+
+// ---------- combos e festas ----------
+const cIds = ['c-qtd', 'c-avulso', 'c-preco', 'c-custo'];
+function combo() {
+  const [q, av, pr, cu] = cIds.map((id) => parseFloat($('#' + id).value) || 0);
+  const cheio = q * av, desc = cheio > 0 ? (1 - pr / cheio) * 100 : 0, lucro = pr - q * cu;
+  const box = $('#c-res'); box.innerHTML = '';
+  [['Preço cheio (avulso)', brl(cheio)], ['Desconto do combo', pct(desc)], ['Sai por unidade', brl(pr / (q || 1))], ['Lucro do combo', brl(lucro)], ['Lucro se vendesse 1 avulso', brl(av - cu)]].forEach(([a, b]) => box.append(el('div', { class: 'kv' }, el('span', {}, a), el('b', { class: 'num' }, b))));
+  const tip = $('#c-tip');
+  tip.innerHTML = desc > 20 ? '<b>Desconto alto demais.</b> Acima de 15 a 20% você dá lucro de graça. O combo existe para o cliente levar mais um, não para pagar menos.' : desc < 5 ? '<b>Desconto pequeno demais.</b> Abaixo de 5% o cliente não sente vantagem. Mire em 10 a 15%.' : `<b>Combo bem calibrado.</b> O cliente economiza ${brl(cheio - pr)} e você lucra ${brl(lucro)} numa venda só.`;
+  guardar('combo', [q, av, pr, cu]);
+}
+cIds.forEach((id) => $('#' + id).addEventListener('input', combo));
+const fIds = ['f-adultos', 'f-criancas', 'f-calor', 'f-preco', 'f-custo'];
+let msgFesta = '';
+function festa() {
+  const [ad, cr, calor, pr, cu] = fIds.map((id) => parseFloat($('#' + id).value) || 0);
+  const qd = Math.ceil(ad * (2 + calor)), qc = Math.ceil(cr * 2), tot = qd + qc;
+  const total = tot * pr, sinal = total / 2, lucro = total - tot * cu;
+  const box = $('#f-res'); box.innerHTML = '';
+  [['Geladinhos de drink (adultos)', `${qd} un`], ['Sem álcool (crianças)', `${qc} un`], ['Total do kit', `${tot} un`], ['Valor do orçamento', brl(total)], ['Sinal de 50% no Pix', brl(sinal)], ['Seu lucro', brl(lucro)]].forEach(([a, b], i) => box.append(el('div', { class: 'kv' }, el('span', {}, a), el(i >= 3 ? 'b' : 'span', { class: 'num' }, b))));
+  msgFesta = `Oi! Fiz o orçamento da sua festa 🎉\n🍹 ${qd} geladinhos de drink para os adultos${qc ? `\n🍓 ${qc} geladinhos sem álcool para as crianças` : ''}\nTotal: ${brl(total)}, entregues congelados no isopor.\nPara reservar a data: sinal de ${brl(sinal)} no Pix 😊`;
+  $('#f-msg').innerHTML = msgFesta.replace(/\n/g, '<br>');
+  guardar('festa', [ad, cr, calor, pr, cu]);
+}
+fIds.forEach((id) => $('#' + id).addEventListener('input', festa));
+$('#f-copiar').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(msgFesta); toast('Mensagem copiada'); }
+  catch (e) { const r = document.createRange(); r.selectNodeContents($('#f-msg')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Selecionei o texto: copie com o menu do aparelho'); }
+});
+
+// ---------- início ----------
+(function iniciar() {
+  const mv = ler('metas', null); if (mv) mIds.forEach((id) => mv[id] !== undefined && ($('#' + id).value = mv[id]));
+  const cv = ler('combo', null); if (cv) cIds.forEach((id, i) => ($('#' + id).value = cv[i]));
+  const fv = ler('festa', null); if (fv) fIds.forEach((id, i) => ($('#' + id).value = fv[i]));
+  opcoesReceitas();
+  const aberta = ler('aberta', 'r0');
+  try { carregar(aberta); } catch (e) { carregar('r0'); }
+  metas(); combo(); festa();
+  const aba = ler('aba', 'sabor'); abrir(['sabor', 'precos', 'metas', 'combos'].includes(aba) ? aba : 'sabor');
+})();
+</script>

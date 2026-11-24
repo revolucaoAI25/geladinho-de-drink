@@ -1,4 +1,4 @@
-import { Download, FileText, Printer, Tablet, Gift, BookOpen, Sparkles } from 'lucide-react';
+import { Download, ExternalLink, FileText, Printer, Tablet, Gift, BookOpen, Sparkles } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { ARQUIVOS, GRUPOS, podeBaixar, type Grupo } from '@/config/entrega';
 import { marca } from '@/config/oferta';
@@ -86,7 +86,7 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
                           <span className="block font-display text-[15px] font-bold leading-snug">{x.titulo}</span>
                           <span className="block text-[13.5px] leading-snug text-tinta/60">{x.desc}</span>
                         </span>
-                        <Download size={18} className="shrink-0 text-turquesa" />
+                        {x.url ? <ExternalLink size={18} className="shrink-0 text-turquesa" /> : <Download size={18} className="shrink-0 text-turquesa" />}
                       </a>
                     ))}
               </div>

@@ -6,6 +6,9 @@ import { fileURLToPath } from 'node:url';
 import { CSS } from './src/base.mjs';
 import { treinamento } from './src/treinamento.mjs';
 import { bonus1, bonus2, bonus3, bonus4 } from './src/bonus.mjs';
+import { semAlcool } from './src/extras/semalcool.mjs';
+import { picoles } from './src/extras/picoles.mjs';
+import { whatsapp } from './src/extras/whatsapp.mjs';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
@@ -19,6 +22,9 @@ const DOCS = {
   b2: ['Bonus 2 - Embalagens que Valorizam seu Geladinho', bonus2],
   b3: ['Bonus 3 - Cardapio dos 10 Primeiros Sabores', bonus3],
   b4: ['Bonus 4 - Plano de 7 Dias para Comecar a Vender', bonus4],
+  x1: ['Extra - 30 Geladinhos Gourmet Sem Alcool', semAlcool],
+  x2: ['Extra - Picoles e Sacoles Especiais para Vender', picoles],
+  x3: ['Extra - Mensagens que Vendem no WhatsApp', whatsapp],
 };
 
 const args = process.argv.slice(2);
