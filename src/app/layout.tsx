@@ -1,0 +1,65 @@
+import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
+import { Tracking } from '@/components/Tracking';
+import { jakarta, montserrat } from './fonts';
+import './globals.css';
+
+const site = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const utmify = process.env.NEXT_PUBLIC_UTMIFY_UTMS !== '0';
+const utmifyPixel = (process.env.NEXT_PUBLIC_UTMIFY_PIXEL_ID || '').replace(/[^a-zA-Z0-9]/g, '');
+// Com o Pixel da Utmify ligado, ela dispara o Pixel da Meta (com deduplicação). Carregar o da Meta também duplicaria os eventos.
+const pixelId = utmifyPixel ? '' : (process.env.NEXT_PUBLIC_META_PIXEL_ID || '').replace(/\D/g, '');
+
+export const metadata: Metadata = {
+  metadataBase: new URL(site),
+  title: 'Geladinhos de Drinks Lucrativos · Venda o verão',
+  description: 'Aprenda a fazer geladinhos de drinks gourmet e a vender neste verão, começando do zero, na sua cozinha.',
+  openGraph: {
+    title: 'Geladinhos de Drinks Lucrativos',
+    description: 'Caipirinha, piña colada, mojito: aprenda a fazer e vender geladinhos de drinks neste verão.',
+    images: [],
+    locale: 'pt_BR',
+    type: 'website',
+  },
+};
+
+export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: '#EF5B34' };
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="pt-BR" className={`${montserrat.variable} ${jakarta.variable}`}>
+      <head>
+        {/* Preferências do /admin (só neste navegador), aplicadas antes de pintar. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var v=JSON.parse(localStorage.getItem('gd:pv')||'{}');var c=document.documentElement.classList;if(v.ex===false)c.add('sem-ex');if(v.ph)c.add('pv-ph')}catch(e){}`,
+          }}
+        />
+        <link rel="dns-prefetch" href="https://pay.kiwify.com.br" />
+        <link rel="preconnect" href="https://pay.kiwify.com.br" crossOrigin="" />
+        {pixelId ? (
+          <>
+            <link rel="preconnect" href="https://connect.facebook.net" />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${pixelId}');fbq('track','PageView');`,
+              }}
+            />
+          </>
+        ) : null}
+      </head>
+      <body className="min-h-dvh font-sans">
+        {children}
+        <Tracking />
+        {utmify ? (
+          <Script id="utmify-utms" src="https://cdn.utmify.com.br/scripts/utms/latest.js" strategy="afterInteractive" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" />
+        ) : null}
+        {utmifyPixel ? (
+          <Script id="utmify-pixel" strategy="afterInteractive">
+            {`window.pixelId="${utmifyPixel}";var a=document.createElement("script");a.setAttribute("async","");a.setAttribute("defer","");a.setAttribute("src","https://cdn.utmify.com.br/scripts/pixel/pixel.js");document.head.appendChild(a);`}
+          </Script>
+        ) : null}
+      </body>
+    </html>
+  );
+}

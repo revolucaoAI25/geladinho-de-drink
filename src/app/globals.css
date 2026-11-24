@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body { @apply bg-creme text-tinta antialiased; font-weight: 450; }
+  b, strong { font-weight: 700; }
+  h1, h2, h3 { @apply font-display; }
+}
+
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-[460px] px-4; }
+  .estreito { @apply mx-auto w-full max-w-[640px] px-5; }
+  .card { @apply rounded-[22px] bg-white/85 shadow-suave ring-1 ring-tinta/5; }
+  .btn {
+    @apply relative inline-flex min-h-[58px] w-full items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 text-center font-display text-[17px] font-bold text-white shadow-botao transition active:translate-y-[3px] active:shadow-none;
+  }
+  .btn-verde { @apply btn bg-limao; }
+  .btn-coral { @apply btn bg-coral; }
+  .btn-azul { @apply btn bg-[#2F7BF5]; }
+  .btn-brilho::after {
+    content: ''; position: absolute; inset: 0; width: 40%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent);
+    @apply animate-brilho;
+  }
+  .opcao {
+    @apply flex w-full items-center gap-3 rounded-2xl border-2 border-limao/25 bg-limao-claro/70 px-4 py-4 text-left text-[16.5px] font-medium transition active:scale-[.985];
+  }
+  .opcao[data-on='1'] { @apply border-limao bg-limao-claro; }
+  .grana { @apply rounded bg-dinheiro px-1 font-bold text-white; }
+  .marca-texto { background: linear-gradient(transparent 55%, #FFC23A88 55%); }
+  .titulo { @apply font-display text-[25px] font-extrabold leading-[1.15] tracking-tight; }
+  .texto { @apply text-[16.5px] leading-relaxed; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
