@@ -161,7 +161,7 @@ function Entrega({ status }: { status: Status }) {
         <Item ok={status.segredo} t="Segredo dos links de acesso" d="ENTREGA_SECRET" />
         <Item ok={status.utmifyApi} t="Credencial da API da Utmify (vendas dos order bumps)" d="UTMIFY_API_TOKEN" />
       </ul>
-      <p className="mt-3 rounded-xl bg-creme p-3 text-[13px] leading-relaxed text-tinta/70">
+      <p className="mt-3 rounded-xl bg-coco p-3 text-[13px] leading-relaxed text-tinta/70">
         URL do webhook na Kiwify (evento <b>Compra aprovada</b>):<br />
         <code className="break-all font-bold text-tinta">{site}/api/kiwify</code>
       </p>

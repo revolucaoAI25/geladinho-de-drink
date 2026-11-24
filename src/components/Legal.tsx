@@ -10,7 +10,7 @@ export function Legal({ titulo, children }: { titulo: string; children: React.Re
       <h1 className="mt-8 text-[28px] font-extrabold">{titulo}</h1>
       <div className="mt-6 space-y-4 text-[16px] leading-relaxed text-tinta/80">{children}</div>
       <p className="mt-10">
-        <Link href="/" className="font-bold text-limao underline">
+        <Link href="/" className="font-bold text-turquesa underline">
           Voltar para a página
         </Link>
       </p>

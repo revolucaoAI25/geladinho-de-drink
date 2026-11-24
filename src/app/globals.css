@@ -4,34 +4,38 @@
 
 @layer base {
   html { -webkit-tap-highlight-color: transparent; }
-  body { @apply bg-creme text-tinta antialiased; font-weight: 450; }
+  body {
+    @apply bg-coco text-tinta antialiased;
+    font-weight: 450;
+    background-image: radial-gradient(60rem 28rem at 50% -8rem, rgba(255,197,56,.22), transparent 70%), radial-gradient(40rem 30rem at 110% 30%, rgba(255,107,91,.07), transparent 70%);
+    background-attachment: fixed;
+  }
   b, strong { font-weight: 700; }
-  h1, h2, h3 { @apply font-display; }
+  h1, h2, h3 { @apply font-display; letter-spacing: -.015em; }
 }
 
 @layer components {
   .wrap { @apply mx-auto w-full max-w-[460px] px-4; }
   .estreito { @apply mx-auto w-full max-w-[640px] px-5; }
-  .card { @apply rounded-[22px] bg-white/85 shadow-suave ring-1 ring-tinta/5; }
+  .card { @apply rounded-[22px] bg-white shadow-cartao ring-1 ring-tinta/[.06]; }
   .btn {
-    @apply relative inline-flex min-h-[58px] w-full items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 text-center font-display text-[17px] font-bold text-white shadow-botao transition active:translate-y-[3px] active:shadow-none;
+    @apply relative inline-flex min-h-[60px] w-full items-center justify-center gap-2 overflow-hidden rounded-[18px] px-6 text-center font-display text-[18px] font-bold tracking-[-.01em] text-white transition active:translate-y-[4px];
   }
-  .btn-verde { @apply btn bg-limao; }
-  .btn-coral { @apply btn bg-coral; }
-  .btn-azul { @apply btn bg-[#2F7BF5]; }
+  .btn-coral { @apply btn bg-gradient-to-b from-[#FF7B69] to-coral-escuro shadow-botao active:shadow-[0_1px_0_0_#C9473A]; }
+  .btn-turquesa { @apply btn bg-gradient-to-b from-[#14837E] to-turquesa shadow-botaoT active:shadow-[0_1px_0_0_#073F3D]; }
   .btn-brilho::after {
     content: ''; position: absolute; inset: 0; width: 40%;
-    background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent);
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.32), transparent);
     @apply animate-brilho;
   }
   .opcao {
-    @apply flex w-full items-center gap-3 rounded-2xl border-2 border-limao/25 bg-limao-claro/70 px-4 py-4 text-left text-[16.5px] font-medium transition active:scale-[.985];
+    @apply flex w-full items-center gap-3.5 rounded-[18px] border-[1.5px] border-tinta/10 bg-white px-3.5 py-3.5 text-left text-[16.5px] font-semibold shadow-cartao transition duration-200 active:scale-[.985];
   }
-  .opcao[data-on='1'] { @apply border-limao bg-limao-claro; }
-  .grana { @apply rounded bg-dinheiro px-1 font-bold text-white; }
-  .marca-texto { background: linear-gradient(transparent 55%, #FFC23A88 55%); }
-  .titulo { @apply font-display text-[25px] font-extrabold leading-[1.15] tracking-tight; }
-  .texto { @apply text-[16.5px] leading-relaxed; }
+  .opcao[data-on='1'] { @apply border-turquesa bg-turquesa-claro; }
+  .grana { @apply whitespace-nowrap rounded-md bg-dinheiro px-1.5 py-[1px] font-bold text-white; }
+  .marca { background: linear-gradient(transparent 58%, rgba(255,197,56,.55) 58%, rgba(255,197,56,.55) 92%, transparent 92%); }
+  .texto { @apply text-[16.5px] leading-[1.65] text-tinta/85; }
+  .selo-sim { @apply inline-flex items-center gap-1.5 rounded-full bg-limao-claro px-3.5 py-1.5 font-display text-[17px] font-bold text-limao-escuro ring-1 ring-limao/40; }
 }
 
 @media (prefers-reduced-motion: reduce) {

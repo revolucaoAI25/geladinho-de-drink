@@ -30,8 +30,8 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
   const grupos: Grupo[] = ['comece', 'bonus', 'extra'];
 
   return (
-    <main className="min-h-dvh bg-creme pb-16">
-      <div className="bg-limao pb-10 pt-6 text-white">
+    <main className="min-h-dvh bg-coco pb-16">
+      <div className="bg-turquesa pb-10 pt-6 text-white">
         <div className="estreito">
           <Logo light />
           <h1 className="mt-8 font-display text-[28px] font-bold leading-tight sm:text-[34px]">{primeiro ? `${primeiro}, aqui estão` : 'Aqui estão'} os seus arquivos 💚</h1>
@@ -56,7 +56,7 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
           return (
             <section key={g} className="card p-5">
               <div className="flex items-center gap-2.5">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-limao-claro text-limao">
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-limao-claro text-turquesa">
                   <Icone size={18} />
                 </span>
                 <div>
@@ -69,7 +69,7 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
                   ? [...new Set(lista.map((x) => x.titulo))].map((titulo) => {
                       const fs = lista.filter((x) => x.titulo === titulo);
                       return (
-                        <div key={titulo} className="rounded-2xl bg-creme p-3.5">
+                        <div key={titulo} className="rounded-2xl bg-coco p-3.5">
                           <p className="font-display text-[15px] font-bold">{titulo}</p>
                           <div className="mt-2 flex flex-wrap gap-2">
                             {fs.map((x) => (
@@ -80,13 +80,13 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
                       );
                     })
                   : lista.map((x) => (
-                      <a key={x.id} href={link(x.id)} className="flex items-center gap-3 rounded-2xl bg-creme p-3.5 transition hover:bg-limao-claro">
+                      <a key={x.id} href={link(x.id)} className="flex items-center gap-3 rounded-2xl bg-coco p-3.5 transition hover:bg-turquesa-claro">
                         <FileText size={20} className="shrink-0 text-coral" />
                         <span className="min-w-0 flex-1">
                           <span className="block font-display text-[15px] font-bold leading-snug">{x.titulo}</span>
                           <span className="block text-[13.5px] leading-snug text-tinta/60">{x.desc}</span>
                         </span>
-                        <Download size={18} className="shrink-0 text-limao" />
+                        <Download size={18} className="shrink-0 text-turquesa" />
                       </a>
                     ))}
               </div>
@@ -104,7 +104,7 @@ export default async function Acesso({ searchParams }: { searchParams: Promise<{
 
 function Botao({ href, t }: { href: string; t: string }) {
   return (
-    <a href={href} className="inline-flex items-center gap-1.5 rounded-full bg-limao px-4 py-2 text-[14px] font-bold text-white">
+    <a href={href} className="inline-flex items-center gap-1.5 rounded-full bg-turquesa px-4 py-2 text-[14px] font-bold text-white">
       <Download size={15} /> {t}
     </a>
   );

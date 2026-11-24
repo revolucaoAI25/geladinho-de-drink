@@ -23,10 +23,10 @@ export function Whats({ nome, hora, msgs, foto }: { nome: string; hora: string; 
           // eslint-disable-next-line @next/next/no-img-element
           <img src={foto} alt="" className="h-9 w-9 rounded-full object-cover" />
         ) : (
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-morango to-coral text-[15px] font-bold text-white">{nome[0]}</span>
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-berry to-coral text-[15px] font-bold text-white">{nome[0]}</span>
         )}
         <span className="flex-1 leading-tight">
-          <span className="block text-[15px] font-semibold">{nome} 💛</span>
+          <span className="block text-[15px] font-semibold">{nome}</span>
           <span className="block text-[12px] text-black/45">online</span>
         </span>
         <span className="text-[16px] text-[#1F7AE0]">📹 📞</span>
@@ -40,9 +40,9 @@ export function Whats({ nome, hora, msgs, foto }: { nome: string; hora: string; 
               <div className={`relative max-w-[82%] rounded-xl px-2.5 py-1.5 shadow-[0_1px_0_rgba(0,0,0,.08)] ${eu ? 'rounded-tr-sm bg-[#D9FDD3]' : 'rounded-tl-sm bg-white'}`}>
                 {m.foto ? (
                   <div className="-mx-1 -mt-0.5 mb-1 overflow-hidden rounded-lg">
-                    <div className="flex h-[150px] w-[210px] items-end justify-center gap-0.5 bg-gradient-to-br from-maracuja-claro to-coral-claro pb-2">
+                    <div className="flex h-[150px] w-[210px] items-end justify-center gap-0.5 bg-[radial-gradient(120%_90%_at_50%_100%,#FFE7B0,#FFF2D6_50%,#FEF7EE)] pb-2">
                       {imagens.sabores.slice(0, 4).map((s, k) => (
-                        <Geladinho key={k} cor={s.cor} fruta={s.fruta} inclinado={(k - 1.5) * 7} className="h-[85%] w-auto" />
+                        <Geladinho key={k} cor={s.cor} pedaco={s.pedaco} inclinado={(k - 1.5) * 7} className="-mx-1 h-[88%] w-auto drop-shadow-md" />
                       ))}
                     </div>
                   </div>

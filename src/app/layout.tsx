@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { Tracking } from '@/components/Tracking';
-import { jakarta, montserrat } from './fonts';
+import { jakarta, outfit, pincel } from './fonts';
 import './globals.css';
 
 const site = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
@@ -23,11 +23,11 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: '#EF5B34' };
+export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: '#0D6F6B' };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${montserrat.variable} ${jakarta.variable}`}>
+    <html lang="pt-BR" className={`${outfit.variable} ${jakarta.variable} ${pincel.variable}`}>
       <head>
         {/* Preferências do /admin (só neste navegador), aplicadas antes de pintar. */}
         <script

@@ -5,21 +5,25 @@ export default {
   theme: {
     extend: {
       colors: {
-        creme: { DEFAULT: '#FFF7EC', escuro: '#FBEBD5' },
-        tinta: '#2B211C',
-        coral: { DEFAULT: '#EF5B34', escuro: '#D2451F', claro: '#FFE4D9' },
-        limao: { DEFAULT: '#4E8A2E', escuro: '#3B6B21', claro: '#E7F2D9' },
-        maracuja: { DEFAULT: '#FFC23A', claro: '#FFF1C9' },
-        morango: { DEFAULT: '#E8456B', claro: '#FDE3EA' },
-        dinheiro: '#16A34A',
+        coco: { DEFAULT: '#FEF7EE', escuro: '#F6E9D6' },
+        tinta: '#123432',
+        turquesa: { DEFAULT: '#0D6F6B', escuro: '#09524F', claro: '#E2F2EF' },
+        coral: { DEFAULT: '#FF6B5B', escuro: '#E24E3E', claro: '#FFE6E1' },
+        manga: { DEFAULT: '#FFC538', claro: '#FFF2CC' },
+        limao: { DEFAULT: '#9ED43A', escuro: '#5E8F1E', claro: '#EFF8DE' },
+        berry: { DEFAULT: '#E83E8C', claro: '#FDE4EF' },
+        dinheiro: '#16975A',
       },
       fontFamily: {
         sans: ['var(--font-texto)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-montserrat)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        pincel: ['var(--font-pincel)', 'cursive'],
       },
       boxShadow: {
-        suave: '0 10px 30px -12px rgba(43,33,28,.25)',
-        botao: '0 6px 0 0 rgba(0,0,0,.18)',
+        suave: '0 12px 32px -14px rgba(18,52,50,.28), 0 2px 6px -2px rgba(18,52,50,.06)',
+        cartao: '0 1px 0 rgba(18,52,50,.04), 0 10px 24px -16px rgba(18,52,50,.35)',
+        botao: '0 5px 0 0 #C9473A, 0 14px 24px -10px rgba(226,78,62,.55)',
+        botaoT: '0 5px 0 0 #073F3D, 0 14px 24px -10px rgba(13,111,107,.5)',
       },
       keyframes: {
         entra: { from: { opacity: '0', transform: 'translateY(14px)' }, to: { opacity: '1', transform: 'none' } },

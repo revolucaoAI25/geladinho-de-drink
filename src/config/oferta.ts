@@ -34,6 +34,7 @@ export const especialista = {
 export const contas = { custoUnidade: 1.8, precoVenda: 7, porDia: 15, dias: 30 };
 
 export const imagens = {
+  logo: '/img/logo.webp',
   abertura: '', // pôster da oferta
   facil: '', // especialista preparando os geladinhos
   custo: '', // ingredientes e materiais na mesa
@@ -45,12 +46,12 @@ export const imagens = {
     { img: '', aluno: 'Aluna Simone', foto: '', legenda: 'Geladinhos da aluna Simone' },
   ],
   sabores: [
-    { nome: 'Caipirinha de Limão', img: '', cor: '#B8D96A', fruta: '🍋' },
-    { nome: 'Morango com Vodka', img: '', cor: '#E8456B', fruta: '🍓' },
-    { nome: 'Maracujá Tropical', img: '', cor: '#FFC23A', fruta: '🥭' },
-    { nome: 'Piña Colada', img: '', cor: '#FFF1C9', fruta: '🍍' },
-    { nome: 'Mojito', img: '', cor: '#CDEBB5', fruta: '🌿' },
-    { nome: 'Sex on the Beach', img: '', cor: '#F7894A', fruta: '🍑' },
+    { nome: 'Caipirinha de Limão', img: '', cor: '#9ED43A', pedaco: '#4F7F18' },
+    { nome: 'Maracujá Tropical', img: '', cor: '#FFA928', pedaco: '#3A2A12' },
+    { nome: 'Morango com Vodka', img: '', cor: '#E83E8C', pedaco: '#8C1E4E' },
+    { nome: 'Piña Colada', img: '', cor: '#FFE19A', pedaco: '#E3A92B' },
+    { nome: 'Mojito', img: '', cor: '#C6EC8C', pedaco: '#2F7A3A' },
+    { nome: 'Sex on the Beach', img: '', cor: '#FF7A4D', pedaco: '#B8304A' },
   ],
 };
 
