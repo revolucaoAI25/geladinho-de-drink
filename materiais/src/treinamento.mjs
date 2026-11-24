@@ -1,6 +1,6 @@
 // Treinamento principal: Geladinhos de Drinks Lucrativos.
 import { C, img, md, callout, lista, passos, tabela, cabeca, pagina, capa, aberturaModulo, saquinho } from './base.mjs';
-import { RECEITAS, CATEGORIAS, calc, ML_UN, CUSTO_SAQUINHO, ING } from './receitas.mjs';
+import { RECEITAS, CATEGORIAS, calc, ML_UN, CUSTO_SAQUINHO, ING, TOP10 } from './receitas.mjs';
 
 const brl = (n) => 'R$ ' + n.toFixed(2).replace('.', ',');
 const pct = (n) => n.toFixed(1).replace('.', ',') + '%';
@@ -10,14 +10,14 @@ function paginaReceita(r, i, n) {
   const cat = CATEGORIAS.find((c) => c.id === r.cat);
   const firme = k.teor <= 5.5;
   const visual = r.foto
-    ? `<img src="${img(r.foto)}" style="width:42mm;height:54mm;object-fit:cover;border-radius:3.2mm;display:block"/>`
+    ? `<img src="${img(r.foto)}" style="width:44mm;height:55mm;object-fit:cover;object-position:35% 50%;border-radius:3.2mm;display:block;box-shadow:0 1.2mm 3mm rgba(18,52,50,.18)"/>`
     : `<div style="width:42mm;height:54mm;border-radius:3.2mm;background:radial-gradient(120% 90% at 50% 100%,#FFE7B0,#FFF2D6 50%,${C.coco});display:grid;place-items:center">${saquinho(r.cor, r.pedaco, 47)}</div>`;
   return pagina(
     `<div style="display:flex;gap:4mm">
       ${visual}
       <div style="flex:1;min-width:0;display:flex;flex-direction:column">
         <div style="display:flex;align-items:center;gap:2mm"><span class="chip" style="background:${cat.cor}33;color:${C.tinta}">${cat.nome}</span></div>
-        <p style="font-family:Outfit;font-weight:800;font-size:9pt;color:${C.coral};margin-top:2.4mm">RECEITA ${String(i + 1).padStart(2, '0')}</p>
+        <p style="font-family:Outfit;font-weight:800;font-size:9pt;color:${C.coralTx};margin-top:2.4mm">RECEITA ${String(i + 1).padStart(2, '0')}</p>
         <h1 style="font-size:15.5pt;margin-top:.6mm">${r.nome}</h1>
         <p style="font-size:8.2pt;line-height:1.45;margin-top:1.6mm">${r.desc}</p>
         <div style="margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:1.4mm">
@@ -27,7 +27,7 @@ function paginaReceita(r, i, n) {
             ['Teor final', `${pct(k.teor)} · ${firme ? 'firme' : 'macio'}`],
             ['Custo/unid.', brl(k.custoUn)],
           ]
-            .map(([a, b]) => `<div style="background:${C.coco};border-radius:2mm;padding:1.4mm 2mm"><p style="font-size:6.2pt;color:${C.tinta}88;font-family:Outfit;font-weight:700;letter-spacing:.08em;text-transform:uppercase">${a}</p><p style="font-family:Outfit;font-weight:800;font-size:8.6pt;line-height:1.2">${b}</p></div>`)
+            .map(([a, b]) => `<div style="background:${C.coco};border-radius:2mm;padding:1.4mm 2mm"><p style="font-size:6.2pt;color:${C.tinta}bb;font-family:Outfit;font-weight:700;letter-spacing:.08em;text-transform:uppercase">${a}</p><p style="font-family:Outfit;font-weight:800;font-size:8.6pt;line-height:1.2">${b}</p></div>`)
             .join('')}
         </div>
       </div>
@@ -43,12 +43,12 @@ function paginaReceita(r, i, n) {
     <div style="margin-top:auto;display:flex;gap:2.6mm;align-items:stretch">
       <div style="flex:1">${callout('segredo', 'Segredo da Bruna', r.dica)}</div>
       <div style="width:30mm;flex-shrink:0;border-radius:3.2mm;background:${C.turquesa};color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2mm">
-        <p style="font-size:6.2pt;font-family:Outfit;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#ffffffaa">Venda por</p>
+        <p style="font-size:6.2pt;font-family:Outfit;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#ffffffdd">Venda por</p>
         <p style="font-family:Outfit;font-weight:800;font-size:16pt;line-height:1.1;color:${C.manga}">${brl(k.preco).replace(',00', '')}</p>
-        <p style="font-size:6.2pt;color:#ffffffaa">lucro ≈ ${brl(k.preco - k.custoUn)}/un</p>
+        <p style="font-size:6.2pt;color:#ffffffdd">lucro ≈ ${brl(k.preco - k.custoUn)}/un</p>
       </div>
     </div>`,
-    { n },
+    { n, cls: 'rec' },
   );
 }
 
@@ -69,7 +69,7 @@ export function treinamento() {
     ${cabeca('Boas-vindas', 'Que bom ter você aqui. ==Bora vender o verão?==')}
     <p>Eu sou a <b>Bruna Martins</b>. Comecei fazendo geladinho de caipirinha para um churrasco de família e, no fim da tarde, três pessoas já queriam comprar. Só que as primeiras receitas davam errado: com bebida demais, o geladinho virava raspadinha mole e derretia no caminho.</p>
     <p>Foram semanas testando até chegar no que eu chamo de <b>Método Drink no Saquinho</b>: a proporção certa para congelar firme, a apresentação que valoriza o produto e o jeito simples de vender. É exatamente isso que está neste material, <mark>do primeiro lote à primeira venda</mark>.</p>
-    <p style="font-family:Pincel;font-size:15pt;color:${C.coral};margin-top:1mm">Com carinho, Bruna</p>`);
+    <p style="font-family:Pincel;font-size:15pt;color:${C.coralTx};margin-top:1mm">Com carinho, Bruna</p>`);
 
   // ---------- COMO USAR ----------
   pg(`
@@ -98,7 +98,7 @@ export function treinamento() {
     ${cabeca('Sumário', 'O que você vai aprender')}
     <div style="display:flex;flex-direction:column;gap:2.4mm">
       ${SUM.map(([m, t, d], i) => `<div style="display:flex;gap:3mm;align-items:center;padding:2.6mm 3mm;border-radius:3mm;background:${i % 2 ? '#fff' : C.coco};border:.3mm solid ${C.cocoEsc}">
-        <span class="num-g" style="font-size:18pt;width:10mm;color:${C.coral}">${String(i + 1).padStart(2, '0')}</span>
+        <span class="num-g" style="font-size:18pt;width:10mm;color:${C.coralTx}">${String(i + 1).padStart(2, '0')}</span>
         <div style="flex:1"><p class="eb" style="font-size:6.2pt;color:${C.turquesa}">${m}</p><h3>${t}</h3><p class="small">${d}</p></div></div>`).join('')}
     </div>
     <div class="box b-escuro" style="margin-top:auto"><p style="font-family:Outfit;font-weight:700;font-size:9.4pt;color:#fff">+ 4 bônus em arquivos separados</p><p style="font-size:8pt;margin-top:1mm">Guia do Geladinho Perfeito · Embalagens que Valorizam · Cardápio dos 10 Primeiros Sabores · Plano de 7 Dias para Começar a Vender</p></div>`);
@@ -110,7 +110,7 @@ export function treinamento() {
     ${cabeca('Módulo 1 · Utensílios', 'Você já tem ==quase tudo== em casa')}
     <div class="g2">
       <div class="box b-limao"><h3>Você provavelmente já tem</h3><div style="margin-top:2mm">${lista(['Liquidificador', 'Jarra medidora (ou copo americano = 190 ml)', 'Colheres e balança de cozinha', 'Peneira', 'Facas e tábua', 'Bandejas ou assadeiras', 'Freezer ou congelador'])}</div></div>
-      <div class="box b-manga"><h3>Vale comprar</h3><div style="margin-top:2mm">${lista(['**Funil** de boca larga (R$ 5 a 10)', '**Saquinhos para geladinho** 6×24 cm (R$ 10 a 15 o pacote com 100)', '**Etiquetas adesivas** (R$ 10)', '**Seladora** manual (opcional, R$ 60 a 90)', '**Isopor** com tampa para vender (R$ 30 a 60)'])}</div></div>
+      <div class="box b-manga"><h3>Vale comprar</h3><div style="margin-top:2mm">${lista(['**Funil** de boca larga (R$ 5 a 10)', '**Saquinhos para geladinho** 6×24 cm (R$ 7 a 11 o pacote com 100)', '**Etiquetas adesivas** (R$ 10)', '**Seladora** manual (opcional, R$ 60 a 90)', '**Isopor** com tampa para vender (R$ 30 a 60)'])}</div></div>
     </div>
     ${callout('dica', 'Comece sem seladora', 'Um **nó bem feito** fecha perfeitamente. Compre a seladora só quando estiver vendendo mais de 50 por semana: ela deixa o acabamento reto e acelera muito a produção.')}
     ${tabela(['Utensílio', 'Para que serve', 'Investimento'], [['Funil', 'Encher sem sujar e sem desperdício', 'R$ 5 a 10'], ['Jarra medidora 1 L', 'Medir líquidos e servir cada saquinho', 'R$ 10 a 20'], ['Balança digital', 'Pesar açúcar e frutas com precisão', 'R$ 20 a 35'], ['Concha de 120 ml', 'Padronizar o volume de cada saquinho', 'R$ 8 a 15']], [2])}
@@ -129,7 +129,7 @@ export function treinamento() {
   pg(`
     ${cabeca('Módulo 1 · Saquinhos', 'O saquinho certo faz ==metade da venda==')}
     ${tabela(['Tamanho', 'Volume', 'Para quê'], [['5 × 23 cm', '≈ 100 ml', 'Sacolé tradicional, preço baixo'], ['**6 × 24 cm**', '**≈ 120 ml**', '**O padrão deste treinamento: tamanho gourmet**'], ['7 × 25 cm', '≈ 160 ml', 'Versão “grande”, para cobrar mais'], ['Bico/zip', '≈ 150 ml', 'Festas e kits (fecha sem nó)']], [1])}
-    ${lista(['Prefira saquinho **grosso e transparente** (próprio para alimentos): mostra a cor da fruta e não rasga no isopor.', 'Encha sempre **120 ml** e deixe **4 a 5 cm livres** em cima para dar o nó.', 'Um pacote com 100 custa de R$ 10 a 15: **cerca de R$ 0,12 por geladinho**, já contando a etiqueta.'])}
+    ${lista(['Prefira saquinho **grosso e transparente** (próprio para alimentos): mostra a cor da fruta e não rasga no isopor.', 'Encha sempre **120 ml** e deixe **4 a 5 cm livres** em cima para dar o nó.', 'Um pacote com 100 custa de R$ 7 a 11: **cerca de R$ 0,14 por geladinho**, já contando a etiqueta.'])}
     <img src="${img('geladinhos.jpg')}" class="foto" style="height:58mm;margin-top:auto"/>`);
 
   pg(`
@@ -151,7 +151,7 @@ export function treinamento() {
         ['5 a 7%', 'Macio', 'textura de raspadinha cremosa', C.mangaCl, '#8A5F00'],
         ['acima de 8%', 'Não congela', 'vira um slush mole', C.coralCl, C.coralEsc],
       ]
-        .map(([a, b, d, bg, cor]) => `<div style="flex:1;background:${bg};border-radius:3mm;padding:3mm 2.4mm;text-align:center"><p style="font-family:Outfit;font-weight:800;font-size:13pt;color:${cor}">${a}</p><p style="font-family:Outfit;font-weight:700;font-size:8.6pt">${b}</p><p style="font-size:7pt;color:${C.tinta}aa;margin-top:.6mm">${d}</p></div>`)
+        .map(([a, b, d, bg, cor]) => `<div style="flex:1;background:${bg};border-radius:3mm;padding:3mm 2.4mm;text-align:center"><p style="font-family:Outfit;font-weight:800;font-size:13pt;color:${cor}">${a}</p><p style="font-family:Outfit;font-weight:700;font-size:8.6pt">${b}</p><p style="font-size:7pt;color:${C.tinta}c4;margin-top:.6mm">${d}</p></div>`)
         .join('')}
     </div>
     <p class="small" style="text-align:center">Teor alcoólico da mistura pronta, no freezer doméstico (−18 °C).</p>
@@ -173,9 +173,9 @@ export function treinamento() {
     ${cabeca('Módulo 2 · A fórmula', 'As ==4 partes== de todo geladinho de drink')}
     <div style="display:flex;height:11mm;border-radius:3mm;overflow:hidden;font-family:Outfit;font-weight:700;font-size:7.4pt;color:#fff">
       <div style="width:58%;background:${C.turquesa};display:grid;place-items:center">BASE 55-65%</div>
-      <div style="width:24%;background:${C.coral};display:grid;place-items:center">SABOR 20-30%</div>
+      <div style="width:24%;background:${C.coralTx};display:grid;place-items:center">SABOR 20-30%</div>
       <div style="width:7%;background:${C.manga};display:grid;place-items:center;color:${C.tinta}">AÇ.</div>
-      <div style="width:11%;background:${C.berry};display:grid;place-items:center">DRINK</div>
+      <div style="width:11%;background:${C.berryTx};display:grid;place-items:center">DRINK</div>
     </div>
     ${[
       [C.turquesa, '1. Base líquida', 'água filtrada, leite, leite de coco ou suco. É o que congela e dá corpo.', '550 a 650 ml por litro'],
@@ -224,7 +224,7 @@ export function treinamento() {
     ${cabeca('Módulo 3 · Índice', 'As ==30 receitas==')}
     <div style="columns:2;column-gap:4mm;font-size:7.9pt">
       ${CATEGORIAS.map((c) => `<div style="break-inside:avoid;margin-bottom:3mm"><p style="font-family:Outfit;font-weight:800;font-size:7.4pt;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:1.6mm"><span style="width:3mm;height:3mm;border-radius:1mm;background:${c.cor}"></span>${c.nome}</p>
-        ${RECEITAS.map((r, i) => [r, i]).filter(([r]) => r.cat === c.id).map(([r, i]) => { const k = calc(r); return `<div style="display:flex;justify-content:space-between;gap:1mm;padding:.8mm 0;border-bottom:.25mm dotted ${C.tinta}33"><span><b style="color:${C.coral}">${String(i + 1).padStart(2, '0')}</b> ${r.nome}</span><span style="color:${C.dinheiro};font-weight:700;white-space:nowrap">${brl(k.preco).replace(',00', '')}</span></div>`; }).join('')}</div>`).join('')}
+        ${RECEITAS.map((r, i) => [r, i]).filter(([r]) => r.cat === c.id).map(([r, i]) => { const k = calc(r); return `<div style="display:flex;justify-content:space-between;gap:1mm;padding:.8mm 0;border-bottom:.25mm dotted ${C.tinta}33"><span><b style="color:${C.coralTx}">${String(i + 1).padStart(2, '0')}</b> ${r.nome}</span><span style="color:${C.dinheiroTx};font-weight:700;white-space:nowrap">${brl(k.preco).replace(',00', '')}</span></div>`; }).join('')}</div>`).join('')}
     </div>
     <div style="margin-top:auto">${callout('dica', 'Como ler as fichas', '**Teor final**: firme = congela como geladinho comum · **Custo/unid.**: ingredientes + saquinho e etiqueta, com preços de referência · **Venda por**: preço praticado na categoria, sempre acima de 2,5× o custo. Ajuste com os preços da sua região (Módulo 5).')}</div>`);
 
@@ -233,11 +233,17 @@ export function treinamento() {
     if (r.cat !== catAtual) {
       catAtual = r.cat;
       const c = CATEGORIAS.find((x) => x.id === r.cat);
-      const daCat = RECEITAS.filter((x) => x.cat === r.cat);
-      pg(`<div style="margin:auto 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3mm">
-        <div style="display:flex;gap:1mm;align-items:flex-end">${daCat.slice(0, 5).map((x) => saquinho(x.cor, x.pedaco, 46)).join('')}</div>
-        <p class="eb">Categoria</p><h1 style="font-size:24pt">${c.nome}</h1><p class="lead" style="max-width:100mm">${c.desc}</p>
-        <p class="small">${daCat.length} receitas</p></div>`, { fundo: C.coco });
+      const daCat = RECEITAS.map((x, j) => [x, j]).filter(([x]) => x.cat === r.cat);
+      const fotos = daCat.slice(0, 3).map(([x]) => img(x.foto));
+      pg(`<div style="display:grid;grid-template-columns:1.3fr 1fr;grid-template-rows:54.8mm 54.8mm;gap:2.4mm;height:112mm;flex-shrink:0">
+          <img src="${fotos[0]}" style="grid-row:span 2;width:100%;height:112mm;min-width:0;object-fit:cover;border-radius:3.6mm"/>
+          <img src="${fotos[1]}" style="width:100%;height:54.8mm;min-width:0;object-fit:cover;object-position:50% 40%;border-radius:3.6mm"/>
+          <img src="${fotos[2]}" style="width:100%;height:54.8mm;min-width:0;object-fit:cover;object-position:50% 40%;border-radius:3.6mm"/>
+        </div>
+        <div style="display:flex;align-items:center;gap:2mm;margin-top:1mm"><span style="width:8mm;height:1.2mm;border-radius:1mm;background:${c.cor}"></span><p class="eb" style="color:${C.turquesa}">Categoria · ${daCat.length} receitas</p></div>
+        <h1 style="font-size:23pt;margin-top:-1mm">${c.nome}</h1>
+        <p class="lead">${c.desc}</p>
+        <div style="margin-top:auto;display:grid;grid-template-columns:${daCat.length > 4 ? '1fr 1fr' : '1fr'};gap:1.4mm">${daCat.map(([x, j]) => `<div style="display:flex;align-items:center;gap:2.4mm;background:#fff;border-radius:2.4mm;padding:1.4mm 2.4mm"><b style="font-family:Outfit;color:${C.coralTx};font-size:9pt;width:6mm">${String(j + 1).padStart(2, '0')}</b><span style="font-family:Outfit;font-weight:700;font-size:8.4pt;line-height:1.15;flex:1">${x.nome}</span><span class="chip k-turq">${brl(calc(x).preco).replace(',00', '')}</span></div>`).join('')}</div>`, { fundo: C.coco });
     }
     add(paginaReceita(r, i, n));
   });
@@ -269,7 +275,7 @@ export function treinamento() {
       ['Degradê', 'Calda ou xarope no fundo + mistura clara por cima, congelando em pé nas primeiras 2 horas (veja o Sex on the Beach).'],
       ['Cores fortes', 'Tenha sabores de cores bem diferentes lado a lado: verde, amarelo, rosa, azul. A vitrine fica irresistível.'],
       ['Folha e rodela na frente', 'Uma folha de hortelã ou uma rodela fina de limão encostada na parede, logo abaixo do nó, parece “drink de bar”.'],
-    ].map(([t, d], i) => `<div style="display:flex;gap:3mm"><span class="num-g" style="font-size:16pt;color:${C.coral};width:7mm">${i + 1}</span><div><h3>${t}</h3><p style="font-size:8.2pt">${md(d)}</p></div></div>`).join('')}
+    ].map(([t, d], i) => `<div style="display:flex;gap:3mm"><span class="num-g" style="font-size:16pt;color:${C.coralTx};width:7mm">${i + 1}</span><div><h3>${t}</h3><p style="font-size:8.2pt">${md(d)}</p></div></div>`).join('')}
     <img src="${img('venda-condominio.jpg')}" class="foto" style="height:50mm;margin-top:auto"/>
     <p class="small" style="text-align:center">Cores fortes lado a lado, plaquinha de preço visível: vende sozinho.</p>`);
 
@@ -278,7 +284,7 @@ export function treinamento() {
     <div style="display:flex;gap:4mm;align-items:center">
       <div style="width:52mm;flex-shrink:0;border-radius:3mm;border:.4mm solid ${C.turquesa};background:#fff;padding:3mm;font-size:7.4pt;line-height:1.35">
         <p style="font-family:Outfit;font-weight:800;font-size:10pt;color:${C.turquesa}">Caipirinha de Limão</p>
-        <p style="color:${C.coral};font-weight:700">Geladinho de drink · 120 ml</p>
+        <p style="color:${C.coralTx};font-weight:700">Geladinho de drink · 120 ml</p>
         <div class="sep" style="margin:1.6mm 0"></div>
         <p>Ingredientes: água, açúcar, limão, cachaça.</p><p><b>Contém álcool.</b></p>
         <p>Produzido em: __/__ · Consumir até: __/__</p><p>Manter congelado (−18 °C).</p>
@@ -302,7 +308,7 @@ export function treinamento() {
   add(aberturaModulo(5, 'Precificação e lucro', 'Preço errado é o motivo nº 1 de quem trabalha muito e não ganha. Aqui você aprende a calcular o custo real e o preço certo, sem chute.', ['A ficha de custo, passo a passo', 'Os custos escondidos', 'Quanto cobrar (e por que 3×)', 'Combos, kits e metas de faturamento'], 'venda-praia.jpg'));
 
   const ex = calc(RECEITAS[0]);
-  const DEZ = RECEITAS.filter((r) => r.foto).map(calc);
+  const DEZ = TOP10.map((nn) => calc(RECEITAS[nn - 1]));
   const CM = Math.round((DEZ.reduce((a, k) => a + k.custoUn, 0) / DEZ.length) * 10) / 10; // custo médio dos 10 mais vendidos
   const mil = (n) => 'R$ ' + (Math.round(n / 10) * 10).toLocaleString('pt-BR');
   pg(`
@@ -314,7 +320,7 @@ export function treinamento() {
         ['Ingredientes/un', brl(ex.custo / ex.un)],
         ['+ saquinho e etiqueta', brl(CUSTO_SAQUINHO)],
         ['Custo final/un', brl(ex.custoUn)],
-      ].map(([a, b], i) => `<div style="flex:1;border-radius:3mm;padding:2.4mm;text-align:center;background:${i === 3 ? C.turquesa : C.coco};color:${i === 3 ? '#fff' : C.tinta}"><p style="font-size:6.4pt;font-family:Outfit;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.7;color:inherit">${a}</p><p style="font-family:Outfit;font-weight:800;font-size:11pt;color:${i === 3 ? C.manga : C.tinta}">${b}</p></div>`).join('')}
+      ].map(([a, b], i) => `<div style="flex:1;border-radius:3mm;padding:2.4mm;text-align:center;background:${i === 3 ? C.turquesa : C.coco};color:${i === 3 ? '#fff' : C.tinta}"><p style="font-size:6.4pt;font-family:Outfit;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:${i === 3 ? 1 : .7};color:inherit">${a}</p><p style="font-family:Outfit;font-weight:800;font-size:11pt;color:${i === 3 ? C.manga : C.tinta}">${b}</p></div>`).join('')}
     </div>
     ${callout('segredo', 'A fórmula', '**Custo por unidade = (custo total do lote ÷ unidades) + saquinho e etiqueta.** Simples assim. Anote numa folha (ou use a Calculadora Automática de Lucros, se você adquiriu).')}
     <h2>O mesmo trabalho, lucros diferentes</h2>
@@ -327,6 +333,10 @@ export function treinamento() {
     ${tabela(['Categoria', 'Custo por unidade', 'Preço sugerido'], CATEGORIAS.map((c) => { const ks = RECEITAS.filter((r) => r.cat === c.id).map(calc); const f = (a) => brl(Math.min(...a)).replace(',00', '') + (Math.min(...a) === Math.max(...a) ? '' : ' a ' + brl(Math.max(...a)).replace('R$ ', '').replace(',00', '')); return [c.nome, f(ks.map((k) => k.custoUn)), `**${f(ks.map((k) => k.preco))}**`]; }), [1, 2])}
     <h2>Como escolher o seu preço</h2>
     ${lista(['**Pesquise** 3 vendedores de geladinho gourmet da sua região. Fique na mesma faixa ou um pouco acima: seu produto é diferente.', '**Praia, eventos e bares** aceitam R$ 1 a 3 a mais. **Condomínio e vizinhança** ficam no preço da tabela.', '**Nunca** venda abaixo de 2× o custo, nem em promoção.'])}
+    <div class="row">
+      <div class="box b-coco"><h3>Por que o de drink vale mais</h3><p style="font-size:8pt;margin-top:1mm">Leva bebida de verdade, tem 120 ml e substitui um drink de bar, que custa R$ 20 a 35. Ao lado disso, R$ 7 a 10 parece barato.</p></div>
+      <div class="box b-manga"><h3>Quando subir o preço</h3><p style="font-size:8pt;margin-top:1mm">Se você vende tudo sempre e tem fila de encomenda, suba R$ 1. Quem compra pelo sabor não deixa de comprar por R$ 1.</p></div>
+    </div>
     <p class="small" style="margin-top:auto">Preço redondo vende mais: R$ 7 é mais fácil de pagar (e de dar troco) que R$ 6,80.</p>`);
 
   pg(`
@@ -336,11 +346,12 @@ export function treinamento() {
         ['Combo 3', '3 geladinhos', 'R$ 18', 'em vez de R$ 21'],
         ['Combo 5', '5 geladinhos', 'R$ 30', 'em vez de R$ 35'],
         ['Kit Festa', '20 sabores sortidos', 'R$ 120', 'com entrega'],
-      ].map(([t, d, p, o]) => `<div class="box b-coco" style="text-align:center"><p class="eb" style="font-size:6.4pt">${t}</p><p style="font-size:7.8pt;margin-top:.6mm">${d}</p><p style="font-family:Outfit;font-weight:800;font-size:15pt;color:${C.coral}">${p}</p><p class="small">${o}</p></div>`).join('')}
+      ].map(([t, d, p, o]) => `<div class="box b-coco" style="text-align:center"><p class="eb" style="font-size:6.4pt">${t}</p><p style="font-size:7.8pt;margin-top:.6mm">${d}</p><p style="font-family:Outfit;font-weight:800;font-size:15pt;color:${C.coralTx}">${p}</p><p class="small">${o}</p></div>`).join('')}
     </div>
     <h2>Quanto dá para faturar</h2>
     ${tabela(['Vendendo por dia', 'Por semana', 'Faturamento no mês', 'Lucro aprox. no mês'], [10, 15, 25].map((d) => [`${d} un a R$ 7,50`, `${d * 6} un`, mil(d * 26 * 7.5), mil(d * 26 * (7.5 - CM * 1.1))]), [1, 2, 3])}
     <p class="small">Considerando 6 dias de venda por semana (26 no mês), preço médio de R$ 7,50, custo médio de ${brl(CM)} por unidade + 10% de custos escondidos. Resultados variam conforme região, preço e dedicação.</p>
+    <p style="font-size:8.2pt"><b>Regra do combo:</b> desconto de 10 a 15%, nunca mais que isso. O objetivo é o cliente levar mais um, não pagar menos.</p>
     <div class="box b-turq"><h3>Orçamento de festa em 1 minuto</h3><p style="font-size:8pt;margin-top:1mm">Conte <b>2 geladinhos por adulto</b> (3 se for festa na piscina ou à tarde no calor). Festa de 40 adultos = 80 a 120 geladinhos. Cobre um sinal de <b>50% no Pix</b> para reservar a data e o restante na entrega.</p></div>
     <div style="margin-top:auto">${callout('segredo', 'Encomendas valem ouro', 'Uma festa de 80 geladinhos a R$ 6 = **R$ 480 numa entrega só**, sem ficar o dia inteiro vendendo. Ofereça encomendas desde a primeira semana.')}</div>`);
 
@@ -384,7 +395,7 @@ export function treinamento() {
     <h2>Pós-venda: o cliente que volta</h2>
     ${lista(['Salve o contato de quem comprou (com o nome e o sabor preferido).', 'Mande a mensagem de recompra 2 a 3 dias depois.', 'Ofereça “compre 10, ganhe 1” para clientes fiéis.', 'Peça uma foto ou depoimento: é a sua melhor propaganda.'])}
     <div class="box b-manga"><h3>Formas de pagamento</h3><p style="font-size:8pt;margin-top:1mm">Aceite <b>Pix</b> (deixe o QR Code impresso no isopor) e, quando vender em eventos, uma <b>maquininha de cartão</b>: cliente sem dinheiro trocado é venda perdida.</p></div>
-    <img src="${img('venda-festa.jpg')}" class="foto" style="height:36mm;margin-top:auto"/>`);
+    <img src="${img('venda-festa.jpg')}" class="foto" style="flex:1;min-height:36mm;height:auto;margin-top:1mm"/>`);
 
   // ---------- FECHAMENTO ----------
   pg(`

@@ -1,6 +1,6 @@
 // Os 4 bônus do treinamento. Cada um tem uma cor de destaque própria, dentro da mesma marca.
 import { C, img, md, callout, lista, passos, tabela, cabeca, pagina, capa, saquinho } from './base.mjs';
-import { RECEITAS, calc, ML_UN } from './receitas.mjs';
+import { RECEITAS, calc, ML_UN, TOP10 } from './receitas.mjs';
 
 const brl = (n) => 'R$ ' + n.toFixed(2).replace('.', ',');
 const preco = (n) => brl(n).replace(',00', '');
@@ -21,10 +21,10 @@ const abertura = (cor, num, titulo, texto, itens, foto) => `<section class="pg" 
     <h1 style="margin-top:1.4mm;font-size:21pt">${titulo}</h1>
     <p class="lead" style="margin-top:2.6mm">${md(texto)}</p>
     <div class="sep" style="margin:4mm 0 3mm"></div>
-    <p style="font-family:Outfit;font-weight:700;font-size:7pt;letter-spacing:.16em;text-transform:uppercase;color:${C.tinta}88">Neste guia</p>
+    <p style="font-family:Outfit;font-weight:700;font-size:7pt;letter-spacing:.16em;text-transform:uppercase;color:${C.tinta}bb">Neste guia</p>
     <div style="margin-top:2mm;display:flex;flex-direction:column;gap:1.4mm">${itens.map((t) => `<p style="display:flex;gap:2mm;font-size:8.6pt"><span style="color:${cor};font-weight:800">→</span>${t}</p>`).join('')}</div>
   </div>
-  <svg class="ondas" style="height:5mm" viewBox="0 0 600 40" preserveAspectRatio="none"><path d="M0 18 C120 4 220 30 330 16 S520 2 600 14 V40 H0Z" fill="${C.manga}"/><path d="M0 26 C150 14 260 38 380 24 S540 18 600 24 V40 H0Z" fill="${C.coral}"/><path d="M0 33 C180 26 360 42 600 31 V40 H0Z" fill="${C.turquesa}"/></svg>
+  <svg class="ondas" style="height:5mm;width:148mm" viewBox="0 0 600 40" preserveAspectRatio="none"><path d="M0 18 C120 4 220 30 330 16 S520 2 600 14 V40 H0Z" fill="${C.manga}"/><path d="M0 26 C150 14 260 38 380 24 S540 18 600 24 V40 H0Z" fill="${C.coral}"/><path d="M0 33 C180 26 360 42 600 31 V40 H0Z" fill="${C.turquesa}"/></svg>
 </section>`;
 
 // =====================================================================
@@ -75,7 +75,7 @@ export function bonus1() {
     ${faixa('04', 'Conservação')}
     ${cabeca('', 'Quanto tempo dura e ==como guardar==')}
     <div style="display:flex;gap:2.4mm">
-      ${[['30 dias', 'no freezer, bem fechado', C.turquesa], ['3 a 4 h', 'no isopor com gelo reciclável', C.coral], ['nunca', 'recongelar o que derreteu', C.coralEsc]].map(([a, b, c]) => `<div style="flex:1;border-radius:3mm;background:${c};color:#fff;text-align:center;padding:3mm 2mm"><p style="font-family:Outfit;font-weight:800;font-size:14pt">${a}</p><p style="font-size:7.4pt;color:#ffffffdd">${b}</p></div>`).join('')}
+      ${[['30 dias', 'no freezer, bem fechado', C.turquesa], ['3 a 4 h', 'no isopor com gelo reciclável', C.coralTx], ['nunca', 'recongelar o que derreteu', '#8E2219']].map(([a, b, c]) => `<div style="flex:1;border-radius:3mm;background:${c};color:#fff;text-align:center;padding:3mm 2mm"><p style="font-family:Outfit;font-weight:800;font-size:14pt;color:#fff">${a}</p><p style="font-size:7.4pt;color:#fff">${b}</p></div>`).join('')}
     </div>
     ${lista(['Guarde os geladinhos prontos em **sacos maiores por sabor**, com a data escrita: evita cheiro de outros alimentos.', 'Use o método **“primeiro que entra, primeiro que sai”**: venda sempre os mais antigos primeiro.', 'Não guarde geladinho na porta do freezer: é a parte mais quente.', 'Se faltar energia por mais de 2 horas, não venda o que amoleceu.', 'Depois de 2 semanas, o sabor da fruta começa a perder força. O ideal é produzir para vender em até **15 dias**.'])}
     ${callout('dica', 'Produza em ciclos', 'Em vez de um lote enorme por mês, faça **2 lotes por semana**. O geladinho chega sempre fresquinho e você não fica com estoque parado.')}
@@ -136,7 +136,7 @@ export function bonus1() {
 // BÔNUS 2: Embalagens que Valorizam seu Geladinho
 // =====================================================================
 export function bonus2() {
-  const cor = C.coral;
+  const cor = C.coralTx;
   const { P, pg, faixa } = livro('BÔNUS 2 · EMBALAGENS QUE VALORIZAM', cor);
   P.push(capa('capa-b2.jpg', 'Bônus 2 · Embalagens que Valorizam seu Geladinho'));
   P.push(abertura(cor, 2, 'Embalagens que Valorizam seu Geladinho', 'O mesmo geladinho pode ser vendido por R$ 4 ou por R$ 9. A diferença está, quase sempre, **na embalagem e na apresentação**.', ['Qual saquinho comprar (e quanto)', 'Fechar com nó ou com seladora', 'Etiquetas: modelos prontos', 'Kits e caixas para festas e presentes', 'Onde comprar e quanto custa'], 'venda-festa.jpg'));
@@ -146,8 +146,8 @@ export function bonus2() {
     ${cabeca('', 'A embalagem ==vende antes do sabor==')}
     <p>O cliente decide em segundos, olhando. Antes de provar, ele julga o seu geladinho pelo que vê: <b>se está bonito, limpo, bem fechado e com etiqueta</b>, ele confia e aceita pagar mais.</p>
     <div class="row" style="align-items:stretch">
-      <div class="box b-coral"><p class="eb" style="color:${C.coralEsc}">Parece caseiro</p><div style="margin-top:1.6mm">${lista(['Saquinho fino e enrugado', 'Tamanhos diferentes', 'Nó torto, com ar', 'Sem etiqueta', 'Vendido a R$ 3 ou 4'])}</div></div>
-      <div class="box b-limao"><p class="eb" style="color:${C.limaoEsc}">Parece gourmet</p><div style="margin-top:1.6mm">${lista(['Saquinho grosso e transparente', 'Todos iguais (120 ml)', 'Reto, sem ar', 'Etiqueta com nome e data', 'Vendido a R$ 7 a 12'])}</div></div>
+      <div class="box b-coral"><p class="eb" style="color:${C.coralTx}">Parece caseiro</p><div style="margin-top:1.6mm">${lista(['Saquinho fino e enrugado', 'Tamanhos diferentes', 'Nó torto, com ar', 'Sem etiqueta', 'Vendido a R$ 3 ou 4'])}</div></div>
+      <div class="box b-limao"><p class="eb" style="color:${C.limaoTx}">Parece gourmet</p><div style="margin-top:1.6mm">${lista(['Saquinho grosso e transparente', 'Todos iguais (120 ml)', 'Reto, sem ar', 'Etiqueta com nome e data', 'Vendido a R$ 7 a 12'])}</div></div>
     </div>
     ${callout('segredo', 'A conta que vale a pena', 'Uma etiqueta bonita custa de **R$ 0,02 a R$ 0,10**. Ela pode fazer o geladinho valer **R$ 2 a 3 a mais**. Não existe investimento com retorno melhor no seu negócio.')}
     <img src="${img('venda-condominio.jpg')}" class="foto" style="height:44mm;margin-top:auto"/>`);
@@ -182,7 +182,7 @@ export function bonus2() {
         <div><h3>Redonda (5 cm)</h3><p style="font-size:8pt">A mais barata. Imprime em casa em papel adesivo (20 por folha A4). Vai na frente do saquinho.</p></div>
       </div>
       <div style="display:flex;gap:3mm;align-items:center">
-        <div style="width:24mm;flex-shrink:0;border-radius:2mm;background:#fff;border:.4mm solid ${C.coral};padding:1.6mm;font-size:5.4pt;line-height:1.3"><p style="font-family:Outfit;font-weight:800;font-size:7pt;color:${C.coral}">Mojito</p><p>água, açúcar, limão, hortelã, rum</p><p><b>Contém álcool</b> · 120 ml</p><p>Fab.: __/__ Val.: __/__</p></div>
+        <div style="width:24mm;flex-shrink:0;border-radius:2mm;background:#fff;border:.4mm solid ${C.coral};padding:1.6mm;font-size:5.4pt;line-height:1.3"><p style="font-family:Outfit;font-weight:800;font-size:7pt;color:${C.coralTx}">Mojito</p><p>água, açúcar, limão, hortelã, rum</p><p><b>Contém álcool</b> · 120 ml</p><p>Fab.: __/__ Val.: __/__</p></div>
         <div><h3>Retangular completa (5 × 3 cm)</h3><p style="font-size:8pt">A mais profissional: sabor, ingredientes, volume, datas e contato. Ideal para entregas e festas.</p></div>
       </div>
       <div style="display:flex;gap:3mm;align-items:center">
@@ -199,8 +199,8 @@ export function bonus2() {
     ${faixa('05', 'Cores e identidade')}
     ${cabeca('', 'Uma marca simples, ==reconhecível==', 'Você não precisa de logotipo caro. Precisa de consistência.')}
     ${passos(['**Escolha um nome** curto e fácil de falar: “Geladinho da Ju”, “Drink Gelado”, “Saquinho Tropical”.', '**Escolha 2 cores** e use sempre as mesmas: etiqueta, cardápio, plaquinha de preço.', '**Escolha 1 fonte** bem legível para os nomes dos sabores.', '**Crie um @** no Instagram com o nome da marca e coloque em todas as etiquetas.'])}
-    <div style="display:flex;gap:2mm;justify-content:center;align-items:flex-end;padding:3mm;border-radius:3mm;background:${C.coco}">
-      ${RECEITAS.filter((r) => r.foto).slice(0, 6).map((r) => saquinho(r.cor, r.pedaco, 40)).join('')}
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:1.6mm">
+      ${[0, 1, 8, 6, 28, 13].map((j) => `<img src="${img(RECEITAS[j].foto)}" style="width:100%;height:50mm;object-fit:cover;object-position:30% 50%;border-radius:2.4mm"/>`).join('')}
     </div>
     <p class="small" style="text-align:center">Saquinhos de cores fortes lado a lado: a própria fruta é a sua identidade visual.</p>
     <div style="margin-top:auto">${callout('segredo', 'Segredo da Bruna', 'A cor do geladinho já é linda. Por isso, prefira etiquetas **claras e simples**, que deixam o produto aparecer. Etiqueta muito colorida “briga” com a fruta.')}</div>`);
@@ -235,9 +235,9 @@ const NOMES_ING = {
 };
 
 export function bonus3() {
-  const cor = C.berry;
+  const cor = C.berryTx;
   const { P, pg, faixa } = livro('BÔNUS 3 · CARDÁPIO DOS 10 PRIMEIROS SABORES', cor);
-  const DEZ = RECEITAS.map((r, i) => ({ r, i, k: calc(r) })).filter(({ r }) => r.foto);
+  const DEZ = TOP10.map((nn) => ({ r: RECEITAS[nn - 1], i: nn - 1, k: calc(RECEITAS[nn - 1]) }));
   P.push(capa('capa-b3.jpg', 'Bônus 3 · Cardápio dos 10 Primeiros Sabores'));
   P.push(abertura(cor, 3, 'Cardápio dos 10 Primeiros Sabores', 'Não precisa fazer os 30 de uma vez. Estes são os **10 sabores que mais vendem**, escolhidos para dar variedade de cor, de bebida e de preço, com lista de compras e plano de produção prontos.', ['Por que estes 10', 'Ficha rápida de cada sabor', 'Cardápio pronto com preços', 'Lista de compras somada', 'Plano de produção em 2 dias'], 'sabor-sex-on-the-beach.jpg'));
 
@@ -254,7 +254,7 @@ export function bonus3() {
         ['Faixa de preço', `De ${preco(Math.min(...DEZ.map(({ k }) => k.preco)))} a ${preco(Math.max(...DEZ.map(({ k }) => k.preco)))}: tem opção para todo bolso.`],
       ].map(([t, d]) => `<div class="box b-berry"><h3>${t}</h3><p style="font-size:8pt;margin-top:.8mm">${d}</p></div>`).join('')}
     </div>
-    <div style="display:flex;gap:1.4mm;justify-content:center;align-items:flex-end;margin-top:auto">${DEZ.map(({ r }) => saquinho(r.cor, r.pedaco, 30)).join('')}</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1.6mm;margin-top:auto">${DEZ.map(({ r }) => `<img src="${img(r.foto)}" style="width:100%;height:23mm;object-fit:cover;object-position:30% 50%;border-radius:2.4mm"/>`).join('')}</div>
     ${callout('segredo', 'Comece com 5', 'Na primeira semana, faça só **Limão, Maracujá, Morango com Vodka, Blue Lagoon e Piña Colada**. Depois acrescente os outros conforme o que o seu público mais pedir.')}`);
 
   // ficha rápida: 2 sabores por página
@@ -268,10 +268,10 @@ export function bonus3() {
           <p style="font-size:8pt">${r.desc}</p>
           <div style="display:flex;flex-wrap:wrap;gap:1.2mm"><span class="chip k-turq">${k.un} un</span><span class="chip k-manga">${r.tempo} min</span><span class="chip k-limao">${r.nivel}</span></div>
           <p style="font-size:7.4pt;line-height:1.4;color:${C.tinta}cc"><b>Vai:</b> ${r.ing.filter(([, , q]) => q).map(([t]) => t.replace(/\s*\(.*?\)/g, '')).join(' · ')}</p>
-          <p style="font-size:7.4pt;line-height:1.4;background:${C.mangaCl};border-radius:2mm;padding:1.4mm 2mm"><b>Segredo:</b> ${r.dica}</p>
+          <p style="font-size:7.4pt;line-height:1.4;background:${C.mangaCl};border-radius:2mm;padding:1.4mm 2mm"><b>Segredo:</b> ${md(r.dica)}</p>
           <div style="margin-top:auto;display:flex;gap:2mm">
             <div style="flex:1;border-radius:2.4mm;background:${C.coco};padding:1.4mm 2mm"><p class="small">custo/un</p><p style="font-family:Outfit;font-weight:800;font-size:10pt">${brl(k.custoUn)}</p></div>
-            <div style="flex:1;border-radius:2.4mm;background:${cor};color:#fff;padding:1.4mm 2mm"><p style="font-size:7pt;color:#ffffffcc">venda por</p><p style="font-family:Outfit;font-weight:800;font-size:10pt">${preco(k.preco)}</p></div>
+            <div style="flex:1;border-radius:2.4mm;background:${cor};color:#fff;padding:1.4mm 2mm"><p style="font-size:7pt;color:#ffffffe6">venda por</p><p style="font-family:Outfit;font-weight:800;font-size:10pt;color:#fff">${preco(k.preco)}</p></div>
           </div>
         </div></div>`).join('<div class="sep"></div>')}`);
   }
@@ -281,15 +281,15 @@ export function bonus3() {
     ${faixa('03', 'Cardápio pronto')}
     <div style="flex:1;border-radius:4mm;background:${C.turquesa};color:#fff;padding:6mm 6mm 5mm;display:flex;flex-direction:column">
       <p class="pincel" style="color:${C.manga};font-size:15pt;text-align:center">geladinhos de</p>
-      <p style="font-family:Outfit;font-weight:800;font-size:24pt;text-align:center;line-height:1;letter-spacing:-.02em">DRINKS</p>
-      <p style="text-align:center;font-size:7.4pt;color:#ffffffaa;margin-top:1mm;letter-spacing:.14em">120 ML · FEITOS NA HORA · CONTÉM ÁLCOOL</p>
+      <p style="font-family:Outfit;font-weight:800;font-size:24pt;text-align:center;line-height:1;letter-spacing:-.02em;color:#fff">DRINKS</p>
+      <p style="text-align:center;font-size:7.4pt;color:#ffffffdd;margin-top:1mm;letter-spacing:.14em">120 ML · FEITOS NA HORA · CONTÉM ÁLCOOL</p>
       <div style="margin-top:4mm;display:flex;flex-direction:column;gap:1.8mm">
-        ${DEZ.map(({ r, k }) => `<div style="display:flex;align-items:baseline;gap:2mm"><span style="width:2.6mm;height:2.6mm;border-radius:50%;background:${r.cor};flex-shrink:0;align-self:center"></span><span style="font-family:Outfit;font-weight:700;font-size:9.4pt;color:#fff">${r.nome}</span><span style="flex:1;border-bottom:.3mm dotted #ffffff55"></span><span style="font-family:Outfit;font-weight:800;font-size:9.4pt;color:${C.manga}">${preco(k.preco)}</span></div>`).join('')}
+        ${DEZ.map(({ r, k }) => `<div style="display:flex;align-items:baseline;gap:2mm"><span style="width:2.6mm;height:2.6mm;border-radius:50%;background:${r.cor};flex-shrink:0;align-self:center"></span><span style="font-family:Outfit;font-weight:700;font-size:9.4pt;color:#fff">${r.nome}</span><span style="flex:1;border-bottom:.3mm dotted #ffffff55"></span><span style="font-family:Outfit;font-weight:800;font-size:9.4pt;color:${C.mangaSobreTurq}">${preco(k.preco)}</span></div>`).join('')}
       </div>
       <div style="margin-top:auto;display:flex;gap:2mm">
-        ${[['3 por', 'R$ 18'], ['5 por', 'R$ 30'], ['Festa 20', 'R$ 120']].map(([a, b]) => `<div style="flex:1;border-radius:2.6mm;background:#ffffff1a;text-align:center;padding:1.8mm"><p style="font-size:7pt;color:#ffffffbb">${a}</p><p style="font-family:Outfit;font-weight:800;font-size:12pt;color:${C.manga}">${b}</p></div>`).join('')}
+        ${[['3 por', 'R$ 18'], ['5 por', 'R$ 30'], ['Festa 20', 'R$ 120']].map(([a, b]) => `<div style="flex:1;border-radius:2.6mm;background:#ffffff1a;text-align:center;padding:1.8mm"><p style="font-size:7pt;color:#fff">${a}</p><p style="font-family:Outfit;font-weight:800;font-size:12pt;color:${C.mangaSobreTurq}">${b}</p></div>`).join('')}
       </div>
-      <p style="text-align:center;font-size:7.4pt;margin-top:2.6mm;color:#ffffffcc">Peça pelo WhatsApp (00) 00000-0000 · @seugeladinho</p>
+      <p style="text-align:center;font-size:7.4pt;margin-top:2.6mm;color:#ffffffe6">Peça pelo WhatsApp (00) 00000-0000 · @seugeladinho</p>
     </div>
     <p class="small" style="text-align:center">Combos com sabores até R$ 7. Gin e Batida entram nos combos com + R$ 2 cada.</p>`);
 
@@ -344,7 +344,7 @@ export function bonus3() {
 // BÔNUS 4: Plano de 7 Dias para Começar a Vender
 // =====================================================================
 export function bonus4() {
-  const cor = C.dinheiro;
+  const cor = C.dinheiroTx;
   const { P, pg, faixa } = livro('BÔNUS 4 · PLANO DE 7 DIAS', cor);
   P.push(capa('capa-b4.jpg', 'Bônus 4 · Plano de 7 Dias para Começar a Vender'));
   P.push(abertura(cor, 4, 'Plano de 7 Dias para Começar a Vender', 'Um passo a passo diário, do zero à primeira venda e às primeiras encomendas. Siga na ordem, marque cada tarefa e **no domingo você já tem clientes**.', ['O plano da semana em uma página', 'As tarefas de cada dia, com checklist', 'Mensagens prontas para usar', 'Metas e controle de vendas'], 'venda-condominio.jpg'));
