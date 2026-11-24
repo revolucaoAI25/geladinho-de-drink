@@ -1,26 +1,46 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { ArrowLeft, Check, ChevronRight, Lock, ShieldCheck, Sparkles, Star, TriangleAlert } from 'lucide-react';
-import { APRENDE, BONUS, checkout, comentarios, contas, conversas, especialista, garantiaDias, imagens, marca, parcelas, preco, precoDe } from '@/config/oferta';
+import {
+  ArrowLeft,
+  BadgeDollarSign,
+  Briefcase,
+  Check,
+  ChefHat,
+  ChevronRight,
+  Citrus,
+  Clock3,
+  Gift,
+  Lock,
+  Package,
+  ShieldCheck,
+  Snowflake,
+  Star,
+  Sun,
+  TriangleAlert,
+  Wine,
+  X,
+} from 'lucide-react';
+import { APRENDE, BONUS, avaliacoes, checkout, comentarios, contas, especialista, garantiaDias, imagens, marca, parcelas, preco, precoDe, prints } from '@/config/oferta';
 import { destinoCheckout, track } from '@/lib/tracking';
-import { Foto, Geladinho } from './Geladinho';
-import { Whats } from './Whats';
+import { Esteira } from './Esteira';
+import { Livro } from './Livro';
 
 const PASSOS = ['abertura', 'tempo', 'desafio', 'facil', 'custo', 'prova', 'carregando', 'oferta'] as const;
 type Passo = (typeof PASSOS)[number];
 const PROGRESSO: Record<Passo, number> = { abertura: 0, tempo: 16, desafio: 32, facil: 48, custo: 64, prova: 80, carregando: 92, oferta: 100 };
 
-const TEMPO = [
-  { id: 'livre', e: '🙌', t: 'Tenho bastante tempo livre', bg: 'bg-manga-claro' },
-  { id: '3h', e: '⏰', t: 'Cerca de 3 horas por dia', bg: 'bg-limao-claro' },
-  { id: 'pouco', e: '💼', t: 'Pouquíssimo tempo, pois já trabalho', bg: 'bg-berry-claro' },
+type Opcao = { id: string; Icone: typeof Sun; t: string; tom: string };
+const TEMPO: Opcao[] = [
+  { id: 'livre', Icone: Sun, t: 'Tenho bastante tempo livre', tom: 'bg-manga-claro text-[#B7791F]' },
+  { id: '3h', Icone: Clock3, t: 'Cerca de 3 horas por dia', tom: 'bg-turquesa-claro text-turquesa' },
+  { id: 'pouco', Icone: Briefcase, t: 'Pouquíssimo tempo, pois já trabalho', tom: 'bg-coral-claro text-coral-escuro' },
 ];
-const DESAFIO = [
-  { id: 'receitas', e: '🍹', t: 'Aprender as receitas e acertar o ponto', bg: 'bg-coral-claro' },
-  { id: 'base', e: '🧊', t: 'Preparar a base dos geladinhos', bg: 'bg-turquesa-claro' },
-  { id: 'vender', e: '💰', t: 'Precificação e estratégias de venda', bg: 'bg-manga-claro' },
+const DESAFIO: Opcao[] = [
+  { id: 'receitas', Icone: ChefHat, t: 'Aprender as receitas e acertar o ponto', tom: 'bg-coral-claro text-coral-escuro' },
+  { id: 'base', Icone: Snowflake, t: 'Preparar a base dos geladinhos', tom: 'bg-turquesa-claro text-turquesa' },
+  { id: 'vender', Icone: BadgeDollarSign, t: 'Precificação e estratégias de venda', tom: 'bg-limao-claro text-limao-escuro' },
 ];
 const FRASE_TEMPO: Record<string, string> = {
   livre: 'Com o seu tempo livre, em **uma tarde** você já faz o primeiro lote para vender.',
@@ -32,8 +52,10 @@ const FRASE_DESAFIO: Record<string, string> = {
   base: 'Você disse que o seu maior desafio é **preparar a base**. O módulo Fórmula Drink que Congela mostra a base de cada tipo de geladinho, passo a passo.',
   vender: 'Você disse que o seu maior desafio é **precificar e vender**. Você recebe o cálculo de custo e preço pronto e o Plano de 7 Dias para Começar a Vender.',
 };
+const VALOR_BONUS = [47, 37, 27, 37];
 
 const brl = (n: number) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: n % 1 ? 2 : 0 });
+const milhar = (n: number) => n.toLocaleString('pt-BR');
 const ler = (k: string) => {
   try {
     return sessionStorage.getItem(k);
@@ -54,13 +76,31 @@ const Rico = ({ t, forte = 'font-bold text-tinta' }: { t: string; forte?: string
   <>{t.split('**').map((p, i) => (i % 2 ? <b key={i} className={forte}>{p}</b> : <span key={i}>{p}</span>))}</>
 );
 
+const Estrelas = ({ tam = 16 }: { tam?: number }) => (
+  <span className="inline-flex text-manga">
+    {Array.from({ length: 5 }, (_, k) => (
+      <Star key={k} size={tam} fill="currentColor" strokeWidth={0} />
+    ))}
+  </span>
+);
+
 /* ================================================================== */
 
 export function Funil() {
   const [passo, setPasso] = useState<Passo>('abertura');
   const [resp, setResp] = useState<{ tempo?: string; desafio?: string }>({});
-  // A primeira tela aparece sem animação (pinta na hora); as trocas de etapa são animadas.
   const [animar, setAnimar] = useState(false);
+  const [saida, setSaida] = useState(false);
+  const passoRef = useRef<Passo>('abertura');
+  passoRef.current = passo;
+
+  /** Pop-up de saída: uma vez por sessão, só na oferta. */
+  const tentarSaida = useCallback(() => {
+    if (ler('gd:saida')) return false;
+    gravar('gd:saida', '1');
+    setSaida(true);
+    return true;
+  }, []);
 
   useEffect(() => {
     const r = ler('gd:resp');
@@ -76,19 +116,28 @@ export function Funil() {
     setPasso(inicial);
     if (inicial !== 'abertura' && location.hash.slice(1) !== inicial) history.replaceState(history.state, '', `#${inicial}`);
     const voltar = () => {
+      // Na oferta, o primeiro "voltar" abre o pop-up em vez de sair.
+      if (passoRef.current === 'oferta' && tentarSaida()) {
+        history.pushState(history.state, '', '#oferta');
+        return;
+      }
       const p = doEndereco();
       setAnimar(true);
       setPasso(p);
       gravar('gd:passo', p);
       scrollTo({ top: 0 });
     };
+    // No computador: mouse saindo pelo topo da janela.
+    const fora = (e: MouseEvent) => {
+      if (passoRef.current === 'oferta' && !e.relatedTarget && e.clientY <= 0) tentarSaida();
+    };
     addEventListener('popstate', voltar);
-    addEventListener('hashchange', voltar);
+    document.addEventListener('mouseout', fora);
     return () => {
       removeEventListener('popstate', voltar);
-      removeEventListener('hashchange', voltar);
+      document.removeEventListener('mouseout', fora);
     };
-  }, []);
+  }, [tentarSaida]);
 
   const ir = useCallback((p: Passo, substituir = false) => {
     setAnimar(true);
@@ -104,7 +153,7 @@ export function Funil() {
     const novo = { ...resp, [campo]: v };
     setResp(novo);
     gravar('gd:resp', JSON.stringify(novo));
-    setTimeout(() => ir(prox), 380);
+    setTimeout(() => ir(prox), 360);
   };
 
   const irOferta = useCallback(() => ir('oferta', true), [ir]);
@@ -126,6 +175,7 @@ export function Funil() {
         {passo === 'oferta' && <Oferta desafio={resp.desafio} />}
       </div>
 
+      {saida && <PopupSaida fechar={() => setSaida(false)} />}
       <Rodape />
     </div>
   );
@@ -136,15 +186,24 @@ export function Funil() {
 function Topo({ passo }: { passo: Passo }) {
   return (
     <div className="sticky top-0 z-30 border-b border-tinta/[.06] bg-coco/90 backdrop-blur-md">
-      <div className="wrap flex h-[58px] items-center gap-3">
+      <div className="wrap flex h-[56px] items-center gap-3">
         <button type="button" aria-label="Voltar" onClick={() => history.back()} className="-ml-1.5 grid h-10 w-10 shrink-0 place-items-center rounded-full text-tinta/70 transition hover:bg-tinta/5">
           <ArrowLeft size={21} />
         </button>
-        <div className="relative h-2.5 flex-1 overflow-hidden rounded-full bg-tinta/[.08]">
+        <div className="relative h-2 flex-1 overflow-hidden rounded-full bg-tinta/[.08]">
           <div className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-turquesa via-[#2FA38D] to-limao transition-[width] duration-700 ease-out" style={{ width: `${PROGRESSO[passo]}%` }} />
         </div>
-        <Image src={imagens.logo} alt={marca.nome} width={40} height={40} className="h-10 w-10 shrink-0 rounded-full object-cover" />
+        <Image src={imagens.icone} alt={marca.nome} width={64} height={64} className="h-9 w-9 shrink-0 rounded-[10px] shadow-sm ring-1 ring-tinta/5" />
       </div>
+    </div>
+  );
+}
+
+function Titulo({ rotulo, children }: { rotulo?: string; children: React.ReactNode }) {
+  return (
+    <div className="text-center">
+      {rotulo && <p className="font-display text-[12.5px] font-semibold uppercase tracking-[.18em] text-coral">{rotulo}</p>}
+      <h2 className="mt-2 text-[26px] font-extrabold leading-[1.12] tracking-[-.02em]">{children}</h2>
     </div>
   );
 }
@@ -153,20 +212,20 @@ function Abertura({ seguir }: { seguir: () => void }) {
   return (
     <>
       <Cronometro />
-      <div className="wrap pt-4">
-        <Image src={imagens.logo} alt={marca.nome} width={720} height={673} priority sizes="240px" className="mx-auto mb-2 h-auto w-[230px] drop-shadow-[0_10px_18px_rgba(18,52,50,.12)]" />
+      <div className="wrap pt-5">
+        <Image src={imagens.logo} alt={marca.nome} width={720} height={673} priority sizes="150px" className="mx-auto h-auto w-[132px]" />
 
-        <div className="text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-turquesa px-3 py-1 font-display text-[12.5px] font-semibold uppercase tracking-[.12em] text-white">
-            <Sparkles size={13} /> Renda extra de verão
+        <h1 className="mt-4 text-center text-[29px] font-extrabold leading-[1.1] tracking-[-.025em] text-tinta min-[380px]:text-[31px]">
+          Transforme drinks famosos em geladinhos gourmet e fature <span className="whitespace-nowrap text-dinheiro">até R$ 3.000</span> neste verão
+        </h1>
+        <div className="mt-3.5 flex items-center justify-center gap-2 text-[13.5px] text-tinta/65">
+          <Estrelas tam={14} />
+          <span>
+            <b className="text-tinta">{avaliacoes.media}</b> · {milhar(avaliacoes.total)} avaliações
           </span>
-          <h1 className="mt-4 text-[30px] font-extrabold leading-[1.08] text-tinta min-[380px]:text-[32px]">
-            Transforme drinks famosos em geladinhos gourmet e fature <span className="whitespace-nowrap text-dinheiro">até R$ 3.000</span> neste verão
-          </h1>
-          <p className="mt-2 font-pincel text-[26px] leading-none text-coral">Venda o Verão!</p>
         </div>
 
-        <Foto src={imagens.abertura} alt="Geladinhos de drinks gourmet" sabores={imagens.sabores} className="mt-6 aspect-[4/5]" etiqueta="Caipirinha · Maracujá · Morango · Piña Colada" />
+        <Image src={imagens.abertura} alt="Geladinhos de Drinks Lucrativos: treinamento com 30 receitas" width={900} height={1125} priority sizes="(max-width:480px) 92vw, 430px" className="mt-6 h-auto w-full rounded-[22px] shadow-suave ring-1 ring-tinta/[.06]" />
 
         <div className="texto mt-7 space-y-4">
           <p>
@@ -181,40 +240,39 @@ function Abertura({ seguir }: { seguir: () => void }) {
         </div>
 
         <div className="card mt-7 flex items-center gap-3.5 p-4">
-          <Avatar />
+          <Image src={especialista.avatar} alt={especialista.nome} width={120} height={120} className="h-14 w-14 shrink-0 rounded-full object-cover ring-[3px] ring-coral/25" />
           <p className="text-[15px] leading-snug text-tinta/80">
             Sou a <b className="text-tinta">{especialista.nome}</b>. Foi com geladinhos de drinks que eu transformei o meu verão em uma <b className="text-tinta">renda de verdade</b>, e agora eu te mostro o caminho.
           </p>
         </div>
 
-        <p className="mt-8 font-display text-[19px] font-bold leading-snug">Alguns dos sabores que você vai aprender:</p>
+        <p className="mt-9 font-display text-[19px] font-bold leading-snug">Alguns dos sabores que você vai aprender:</p>
         <div className="mt-3.5 grid grid-cols-2 gap-2.5">
-          {imagens.sabores.map((s) => (
-            <div key={s.nome} className="flex items-center gap-2.5 rounded-2xl bg-white px-2.5 py-2 shadow-cartao ring-1 ring-tinta/[.05]">
-              <Geladinho cor={s.cor} pedaco={s.pedaco} className="h-11 w-auto shrink-0" />
-              <span className="text-[14px] font-semibold leading-tight">{s.nome}</span>
+          {imagens.sabores.slice(0, 6).map((s) => (
+            <div key={s.nome} className="flex items-center gap-2.5 rounded-2xl bg-white p-1.5 pr-2.5 shadow-cartao ring-1 ring-tinta/[.05]">
+              <Image src={s.img} alt="" width={120} height={150} className="h-12 w-12 shrink-0 rounded-xl object-cover object-[50%_35%]" />
+              <span className="text-[13.5px] font-semibold leading-tight">{s.nome}</span>
             </div>
           ))}
         </div>
-        <p className="mt-3 text-center text-[14px] text-tinta/60">+ 24 receitas, incluindo versões cremosas e sem álcool</p>
+        <p className="mt-3 text-center text-[13.5px] text-tinta/55">+ 24 receitas, incluindo versões cremosas e sem álcool</p>
 
         <div className="mt-8">
           <button type="button" onClick={seguir} className="btn-coral btn-brilho animate-pulso">
             Quero aprender agora <ChevronRight size={22} strokeWidth={2.6} />
           </button>
-          <p className="mt-3 text-center text-[13.5px] text-tinta/55">Leva menos de 1 minuto · acesso vitalício</p>
+          <p className="mt-3 text-center text-[13px] text-tinta/50">Leva menos de 1 minuto · acesso vitalício</p>
         </div>
       </div>
     </>
   );
 }
 
-function Pergunta({ etapa, titulo, opcoes, valor, escolher, rodape }: { etapa: string; titulo: string; opcoes: { id: string; e: string; t: string; bg: string }[]; valor?: string; escolher: (v: string) => void; rodape?: string }) {
+function Pergunta({ etapa, titulo, opcoes, valor, escolher, rodape }: { etapa: string; titulo: string; opcoes: Opcao[]; valor?: string; escolher: (v: string) => void; rodape?: string }) {
   const [sel, setSel] = useState(valor);
   return (
     <div className="wrap pt-8">
-      <p className="text-center font-display text-[13px] font-semibold uppercase tracking-[.16em] text-coral">{etapa}</p>
-      <h2 className="mt-2 text-center text-[26px] font-extrabold leading-[1.12]">{titulo}</h2>
+      <Titulo rotulo={etapa}>{titulo}</Titulo>
       <div className="mt-7 space-y-3">
         {opcoes.map((o, i) => {
           const on = sel === o.id;
@@ -230,7 +288,9 @@ function Pergunta({ etapa, titulo, opcoes, valor, escolher, rodape }: { etapa: s
               className="opcao animate-entra"
               style={{ animationDelay: `${80 + i * 70}ms` }}
             >
-              <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-[14px] text-[26px] ${o.bg}`}>{o.e}</span>
+              <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-[13px] ${o.tom}`}>
+                <o.Icone size={21} strokeWidth={2.2} />
+              </span>
               <span className="flex-1 leading-snug">{o.t}</span>
               <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border-[1.5px] transition duration-200 ${on ? 'scale-110 border-turquesa bg-turquesa text-white' : 'border-tinta/15 text-tinta/35'}`}>
                 {on ? <Check size={16} strokeWidth={3.2} /> : <ChevronRight size={15} strokeWidth={2.6} />}
@@ -247,8 +307,8 @@ function Pergunta({ etapa, titulo, opcoes, valor, escolher, rodape }: { etapa: s
 function Sim({ titulo, tambem = false }: { titulo: string; tambem?: boolean }) {
   return (
     <div className="text-center">
-      <h2 className="text-[27px] font-extrabold leading-[1.1]">{titulo}</h2>
-      <p className="mt-3 text-[16px] text-tinta/70">A resposta {tambem ? 'também ' : ''}é</p>
+      <h2 className="text-[26px] font-extrabold leading-[1.12] tracking-[-.02em]">{titulo}</h2>
+      <p className="mt-3 text-[15.5px] text-tinta/65">A resposta {tambem ? 'também ' : ''}é</p>
       <span className="selo-sim mt-1.5 animate-pop">
         <Check size={18} strokeWidth={3.2} /> SIM!
       </span>
@@ -260,7 +320,7 @@ function Lista({ itens }: { itens: string[] }) {
   return (
     <ul className="space-y-2.5">
       {itens.map((t) => (
-        <li key={t} className="flex gap-3 text-[16px] leading-snug text-tinta/85">
+        <li key={t} className="flex gap-3 text-[15.5px] leading-snug text-tinta/85">
           <span className="mt-0.5 grid h-[22px] w-[22px] shrink-0 place-items-center rounded-full bg-limao-claro text-limao-escuro ring-1 ring-limao/40">
             <Check size={13} strokeWidth={3.4} />
           </span>
@@ -273,18 +333,22 @@ function Lista({ itens }: { itens: string[] }) {
   );
 }
 
+function Foto({ src, alt, prioridade = false }: { src: string; alt: string; prioridade?: boolean }) {
+  return <Image src={src} alt={alt} width={800} height={993} priority={prioridade} sizes="(max-width:480px) 92vw, 430px" className="mt-6 h-auto w-full rounded-[22px] shadow-suave ring-1 ring-tinta/[.06]" />;
+}
+
 function Facil({ tempo, seguir }: { tempo?: string; seguir: () => void }) {
   return (
     <div className="wrap pt-7">
       <Sim titulo="As receitas são fáceis para iniciantes?" />
-      <Foto src={imagens.facil} alt="Preparando geladinhos de drinks em casa" sabores={imagens.sabores.slice(1)} className="mt-6 aspect-[4/5]" />
+      <Foto src={imagens.facil} alt="Bruna preparando geladinhos de drinks na cozinha" prioridade />
       <div className="texto mt-7 space-y-5">
         <p>
           Você <b className="text-tinta">não precisa ter experiência</b> com confeitaria nem comprar equipamento caro. Cada receita tem medidas exatas e passo a passo, para você acertar <b className="text-tinta">logo no primeiro lote</b>.
         </p>
         {tempo && FRASE_TEMPO[tempo] && (
           <div className="flex gap-3 rounded-2xl bg-turquesa-claro p-4 ring-1 ring-turquesa/15">
-            <span className="text-[22px] leading-none">⏱️</span>
+            <Clock3 size={20} className="mt-0.5 shrink-0 text-turquesa" />
             <p className="text-[15.5px] leading-relaxed">
               <Rico t={FRASE_TEMPO[tempo]} />
             </p>
@@ -307,18 +371,22 @@ function Custo({ seguir }: { seguir: () => void }) {
   return (
     <div className="wrap pt-7">
       <Sim titulo="O custo é acessível para fazer?" tambem />
-      <Foto src={imagens.custo} alt="Ingredientes e materiais para fazer os geladinhos" sabores={[...imagens.sabores.slice(2), ...imagens.sabores.slice(0, 2)]} className="mt-6 aspect-[4/5]" />
+      <Foto src={imagens.custo} alt="Ingredientes simples para fazer os geladinhos" prioridade />
 
       <div className="mt-7 space-y-2.5">
-        {[
-          ['🍋', 'Frutas, sucos e leite condensado', 'R$ 20 a R$ 35'],
-          ['🍸', 'Bebida (cachaça, vodka ou rum)', 'R$ 15 a R$ 30'],
-          ['🛍️', 'Saquinhos e funil', 'cerca de R$ 8'],
-        ].map(([e, t, v]) => (
-          <div key={t} className="card flex items-center gap-3 px-4 py-3">
-            <span className="text-[22px]">{e}</span>
-            <span className="flex-1 text-[15px] font-semibold leading-tight">{t}</span>
-            <span className="whitespace-nowrap font-display text-[15px] font-bold text-dinheiro">{v}</span>
+        {(
+          [
+            [Citrus, 'Frutas, sucos e leite condensado', 'R$ 20 a R$ 35', 'bg-limao-claro text-limao-escuro'],
+            [Wine, 'Bebida (cachaça, vodka ou rum)', 'R$ 15 a R$ 30', 'bg-coral-claro text-coral-escuro'],
+            [Package, 'Saquinhos e funil', 'cerca de R$ 8', 'bg-turquesa-claro text-turquesa'],
+          ] as const
+        ).map(([I, t, v, tom]) => (
+          <div key={t} className="card flex items-center gap-3 px-3.5 py-3">
+            <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${tom}`}>
+              <I size={19} />
+            </span>
+            <span className="flex-1 text-[14.5px] font-semibold leading-tight">{t}</span>
+            <span className="whitespace-nowrap font-display text-[14.5px] font-bold text-dinheiro">{v}</span>
           </div>
         ))}
       </div>
@@ -354,50 +422,42 @@ function Custo({ seguir }: { seguir: () => void }) {
 function Prova({ seguir }: { seguir: () => void }) {
   return (
     <div className="pt-7">
-      <div className="wrap text-center">
-        <p className="font-display text-[13px] font-semibold uppercase tracking-[.16em] text-coral">Turma 1</p>
-        <h2 className="mt-2 text-[26px] font-extrabold leading-[1.12]">O que as alunas estão me mandando</h2>
+      <div className="wrap">
+        <Titulo rotulo="Turma 1">O que as alunas estão me mandando</Titulo>
       </div>
-      <Carrossel>
-        {conversas.map((c) => (
-          <div key={c.nome} className="w-[86%] max-w-[350px] shrink-0 snap-center">
-            <Whats {...c} msgs={c.msgs as never} />
-          </div>
-        ))}
-      </Carrossel>
+      <div className="mx-auto mt-6 max-w-[620px]">
+        <Esteira>
+          {prints.map((p) => (
+            <Image key={p.img} src={p.img} alt={`Conversa no WhatsApp com a aluna ${p.nome}`} width={640} height={1137} sizes="250px" className="h-auto w-[238px] shrink-0 rounded-[22px] shadow-suave ring-1 ring-tinta/10" />
+          ))}
+        </Esteira>
+      </div>
 
-      <div className="wrap mt-12 text-center">
-        <h2 className="text-[25px] font-extrabold leading-[1.12]">E alguns geladinhos feitos por quem começou do zero</h2>
+      <div className="wrap mt-10">
+        <Titulo rotulo="Na vida real">Geladinhos feitos por quem começou do zero</Titulo>
       </div>
       <Carrossel>
-        {imagens.galeria.map((g, i) => (
-          <figure key={g.aluno} className="w-[80%] max-w-[330px] shrink-0 snap-center overflow-hidden rounded-[26px] bg-white shadow-suave ring-1 ring-tinta/[.05]">
+        {imagens.galeria.map((g) => (
+          <figure key={g.aluno} className="w-[80%] max-w-[330px] shrink-0 snap-center overflow-hidden rounded-[24px] bg-white shadow-suave ring-1 ring-tinta/[.05]">
             <div className="relative">
-              <Foto src={g.img} alt={g.legenda} sabores={[...imagens.sabores.slice(i), ...imagens.sabores.slice(0, i)]} className="aspect-square !rounded-none !shadow-none !ring-0" />
+              <Image src={g.img} alt={g.legenda} width={720} height={720} sizes="330px" className="aspect-square h-auto w-full object-cover" />
               <div className="absolute bottom-3 left-3 flex items-center gap-2.5">
-                <span className="grid h-12 w-12 place-items-center overflow-hidden rounded-full border-[3px] border-white bg-gradient-to-br from-turquesa to-[#2FA38D] font-display text-[18px] font-bold text-white shadow-md">
-                  {g.foto ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={g.foto} alt="" className="h-full w-full object-cover" />
-                  ) : (
-                    g.aluno.split(' ')[1][0]
-                  )}
-                </span>
-                <span className="relative z-10 rounded-full bg-white/95 px-3 py-1 font-display text-[12px] font-bold uppercase tracking-wider shadow-sm">{g.aluno}</span>
+                <Image src={g.foto} alt="" width={96} height={96} className="h-12 w-12 rounded-full border-[3px] border-white object-cover shadow-md" />
+                <span className="rounded-full bg-white/95 px-3 py-1 font-display text-[12px] font-bold uppercase tracking-wider shadow-sm">{g.aluno}</span>
               </div>
             </div>
-            <figcaption className="py-3.5 text-center text-[14.5px] font-medium text-tinta/75">{g.legenda}</figcaption>
+            <figcaption className="px-4 py-3.5 text-center text-[14.5px] font-medium leading-snug text-tinta/75">{g.legenda}</figcaption>
           </figure>
         ))}
       </Carrossel>
 
-      <div className="wrap mt-12">
-        <div className="rounded-[26px] bg-gradient-to-br from-turquesa to-[#0B5D5A] p-6 text-center text-white shadow-suave">
-          <p className="font-pincel text-[28px] leading-none text-manga">Agora é a sua vez!</p>
-          <p className="mt-4 text-[16px] leading-relaxed text-white/85">
+      <div className="wrap mt-10">
+        <div className="rounded-[24px] bg-gradient-to-br from-turquesa to-[#0B5D5A] p-6 text-center text-white shadow-suave">
+          <p className="font-display text-[23px] font-extrabold leading-tight">Agora é a sua vez</p>
+          <p className="mt-3 text-[15.5px] leading-relaxed text-white/85">
             Se você chegou até aqui, o principal você já tem: <b className="text-white">vontade de fazer acontecer</b>. A maioria dos meus alunos começou do zero e hoje vende geladinhos com <b className="text-white">alto valor percebido</b>.
           </p>
-          <p className="mt-3 text-[15px] italic text-white/75">Vem fazer parte do time, vou adorar ter você comigo.</p>
+          <p className="mt-3 text-[14.5px] italic text-white/70">Vem fazer parte do time, vou adorar ter você comigo.</p>
         </div>
         <button type="button" onClick={seguir} className="btn-coral btn-brilho mt-6 animate-pulso">
           Quero fazer dinheiro em casa!
@@ -444,8 +504,8 @@ function Carregando({ fim }: { fim: () => void }) {
         </svg>
         <span className="absolute inset-0 grid place-items-center font-display text-[34px] font-extrabold tabular-nums text-turquesa">{p}%</span>
       </div>
-      <h2 className="mt-7 text-[24px] font-extrabold leading-[1.15]">Você está a poucos instantes de começar a sua renda de verão</h2>
-      <ul className="mt-7 w-full max-w-[320px] space-y-3 text-left text-[15.5px]">
+      <h2 className="mt-7 text-[23px] font-extrabold leading-[1.15] tracking-[-.02em]">Você está a poucos instantes de começar a sua renda de verão</h2>
+      <ul className="mt-7 w-full max-w-[320px] space-y-3 text-left text-[15px]">
         {etapas.map((e, i) => {
           const ok = p >= (i + 1) * 30;
           return (
@@ -462,6 +522,22 @@ function Carregando({ fim }: { fim: () => void }) {
 
 /* ============================== OFERTA ============================== */
 
+/** Kit em livros: o treinamento na frente e os 4 bônus atrás, em leque. */
+function Kit({ grande = true }: { grande?: boolean }) {
+  const L = grande ? 168 : 112;
+  const b = grande ? 98 : 64;
+  return (
+    <div className="relative mx-auto" style={{ width: grande ? 330 : 240, height: grande ? 250 : 170 }}>
+      <div className="absolute inset-x-6 bottom-1 h-6 rounded-[50%] bg-tinta/20 blur-[10px]" />
+      <Livro src={imagens.bonus[0]} alt="" largura={b} inclinar={10} className="absolute bottom-3 left-0 -rotate-[8deg]" />
+      <Livro src={imagens.bonus[1]} alt="" largura={b} inclinar={10} className="absolute bottom-6 left-[13%] -rotate-[3deg]" />
+      <Livro src={imagens.bonus[3]} alt="" largura={b} inclinar={-10} className="absolute bottom-3 right-0 rotate-[8deg]" />
+      <Livro src={imagens.bonus[2]} alt="" largura={b} inclinar={-10} className="absolute bottom-6 right-[13%] rotate-[3deg]" />
+      <Livro src={imagens.produto} alt={`${marca.nome}: treinamento completo`} largura={L} inclinar={-8} prioridade className="absolute bottom-0 left-1/2 -translate-x-1/2" />
+    </div>
+  );
+}
+
 function Oferta({ desafio }: { desafio?: string }) {
   useEffect(() => {
     track('ViewContent', { content_name: marca.nome, value: preco, currency: 'BRL' });
@@ -472,24 +548,32 @@ function Oferta({ desafio }: { desafio?: string }) {
       <div className="wrap space-y-5 pt-4">
         <Cronometro compacto />
 
-        <div className="animate-pop overflow-hidden rounded-[26px] bg-gradient-to-br from-turquesa to-[#0B5D5A] p-6 text-center text-white shadow-suave">
-          <p className="font-pincel text-[30px] leading-none text-manga">Parabéns!</p>
-          <p className="mt-3 font-display text-[20px] font-bold leading-snug">
-            Você está qualificada para participar do treinamento <span className="text-manga">{marca.nome}</span>
+        <div className="animate-pop rounded-[24px] bg-gradient-to-br from-turquesa to-[#0B5D5A] px-5 py-6 text-center text-white shadow-suave">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 font-display text-[12px] font-semibold uppercase tracking-[.14em] text-manga">
+            <Check size={14} strokeWidth={3} /> Perfil aprovado
+          </span>
+          <p className="mt-3 font-display text-[24px] font-extrabold leading-tight">Parabéns!</p>
+          <p className="mt-1 text-[16px] leading-snug text-white/85">
+            Você está qualificada para participar do treinamento <b className="text-white">{marca.nome}</b>
           </p>
         </div>
 
         {desafio && FRASE_DESAFIO[desafio] && (
           <div className="flex gap-3 rounded-2xl bg-manga-claro p-4 ring-1 ring-manga/40">
-            <span className="text-[22px] leading-none">🎯</span>
-            <p className="text-[15.5px] leading-relaxed text-tinta/85">
+            <ChefHat size={20} className="mt-0.5 shrink-0 text-[#B7791F]" />
+            <p className="text-[15px] leading-relaxed text-tinta/85">
               <Rico t={FRASE_DESAFIO[desafio]} />
             </p>
           </div>
         )}
 
+        <div className="pt-2">
+          <Kit />
+          <p className="mt-3 text-center font-display text-[15px] font-semibold text-tinta/70">Treinamento completo + 4 bônus</p>
+        </div>
+
         <div className="card p-5">
-          <h2 className="text-[22px] font-extrabold leading-tight">Tudo o que você vai aprender comigo</h2>
+          <h2 className="text-[21px] font-extrabold leading-tight tracking-[-.02em]">Tudo o que você vai aprender comigo</h2>
           <div className="mt-4">
             <Lista itens={APRENDE} />
           </div>
@@ -500,7 +584,7 @@ function Oferta({ desafio }: { desafio?: string }) {
               ['3', 'Plano Primeiras Vendas'],
             ].map(([n, t]) => (
               <div key={n} className="rounded-2xl bg-turquesa-claro px-2 py-3">
-                <p className="font-display text-[20px] font-extrabold text-turquesa">{n}</p>
+                <p className="font-display text-[19px] font-extrabold text-turquesa">{n}</p>
                 <p className="mt-0.5 text-[12px] font-semibold leading-tight">{t}</p>
               </div>
             ))}
@@ -508,16 +592,19 @@ function Oferta({ desafio }: { desafio?: string }) {
           <p className="mt-2.5 text-center text-[12.5px] text-tinta/50">as 3 etapas do {marca.metodo}</p>
         </div>
 
-        <div className="rounded-[26px] bg-white p-5 shadow-cartao ring-1 ring-coral/25">
-          <h2 className="text-center text-[22px] font-extrabold leading-tight">
-            🎁 Ganhe <span className="text-coral">4 bônus grátis</span> garantindo a sua vaga agora
+        <div>
+          <h2 className="text-center text-[22px] font-extrabold leading-tight tracking-[-.02em]">
+            <Gift size={22} className="-mt-1 mr-1.5 inline text-coral" />
+            Ganhe <span className="text-coral">4 bônus grátis</span> garantindo a sua vaga agora
           </h2>
-          <div className="mt-5 space-y-3">
+          <div className="mt-5 grid grid-cols-2 gap-3">
             {BONUS.map((b, i) => (
-              <div key={b.t} className="flex gap-3">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-coral-claro font-display text-[15px] font-extrabold text-coral-escuro">{i + 1}</span>
-                <p className="text-[15px] leading-snug text-tinta/80">
-                  <b className="text-tinta">{b.t}</b>: {b.d}
+              <div key={b.t} className="card flex flex-col items-center p-3 pt-4 text-center">
+                <Livro src={imagens.bonus[i]} alt={b.t} largura={104} inclinar={-12} />
+                <p className="mt-3 font-display text-[11.5px] font-bold uppercase tracking-[.1em] text-coral">Bônus {i + 1}</p>
+                <p className="mt-0.5 font-display text-[14.5px] font-bold leading-tight">{b.t}</p>
+                <p className="mt-1.5 text-[12.5px] text-tinta/50">
+                  <s>{brl(VALOR_BONUS[i])}</s> <b className="text-dinheiro">grátis</b>
                 </p>
               </div>
             ))}
@@ -526,13 +613,17 @@ function Oferta({ desafio }: { desafio?: string }) {
 
         <CardPreco />
 
-        <h2 className="pt-5 text-center text-[23px] font-extrabold leading-tight">Alguns dos sabores que você vai aprender</h2>
+        <Image src={imagens.cartazOferta} alt={`${marca.nome}: o que vem no treinamento`} width={900} height={1125} sizes="(max-width:480px) 92vw, 430px" className="h-auto w-full rounded-[22px] shadow-suave ring-1 ring-tinta/[.06]" />
+
+        <div className="pt-4">
+          <Titulo rotulo="30 receitas">Alguns dos sabores que você vai aprender</Titulo>
+        </div>
       </div>
       <Carrossel>
-        {imagens.sabores.map((s, i) => (
-          <figure key={s.nome} className="w-[62%] max-w-[250px] shrink-0 snap-center">
-            <Foto src={s.img} alt={`Geladinho de ${s.nome}`} sabores={[imagens.sabores[(i + 5) % 6], s, imagens.sabores[(i + 1) % 6]]} className="aspect-[4/5]" />
-            <figcaption className="mt-2.5 text-center font-display text-[15.5px] font-bold">{s.nome}</figcaption>
+        {imagens.sabores.map((s) => (
+          <figure key={s.nome} className="w-[62%] max-w-[240px] shrink-0 snap-center">
+            <Image src={s.img} alt={`Geladinho de ${s.nome}`} width={600} height={745} sizes="240px" className="h-auto w-full rounded-[20px] shadow-suave ring-1 ring-tinta/[.06]" />
+            <figcaption className="mt-2.5 text-center font-display text-[15px] font-bold">{s.nome}</figcaption>
           </figure>
         ))}
       </Carrossel>
@@ -540,30 +631,7 @@ function Oferta({ desafio }: { desafio?: string }) {
       <div className="wrap space-y-6 pt-4">
         <CardPreco titulo="Última turma com valor promocional" />
 
-        <div className="pt-3 text-center">
-          <h2 className="text-[23px] font-extrabold">Comunidade {marca.curto}</h2>
-          <p className="mt-1.5 text-[15.5px] text-tinta/75">
-            <b className="text-dinheiro">98%</b> dos alunos indicam o treinamento para amigos e conhecidos
-          </p>
-        </div>
-        <div className="space-y-3">
-          {comentarios.map((c) => (
-            <div key={c.nome} className="card p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-display text-[15.5px] font-bold">{c.nome}</p>
-                  <p className="text-[12.5px] text-tinta/45">{c.user}</p>
-                </div>
-                <span className="flex text-manga">
-                  {Array.from({ length: 5 }, (_, k) => (
-                    <Star key={k} size={15} fill="currentColor" strokeWidth={0} />
-                  ))}
-                </span>
-              </div>
-              <p className="mt-2 text-[15px] leading-relaxed text-tinta/80">{c.t}</p>
-            </div>
-          ))}
-        </div>
+        <Avaliacoes />
 
         <div className="card flex items-center gap-4 p-5">
           <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-limao-claro text-limao-escuro ring-1 ring-limao/40">
@@ -577,16 +645,12 @@ function Oferta({ desafio }: { desafio?: string }) {
 
         <CardPreco titulo="Última turma com valor promocional" />
 
-        <div className="overflow-hidden rounded-[26px] bg-white shadow-suave ring-1 ring-tinta/[.05]">
-          {especialista.foto ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={especialista.foto} alt={especialista.nome} className="aspect-[4/5] w-full object-cover" />
-          ) : (
-            <Foto alt={especialista.nome} sabores={imagens.sabores} className="aspect-[4/3] !rounded-none !shadow-none !ring-0" etiqueta="foto da especialista" />
-          )}
+        <div className="overflow-hidden rounded-[24px] bg-white shadow-suave ring-1 ring-tinta/[.05]">
+          <Image src={especialista.foto} alt={especialista.nome} width={800} height={993} sizes="(max-width:480px) 92vw, 430px" className="h-auto w-full" />
           <div className="p-5">
-            <p className="font-pincel text-[26px] leading-none text-coral">{especialista.nome}</p>
-            <p className="mt-1.5 text-[13.5px] font-semibold uppercase tracking-[.1em] text-turquesa">{especialista.papel}</p>
+            <p className="font-display text-[12.5px] font-semibold uppercase tracking-[.16em] text-coral">Quem vai te ensinar</p>
+            <p className="mt-1 font-display text-[24px] font-extrabold leading-tight">{especialista.nome}</p>
+            <p className="text-[14px] font-medium text-turquesa">{especialista.papel}</p>
             <div className="mt-4 space-y-3 text-[15.5px] leading-relaxed text-tinta/80">
               {especialista.historia.map((h) => (
                 <p key={h}>{h}</p>
@@ -601,15 +665,57 @@ function Oferta({ desafio }: { desafio?: string }) {
   );
 }
 
+function Avaliacoes() {
+  const rotulos = ['5', '4', '3', '2', '1'];
+  return (
+    <div className="space-y-3 pt-3">
+      <Titulo rotulo={`Comunidade ${marca.curto}`}>O que dizem as alunas</Titulo>
+      <div className="card flex items-center gap-5 p-5">
+        <div className="shrink-0 text-center">
+          <p className="font-display text-[44px] font-extrabold leading-none tracking-tight">{avaliacoes.media}</p>
+          <div className="mt-1.5">
+            <Estrelas tam={15} />
+          </div>
+          <p className="mt-1 text-[12px] text-tinta/50">{milhar(avaliacoes.total)} avaliações</p>
+        </div>
+        <div className="flex-1 space-y-1.5">
+          {avaliacoes.dist.map((v, i) => (
+            <div key={i} className="flex items-center gap-2 text-[12px] text-tinta/55">
+              <span className="w-3 text-right font-semibold">{rotulos[i]}</span>
+              <Star size={11} className="text-manga" fill="currentColor" strokeWidth={0} />
+              <div className="h-2 flex-1 overflow-hidden rounded-full bg-tinta/[.07]">
+                <div className="h-full rounded-full bg-manga" style={{ width: `${Math.max(v, 1)}%` }} />
+              </div>
+              <span className="w-8 text-right tabular-nums">{v}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {comentarios.map((c) => (
+        <div key={c.nome} className="card p-4">
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="font-display text-[15px] font-bold">{c.nome}</p>
+              <p className="text-[12.5px] text-tinta/45">{c.user}</p>
+            </div>
+            <Estrelas tam={14} />
+          </div>
+          <p className="mt-2 text-[15px] leading-relaxed text-tinta/80">{c.t}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function CardPreco({ titulo }: { titulo?: string }) {
   return (
     <div className="space-y-3 pt-2">
-      <div className="overflow-hidden rounded-[24px] bg-white shadow-suave ring-2 ring-turquesa">
-        {titulo && <p className="bg-turquesa py-2 text-center font-display text-[13.5px] font-semibold uppercase tracking-[.08em] text-white">{titulo}</p>}
-        <div className="flex items-center gap-3 p-4">
-          <Image src={imagens.logo} alt="" width={64} height={64} className="h-14 w-14 shrink-0 rounded-2xl object-cover ring-1 ring-tinta/5 min-[380px]:h-16 min-[380px]:w-16" />
+      <div className="overflow-hidden rounded-[22px] bg-white shadow-suave ring-2 ring-turquesa">
+        {titulo && <p className="bg-turquesa py-2 text-center font-display text-[13px] font-semibold uppercase tracking-[.1em] text-white">{titulo}</p>}
+        <div className="flex items-center gap-3.5 p-4">
+          <Image src={imagens.produto} alt="" width={160} height={200} className="h-[70px] w-[56px] shrink-0 rounded-[6px] object-cover shadow-md ring-1 ring-tinta/10" />
           <div className="min-w-0 flex-1">
-            <p className="font-display text-[15.5px] font-bold leading-tight min-[380px]:text-[17px]">{marca.nome}</p>
+            <p className="font-display text-[16px] font-bold leading-tight min-[380px]:text-[17px]">{marca.nome}</p>
             <p className="mt-1 text-[12.5px] text-tinta/55">treinamento + 4 bônus · acesso no e-mail</p>
           </div>
         </div>
@@ -638,7 +744,7 @@ function CardPreco({ titulo }: { titulo?: string }) {
   );
 }
 
-function BotaoCompra() {
+function BotaoCompra({ texto = 'Quero garantir minha vaga' }: { texto?: string }) {
   return (
     <a
       href={checkout || '#'}
@@ -650,8 +756,44 @@ function BotaoCompra() {
       }}
       className="btn-coral btn-brilho animate-pulso"
     >
-      Quero garantir minha vaga <ChevronRight size={22} strokeWidth={2.6} />
+      {texto} <ChevronRight size={22} strokeWidth={2.6} />
     </a>
+  );
+}
+
+function PopupSaida({ fechar }: { fechar: () => void }) {
+  useEffect(() => {
+    const esc = (e: KeyboardEvent) => e.key === 'Escape' && fechar();
+    document.addEventListener('keydown', esc);
+    return () => document.removeEventListener('keydown', esc);
+  }, [fechar]);
+  return (
+    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-tinta/55 p-3 sm:items-center" onClick={fechar}>
+      <div role="dialog" aria-modal="true" aria-labelledby="saida-titulo" className="animate-entra relative max-h-[94dvh] w-full max-w-[420px] overflow-y-auto rounded-[26px] bg-coco p-5 pb-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <button type="button" aria-label="Fechar" onClick={fechar} className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full text-tinta/50 hover:bg-tinta/5">
+          <X size={20} />
+        </button>
+        <p className="text-center font-display text-[12.5px] font-semibold uppercase tracking-[.18em] text-coral">Espera!</p>
+        <h3 id="saida-titulo" className="mt-1.5 text-center font-display text-[23px] font-extrabold leading-tight tracking-[-.02em]">
+          A sua vaga com desconto ainda está reservada
+        </h3>
+        <div className="mt-4">
+          <Kit grande={false} />
+        </div>
+        <p className="mt-4 text-center text-[15px] leading-relaxed text-tinta/75">
+          O treinamento completo + 4 bônus sai de <s>{brl(precoDe)}</s> por <b className="text-coral">{brl(preco)}</b> só enquanto o cronômetro estiver rodando.
+        </p>
+        <div className="mt-4">
+          <Cronometro compacto />
+        </div>
+        <div className="mt-4">
+          <BotaoCompra texto="Quero aproveitar agora" />
+        </div>
+        <button type="button" onClick={fechar} className="mt-3 w-full py-2 text-center text-[13.5px] text-tinta/50 underline underline-offset-2">
+          Não, prefiro perder essa oportunidade
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -663,20 +805,6 @@ function Linha({ a, b, verde }: { a: string; b: string; verde?: boolean }) {
       <span className="text-tinta/70">{a}</span>
       <b className={`font-display text-[16px] ${verde ? 'text-dinheiro' : 'text-tinta'}`}>{b}</b>
     </div>
-  );
-}
-
-function Avatar() {
-  return especialista.foto ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={especialista.foto} alt={especialista.nome} className="h-14 w-14 shrink-0 rounded-full object-cover ring-[3px] ring-coral/30" />
-  ) : (
-    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gradient-to-br from-coral to-berry font-display text-[19px] font-bold text-white ring-[3px] ring-coral/20">
-      {especialista.nome
-        .split(' ')
-        .map((p) => p[0])
-        .join('')}
-    </span>
   );
 }
 
@@ -800,7 +928,7 @@ function Confete() {
 function Rodape() {
   return (
     <footer className="relative mt-14">
-      <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="block h-[70px] w-full" aria-hidden>
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="block h-[56px] w-full" aria-hidden>
         <path d="M0 70 C200 20 380 110 600 60 S1000 20 1200 55 V120 H0Z" fill="#FFC538" />
         <path d="M0 90 C250 50 420 120 700 80 S1050 60 1200 85 V120 H0Z" fill="#FF6B5B" />
         <path d="M0 105 C300 80 600 125 1200 100 V120 H0Z" fill="#0D6F6B" />

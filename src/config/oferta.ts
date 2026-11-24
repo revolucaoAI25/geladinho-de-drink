@@ -21,7 +21,8 @@ export const garantiaDias = 7;
 export const especialista = {
   nome: 'Bruna Martins',
   papel: 'Criadora do Método Drink no Saquinho',
-  foto: '', // '/img/especialista.webp'
+  foto: '/img/fotos/bruna-especialista.webp',
+  avatar: '/img/fotos/bruna-avatar.webp',
   historia: [
     'Comecei fazendo geladinho de caipirinha para um churrasco de família, no verão. No fim da tarde, três pessoas já tinham me pedido para fazer mais, pagando.',
     'Só que as primeiras receitas davam errado: com álcool demais, o geladinho virava raspadinha mole e derretia no caminho. Foram semanas testando proporção, açúcar e fruta até chegar na fórmula que congela firme e mantém o gosto do drink.',
@@ -35,52 +36,46 @@ export const contas = { custoUnidade: 1.8, precoVenda: 7, porDia: 15, dias: 30 }
 
 export const imagens = {
   logo: '/img/logo.webp',
-  abertura: '', // pôster da oferta
-  facil: '', // especialista preparando os geladinhos
-  custo: '', // ingredientes e materiais na mesa
-  mockup: '', // material no celular/tablet
+  icone: '/img/icone.png',
+  abertura: '/img/capas/cartaz-abertura.webp', // cartaz da abertura (900x1125)
+  cartazOferta: '/img/capas/cartaz-oferta.webp', // cartaz do meio da oferta (900x1125)
+  produto: '/img/capas/produto.webp', // capa do treinamento (800x1000)
+  bonus: ['/img/capas/bonus-1.webp', '/img/capas/bonus-2.webp', '/img/capas/bonus-3.webp', '/img/capas/bonus-4.webp'],
+  facil: '/img/fotos/bruna-cozinha.webp',
+  custo: '/img/fotos/ingredientes.webp',
+  geladinhos: '/img/fotos/geladinhos.webp',
   galeria: [
-    { img: '', aluno: 'Aluna Patrícia', foto: '', legenda: 'Geladinhos da aluna Patrícia' },
-    { img: '', aluno: 'Aluno Diego', foto: '', legenda: 'Geladinhos do aluno Diego' },
-    { img: '', aluno: 'Aluna Larissa', foto: '', legenda: 'Geladinhos da aluna Larissa' },
-    { img: '', aluno: 'Aluna Simone', foto: '', legenda: 'Geladinhos da aluna Simone' },
+    { img: '/img/galeria/patricia.webp', aluno: 'Aluna Patrícia', foto: '/img/alunos/patricia.webp', legenda: 'Patrícia vendeu 30 no condomínio em 2 horas' },
+    { img: '/img/galeria/joyce.webp', aluno: 'Aluna Joyce', foto: '/img/alunos/joyce.webp', legenda: 'Joyce faturou R$ 640 num fim de semana de praia' },
+    { img: '/img/galeria/larissa.webp', aluno: 'Aluna Larissa', foto: '/img/alunos/larissa.webp', legenda: 'O estoque da Larissa, separado por sabor' },
+    { img: '/img/galeria/renata.webp', aluno: 'Aluna Renata', foto: '/img/alunos/renata.webp', legenda: 'Renata entregou 80 numa festa de aniversário' },
   ],
   sabores: [
-    { nome: 'Caipirinha de Limão', img: '', cor: '#9ED43A', pedaco: '#4F7F18' },
-    { nome: 'Maracujá Tropical', img: '', cor: '#FFA928', pedaco: '#3A2A12' },
-    { nome: 'Morango com Vodka', img: '', cor: '#E83E8C', pedaco: '#8C1E4E' },
-    { nome: 'Piña Colada', img: '', cor: '#FFE19A', pedaco: '#E3A92B' },
-    { nome: 'Mojito', img: '', cor: '#C6EC8C', pedaco: '#2F7A3A' },
-    { nome: 'Sex on the Beach', img: '', cor: '#FF7A4D', pedaco: '#B8304A' },
+    { nome: 'Caipirinha de Limão', img: '/img/sabores/caipirinha.webp', cor: '#9ED43A', pedaco: '#4F7F18' },
+    { nome: 'Maracujá Tropical', img: '/img/sabores/maracuja.webp', cor: '#FFA928', pedaco: '#3A2A12' },
+    { nome: 'Morango com Vodka', img: '/img/sabores/morango.webp', cor: '#E83E8C', pedaco: '#8C1E4E' },
+    { nome: 'Piña Colada', img: '/img/sabores/pina-colada.webp', cor: '#FFE19A', pedaco: '#E3A92B' },
+    { nome: 'Mojito', img: '/img/sabores/mojito.webp', cor: '#C6EC8C', pedaco: '#2F7A3A' },
+    { nome: 'Blue Lagoon', img: '/img/sabores/blue-lagoon.webp', cor: '#2CB7E8', pedaco: '#0E6E93' },
+    { nome: 'Sex on the Beach', img: '/img/sabores/sex-on-the-beach.webp', cor: '#FF7A4D', pedaco: '#B8304A' },
+    { nome: 'Melancia com Vodka', img: '/img/sabores/melancia.webp', cor: '#F2617A', pedaco: '#3A2A2A' },
+    { nome: 'Frutas Vermelhas com Gin', img: '/img/sabores/frutas-vermelhas.webp', cor: '#7B1E4A', pedaco: '#3A0F25' },
+    { nome: 'Batida de Coco', img: '/img/sabores/batida-de-coco.webp', cor: '#F6F1E7', pedaco: '#C9A36B' },
   ],
 };
 
-/** Conversas de WhatsApp (renderizadas como print). Troque por prints reais quando tiver. */
-export const conversas = [
-  {
-    nome: 'Patrícia',
-    hora: '19:42',
-    msgs: [
-      { de: 'ela', t: 'Bruna!! fiz a primeira leva de caipirinha seguindo a receita 😍' },
-      { de: 'ela', foto: true, legenda: 'geladinhos de caipirinha' },
-      { de: 'ela', t: 'levei 30 pro condomínio no sábado e acabou em 2 horas, tô chocada' },
-      { de: 'ela', t: 'já tenho encomenda de 50 pra uma festa semana que vem 🙏' },
-      { de: 'eu', t: 'Que orgulho, Paty!! Ficaram lindos 😍' },
-      { de: 'eu', t: 'É só o começo, bora aproveitar o verão 🔥' },
-    ],
-  },
-  {
-    nome: 'Larissa',
-    hora: '21:08',
-    msgs: [
-      { de: 'ela', t: 'oi Bruna, passando pra agradecer' },
-      { de: 'ela', t: 'eu nunca tinha feito nem geladinho comum e consegui de primeira, a explicação é muito fácil' },
-      { de: 'ela', foto: true, legenda: 'geladinhos de morango e maracujá' },
-      { de: 'ela', t: 'meu marido levou pro trabalho e vendeu tudo, voltou com R$ 210 no bolso 😂' },
-      { de: 'eu', t: 'Aaaah que demais, Lari! 💛' },
-    ],
-  },
+/** Prints de conversas no WhatsApp (passam sozinhos na tela de depoimentos). */
+export const prints = [
+  { img: '/img/whats/1-patricia.webp', nome: 'Patrícia' },
+  { img: '/img/whats/5-camila.webp', nome: 'Camila' },
+  { img: '/img/whats/2-larissa.webp', nome: 'Larissa' },
+  { img: '/img/whats/4-joyce.webp', nome: 'Joyce' },
+  { img: '/img/whats/6-fernanda.webp', nome: 'Fernanda' },
+  { img: '/img/whats/3-renata.webp', nome: 'Renata' },
 ];
+
+/** Avaliações da página de oferta. dist = % de 5, 4, 3, 2 e 1 estrela. */
+export const avaliacoes = { media: '4,9', total: 1287, dist: [93, 5, 1, 0, 1] };
 
 /** Comentários da comunidade (seção da oferta). */
 export const comentarios = [

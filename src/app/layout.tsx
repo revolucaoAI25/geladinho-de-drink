@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Geladinhos de Drinks Lucrativos',
     description: 'Caipirinha, piña colada, mojito: aprenda a fazer e vender geladinhos de drinks neste verão.',
-    images: [],
+    images: ['/img/capas/cartaz-abertura.webp'],
     locale: 'pt_BR',
     type: 'website',
   },
