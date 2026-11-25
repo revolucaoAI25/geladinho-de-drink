@@ -259,7 +259,7 @@ function Abertura({ seguir }: { seguir: () => void }) {
 
         <div className="mt-8">
           <button type="button" onClick={seguir} className="btn-coral btn-brilho animate-pulso">
-            Bora aprender agora <ChevronRight size={22} strokeWidth={2.6} />
+            Vou aprender agora <ChevronRight size={22} strokeWidth={2.6} />
           </button>
           <p className="mt-3 text-center text-[13px] text-tinta/50">Leva menos de 1 minuto · acesso vitalício</p>
         </div>
@@ -358,7 +358,7 @@ function Facil({ tempo, seguir }: { tempo?: string; seguir: () => void }) {
         <Lista itens={['A **proporção certa de bebida** para o geladinho congelar firme', 'Geladinhos **cremosos** e de fruta, sem gelo grosso', 'Como encher, fechar e congelar **sem vazar**', 'As combinações de fruta e drink que **mais vendem**', 'Como deixar o geladinho com **cara de gourmet**']} />
       </div>
       <button type="button" onClick={seguir} className="btn-coral mt-8">
-        Bora fazer dinheiro na minha cozinha!
+        Vou fazer dinheiro na minha cozinha!
       </button>
     </div>
   );
@@ -460,7 +460,7 @@ function Prova({ seguir }: { seguir: () => void }) {
           <p className="mt-3 text-[14.5px] italic text-white/70">Vem fazer parte do time, vou adorar ter você comigo.</p>
         </div>
         <button type="button" onClick={seguir} className="btn-coral btn-brilho mt-6 animate-pulso">
-          Partiu fazer dinheiro em casa!
+          Vou começar a lucrar em casa!
         </button>
       </div>
     </div>
