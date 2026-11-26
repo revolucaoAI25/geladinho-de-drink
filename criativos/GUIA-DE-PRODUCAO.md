@@ -17,7 +17,7 @@ Você gera as **imagens** e anima em **vídeo** (8 s cada) com os prompts da se�
 | Cenários | (1) varanda de madeira com plantas e pôr do sol; (2) bancada de mármore branco; (3) mesa de madeira perto da janela com vaso branco; (4) parede terracota com coqueteleira | Os mesmos 4 cenários |
 | Takes | ~25 takes reaproveitados em todos os vídeos: mão segurando o produto, produto no copo, especialista de avental verde produzindo, amigas rindo, caixas de presente, mesa de festa | Os mesmos 25, com geladinho (seção 3) |
 | Especialista | mulher de **avental verde** montando o produto, olhando para baixo | **Bruna Martins**, a mesma da página (anexe as fotos dela) |
-| Legenda | metade dos vídeos tem legenda pequena, branca, no terço de baixo; a outra metade não tem | Mantemos a mesma divisão, vídeo por vídeo |
+| Legenda | metade dos vídeos tem legenda pequena, branca, no terço de baixo; a outra metade não tem | **Legenda em todos** (ajuda a entrega) |
 | Final | figurinha "**Clique em Saiba mais**" nos últimos 2 a 3 s | Igual, em estilos variados |
 | Música | instrumental leve e ensolarado de fundo, constante | Trilha **original** no mesmo clima (ver 2.3) |
 
@@ -31,15 +31,13 @@ Você gera as **imagens** e anima em **vídeo** (8 s cada) com os prompts da se�
 
 ## 2. Regras para todos os vídeos
 
-### 2.1 Bebida alcoólica (obrigatório)
-- Texto fixo pequeno no rodapé de todos os vídeos: **"Beba com moderação · Venda proibida para menores de 18 anos"**. É a regra do CONAR para publicidade de bebida e evita reprovação.
-- No Gerenciador de Anúncios, use **idade mínima de 18 anos** em todos os conjuntos. A Meta exige isso para anúncios que mostram álcool.
-- Ninguém aparece bebendo em excesso nem dirigindo. As personagens adultas seguram, mostram e provam o geladinho.
+### 2.1 Pessoas nas cenas
+- Ninguém aparece bebendo em excesso nem dirigindo, e nenhuma pessoa tem cara de menor de idade. As personagens adultas seguram, mostram e provam o geladinho.
 
 ### 2.2 Testes que já vêm embutidos
-- **Legenda**: G02, G03, G06, G09, G10, G12 e G13 com legenda; os outros 6 sem (igual às referências).
+- **Legenda**: em todos os vídeos.
 - **Texto de gancho na tela** (caixa no topo nos 3 primeiros segundos): G01, G03, G05, G06, G09 e G12.
-- **CTA estendido mostrando o produto por dentro** (+8 s com a capa, páginas do treinamento, os 4 bônus e o preço): versões extras de **G03, G06 e G09**. Assim você compara o mesmo roteiro com e sem.
+- **CTA mostrando o produto por dentro**: versões extras de **G03, G06 e G09**. O vídeo **não fica mais longo**: o trecho do produto substitui frases do meio do roteiro, e a duração final fica igual (ou poucos segundos acima) à da versão normal. Assim você compara o mesmo roteiro com e sem.
 
 ### 2.3 Música
 "Here Comes the Sun" é dos Beatles e tem direitos autorais. Em anúncio, a Meta silencia ou bloqueia, e nem o instrumental, nem um cover, nem uma versão mais lenta escapam. Eu gero uma **trilha original no mesmo clima**: violão dedilhado, ensolarada, ~120 BPM, leve e constante, sem nenhum trecho da melodia original.
@@ -102,80 +100,85 @@ Caipirinha de limão: verde-limão com raspas · Morango com vodka: rosa com ped
 
 `[T..]` indica a ordem sugerida de takes; eu ajusto os cortes ao tempo da narração na edição.
 
-### G01 · Apresentação de verão (modelo do vídeo 1) · sem legenda · com texto de gancho
+### G01 · Apresentação de verão (modelo do vídeo 1) · com texto de gancho
 **Texto na tela:** O DRINK DO VERÃO AGORA É **GELADINHO**
 > Calorzinho pede bons drinks. E pra deixar tudo ainda mais especial, nada melhor do que um geladinho de drink. Ele transforma qualquer encontro num momento diferente: é lindo de ver, já vem geladinho no ponto e tem gosto de drink de bar, seja de caipirinha, de morango ou de piña colada. E o melhor é que dá pra transformar isso em renda extra neste verão. No treinamento da Bruna Martins, você aprende o passo a passo completo pra fazer geladinhos de drinks em 30 sabores diferentes. E ela ensina muito bem, de um jeito simples e direto, pra você começar com segurança. Você também descobre como precificar do jeito certo pra ter lucro de verdade e como vender pra amigos, vizinhos, festas e eventos, tudo com acesso vitalício. Então você estuda no seu ritmo e consulta o material quando quiser. Clique em saiba mais e aprenda hoje mesmo.
 
 `T22 · T05 · T06 · T09 · T07 · T02 · T23 · T08 · T17 · T16 · T07 · T05 · T01 · T16 · T03 · T10 · T01 · T19 · T21`
 
-### G02 · Salão de beleza (modelo do vídeo 2) · com legenda
+### G02 · Salão de beleza (modelo do vídeo 2)
 > Eu trabalho num salão de beleza e, quando contei pras meninas que tava fazendo geladinho de drink, a cabeleireira riu: "Vai trocar a escova pelo freezer?" Virou piada toda vez que alguém pedia um café. Eu ri junto, mas na época eu dividia apartamento com mais três pessoas pra conseguir pagar o aluguel, então não parei. Aí uma cliente viu a foto no meu celular. Ela tava organizando a despedida de solteira da irmã, só adultas, e pediu 40 geladinhos de morango com vodka. Gastei uns 72 e cobrei 280. Olha esse aqui, rosinha, com pedacinho de morango aparecendo dentro. As fotos da despedida rodaram o salão inteiro. Hoje é a cabeleireira que pergunta se eu trouxe os geladinhos. Festa de adulto, com moderação. Deixei o método da Bruna aqui embaixo, é só clicar em saiba mais.
 
 `T16 · T15 · T07 · T12 · T20 · T15 · T17 · T18 · T02 · T07 · T15 · T13 · T05`
 
-### G03 · Renda que cabe na rotina (modelo do vídeo 3) · com legenda · com texto de gancho · **+ versão CTA estendido**
+### G03 · Renda que cabe na rotina (modelo do vídeo 3) · com texto de gancho · **+ versão com o produto por dentro**
 **Texto na tela:** RENDA EXTRA QUE CABE NA SUA **ROTINA**
 > Quer uma renda extra que cabe na sua rotina e ainda é bonita de fazer? Então conheça os geladinhos de drinks, a novidade que tá chamando atenção e abrindo portas pra quem quer ganhar dinheiro em casa. Eles são lindos, têm gosto de drink de verdade e são a cara do verão, o que faz as pessoas quererem comprar, presentear e encomendar pra festas e eventos. No treinamento da Bruna Martins, você aprende o passo a passo completo pra produzir 30 sabores diferentes. E ela ensina muito bem, de forma simples e direta, pra você começar sem medo. Além disso, você descobre como precificar do jeito certo pra ter lucro de verdade e como vender pra amigos, clientes e redes sociais, mesmo começando do zero. E o melhor: o acesso é vitalício. Você estuda no seu ritmo, consulta o material sempre que precisar e começa a transformar sua criatividade em dinheiro no bolso. Clique em saiba mais e aprenda hoje mesmo.
 
 `T05 · T10 · T15 · T15 · T08 · T18 · T06 · T01 · T14 · T12 · T16 · T02 · T09 · T11 · T22`
 
-### G04 · Variedade e escassez (modelo do vídeo 4) · sem legenda
+### G04 · Variedade e escassez (modelo do vídeo 4)
 > Eu sempre falo que a parte mais difícil pras minhas clientes é escolher qual geladinho levar primeiro, porque são tantos sabores que fica difícil escolher um só. No treinamento da Bruna Martins, você aprende a preparar geladinhos de drinks em 30 sabores diferentes: caipirinha, morango com vodka, maracujá, piña colada, mojito, blue lagoon, sex on the beach e muito mais. Você aprende a fórmula certa pro geladinho congelar firme, cremoso e com gosto de drink, combinações com frutas, ervas e especiarias, e jeitos de embalar e etiquetar pra deixar o geladinho com cara de gourmet. Você aprende tudo passo a passo, com receitas detalhadas, medidas, rendimento e o cálculo do preço de cada unidade. O acesso é vitalício, então você pode consultar as receitas sempre que precisar. Mas atenção: o valor promocional de lançamento é por tempo limitado e pode sair do ar a qualquer momento. Então clique em saiba mais e venha aprender a fazer geladinhos de drinks.
 
 `T14 · T03 · T05 · T11 · T22 · T09 · T12 · T01 · T07 · T04 · T18 · T10 · T03 · T02 · T23 · T16 · T06 · T08 · T03 · T17`
 
-### G05 · Faturar no verão (modelo do vídeo 5) · sem legenda · com texto de gancho
+### G05 · Faturar no verão (modelo do vídeo 5) · com texto de gancho
 **Texto na tela:** FATURE NESTE VERÃO **SEM LOJA**
 > Quer faturar neste verão sem precisar de loja, sem investir muito e sem complicação? Então olha só o que tá fazendo sucesso: os geladinhos de drinks. Eles transformam um simples geladinho numa experiência, são lindos de ver e despertam aquela vontade de postar, provar e encomendar. No treinamento da Bruna Martins, você aprende o passo a passo completo pra produzir 30 sabores diferentes. E ela ensina muito bem, de um jeito claro e direto, pra você não ficar perdida. Além disso, você descobre como precificar do jeito certo pra ter lucro de verdade e como vender pra amigos, clientes, festas e eventos. O acesso é vitalício: você estuda no seu tempo, consulta quando quiser e começa a transformar o verão em renda extra. Clique em saiba mais e aprenda hoje mesmo.
 
 `T08 · T17 · T10 · T15 · T15 · T14 · T18 · T12 · T05 · T23 · T16 · T03`
 
-### G06 · "Essa mulher aqui" (modelo do vídeo 6) · com legenda · com texto de gancho · **+ versão CTA estendido**
+### G06 · "Essa mulher aqui" (modelo do vídeo 6) · com texto de gancho · **+ versão com o produto por dentro**
 **Texto na tela:** ELA FATURA **R$ 3 MIL** POR MÊS COM ISSO
 > Essa mulher aqui fatura até 3 mil reais por mês no verão com uma ideia simplesmente genial. A Bruna Martins resolveu transformar o tradicional geladinho numa experiência diferente: geladinhos de drinks, com sabor de caipirinha, morango com vodka, piña colada, blue lagoon e muito mais. Você tira do freezer e ele tá firme, cremoso e com gosto de drink de verdade, deixando qualquer encontro muito mais especial. E o melhor: dá pra personalizar com frutas, ervas e etiquetas do seu jeito. O resultado fica incrível pra festas, aniversários, churrasco, despedida de solteira, eventos e até presentes. É aquele tipo de detalhe que chama atenção e deixa qualquer ocasião mais especial. Foi tanta gente perguntando como ela fazia que ela resolveu criar um treinamento ensinando tudo do zero, desde a fórmula que faz o geladinho congelar até os sabores, as embalagens e o preço certo de cada unidade. Se você também quer aprender essa técnica e transformar os geladinhos de drinks numa oportunidade de renda, é só clicar em saiba mais.
 
 `T24 · T12 · T19 · T06 · T01 · T13 · T14 · T11 · T22 · T07 · T18 · T09 · T05 · T16 · T02 · T25 · T11 · T21 · T03 · T17`
 
-### G07 · A nova modinha do verão (modelo do vídeo 7) · sem legenda
+### G07 · A nova modinha do verão (modelo do vídeo 7)
 > O verão tá chegando e, com ele, chegou uma nova modinha que também é uma ótima oportunidade de renda. Olha só, gente, que legal esses geladinhos de drinks. Além de serem diferentes de tudo, eles são lindos, têm cara de drink de bar e deixam qualquer churrasco, festa ou dia de piscina ainda mais gostoso. E o melhor: a fórmula certa faz o geladinho congelar firme, mesmo com a bebida. Dá pra fazer de vários sabores, como caipirinha, morango, maracujá, piña colada, mojito e muito mais, criando combinações que encantam, viram presente, enfeitam festas e ainda rendem um bom dinheiro no verão. É criatividade, sabor e lucro no mesmo saquinho. Clique em saiba mais e aprenda hoje mesmo.
 
 `T23 · T08 · T17 · T04 · T05 · T06 · T15 · T15 · T25 · T14 · T01 · T21 · T11`
 
-### G08 · A sogra (modelo do vídeo 8) · sem legenda
+### G08 · A sogra (modelo do vídeo 8)
 > Minha sogra me chamava de preguiçosa porque eu nunca quis trabalhar fora, mas a verdade é que eu sempre quis abrir o meu próprio negócio, só não sabia por onde começar. Foi numa noite, pesquisando ideia de renda extra pra fazer em casa, que eu vi os geladinhos de drinks e pensei: é isso! Eles são lindos, têm gosto de drink de verdade, e as pessoas se encantam, postam e já querem encomendar. Eu aprendi tudo no treinamento da Bruna Martins, e ela ensina muito bem, de um jeito simples e direto: desde o passo a passo de como fazer os 30 sabores até como precificar do jeito certo pra ter lucro de verdade e como vender pra amigos, festas e encomendas. Hoje eu faço tudo na minha cozinha, no meu horário, e o acesso é vitalício, então estudo no meu ritmo e consulto o material quando precisar. Quem me chamava de preguiçosa agora vê o meu negócio funcionando. Se você também sonha em ter o seu próprio negócio sem sair de casa, clica em saiba mais e aprenda hoje mesmo.
 
 `T16 · T22 · T11 · T12 · T14 · T14 · T18 · T09 · T07 · T02 · T05 · T17 · T08 · T17 · T10`
 
-### G09 · O aluguel (modelo do vídeo 9) · com legenda · com texto de gancho · **+ versão CTA estendido**
+### G09 · O aluguel (modelo do vídeo 9) · com texto de gancho · **+ versão com o produto por dentro**
 **Texto na tela:** O GELADINHO QUE **PAGOU MEU ALUGUEL**
 > Se alguém me dissesse seis meses atrás que um geladinho de drink ia pagar o meu aluguel, eu ia dar risada. Pois esse mês foram 3.400 reais só vendendo geladinho de drink. Tá vendo esse de maracujá aqui? É o que mais sai. Quando a pessoa tira do freezer, sente o gosto de drink e vê que tá firme e cremoso, filma, posta e, no outro dia, já tem gente me chamando. Antes disso, eu pagava o aluguel sempre atrasado, com juros, e vivia com medo de abrir o aplicativo do banco. Foi num domingo à noite, pesquisando ideia de renda extra pra fazer em casa, que eu achei o treinamento da Bruna Martins. Não tem segredo: é fazer do jeito que a Bruna ensina. São geladinhos de drinks com sabores que quase ninguém faz por aqui, então eu quase não tenho concorrência. E ela ensina também como vender. E o melhor: o acesso é vitalício. Se você também quer parar de viver com medo das contas, deixei o treinamento da Bruna aqui embaixo. Clique em saiba mais e aprenda hoje mesmo.
 
 `T15 · T05 · T10 · T17 · T03 · T07 · T01 · T11 · T05 · T18 · T06 · T19 · T04 · T14 · T14 · T12 · T16 · T09 · T22`
 
-### G10 · O presente da amiga (modelo do vídeo 11) · com legenda
+### G10 · O presente da amiga (modelo do vídeo 11)
 > Olha esse geladinho de drink que eu fiz pro aniversário da minha amiga da faculdade. Ela ama caipirinha e drink de fruta, e como eu sabia fazer esses geladinhos que aprendi no treinamento da Bruna Martins, decidi fazer pra ela. E ficou assim, uma graça, né? Ela amou. E é muito fácil de fazer: você só precisa de ingredientes que provavelmente já tem em casa, como fruta, açúcar e a bebida, e de um método que te ensine. Depois que eu fiz pra minha amiga, outras conhecidas dela, amigas, primas e parentes, ficaram encantadas e começaram a me mandar mensagem pedindo pra eu fazer pra elas também. E só no mês de janeiro eu tirei dois mil reais com as vendas dos geladinhos que eu mesma faço em casa, nos sabores que a cliente pedir. Se você quer aprender a fazer essas belezinhas, que ficam lindas na mesa e têm gosto de drink de verdade, vou deixar o treinamento aqui embaixo pra você. Clica em saiba mais e aprenda hoje mesmo.
 
 `T11 · T19 · T06 · T01 · T03 · T14 · T08 · T17 · T10 · T15 · T15 · T03 · T18 · T12 · T05`
 
-### G11 · O meu aniversário (modelo do vídeo 12) · sem legenda
+### G11 · O meu aniversário (modelo do vídeo 12)
 > Gente, olha o que eu fiz no meu aniversário. Eu queria fazer algo diferente pros convidados e aí lembrei dos geladinhos de drinks que aprendi no treinamento da Bruna Martins. Fiz vários, cada um de um sabor, e coloquei num balde de gelo na mesa, junto com os drinks. Olha que lindo ficou! Cada convidado escolhia o seu, caipirinha, morango, maracujá, piña colada, e era só abrir e aproveitar. Todo mundo amou, filmou, postou, e eu só ouvi elogio a noite inteira. E o melhor: é muito fácil de fazer. Você só precisa dos ingredientes, que provavelmente já tem em casa, e de um método que te ensine. Depois da festa, vários convidados me perguntaram se eu vendia e começaram a me mandar mensagem pedindo pra eu fazer pra eles também. Ou seja, o que começou como uma ideia pro meu aniversário virou renda extra. A Bruna ensina muito bem o passo a passo, como precificar do jeito certo e como vender pra festas e encomendas, e o acesso é vitalício, então você estuda no seu tempo e consulta quando quiser. Se você também quer surpreender seus convidados e ainda ganhar dinheiro com isso, clique em saiba mais e aprenda hoje mesmo.
 
 `T12 · T22 · T11 · T20 · T17 · T02 · T09 · T05 · T18 · T03 · T21 · T04 · T10 · T01 · T23 · T07 · T05 · T19 · T21 · T06`
 
-### G12 · 30 geladinhos em uma horinha (modelo do vídeo 13) · com legenda · com texto de gancho
+### G12 · 30 geladinhos em uma horinha (modelo do vídeo 13) · com texto de gancho
 **Texto na tela:** 30 GELADINHOS EM **1 HORINHA**
 > Olha o que eu fiz em apenas uma horinha: preparei 30 geladinhos de drinks pra um casamento e ainda deu tempo de embalar tudo bonitinho. Olha como ficaram lindos, cada um de um sabor. E o melhor é que eles têm gosto de drink de verdade, e os convidados amam. Eu aprendi tudo no treinamento da Bruna Martins, e ela ensina muito bem, desde o passo a passo pra fazer até como precificar do jeito certo pra ter lucro e como vender pra festas, casamentos e eventos, mesmo começando do zero, sem precisar de loja, sem complicação. E o acesso é vitalício, então eu estudo no meu tempo e consulto o material sempre que precisar. Se você também quer uma renda extra fazendo algo lindo e que as pessoas amam, clique em saiba mais e aprenda hoje mesmo.
 
 `T20 · T07 · T19 · T12 · T02 · T08 · T17 · T10 · T05 · T07 · T01 · T16 · T09`
 
-### G13 · Renda rápida (modelo do vídeo 15) · com legenda
+### G13 · Renda rápida (modelo do vídeo 15)
 > Eu tava precisando de uma renda rápida, mas sem largar meu trabalho e sem sair de casa. Aí eu conheci os geladinhos de drinks e resolvi testar. Em uma hora, eu fechei uma encomenda de 30 geladinhos e fiz 210 reais. Sério, em uma hora. Eles são lindos, têm gosto de drink de verdade, e as pessoas se encantam e querem levar pra festa, pra churrasco, pra tudo. Eu aprendi tudo no treinamento da Bruna Martins, e ela ensina muito bem, desde o passo a passo de como fazer os 30 sabores até como precificar do jeito certo pra ter lucro e como vender, mesmo começando do zero. E o melhor é que o acesso é vitalício, então eu estudo no meu tempo e consulto quando quiser. Se você também quer uma renda extra sem complicar a sua rotina, clique em saiba mais e aprenda hoje mesmo.
 
 `T17 · T07 · T25 · T14 · T14 · T12 · T03 · T03 · T02 · T01 · T05 · T06 · T19`
 
-### CTA estendido (versões extras de G03, G06 e G09)
-No lugar da última frase:
-> Clicando em saiba mais, você recebe na hora o treinamento completo com as 30 receitas, a Fórmula Drink que Congela, o cálculo de preço pronto e mais 4 bônus. Tudo por um valor que cabe no bolso. Clique em saiba mais e comece hoje mesmo.
+### CTA com o produto por dentro (versões extras de G03, G06 e G09)
+Para não alongar o vídeo, cortamos um trecho do meio e trocamos a última frase:
+- **G03:** sai "Você estuda no seu ritmo, consulta o material sempre que precisar e começa a transformar sua criatividade em dinheiro no bolso."
+- **G06:** sai "É aquele tipo de detalhe que chama atenção e deixa qualquer ocasião mais especial."
+- **G09:** sai "Antes disso, eu pagava o aluguel sempre atrasado, com juros, e vivia com medo de abrir o aplicativo do banco."
+
+Última frase nova (no lugar do CTA):
+> Clicando em saiba mais, você recebe na hora as 30 receitas, a fórmula que faz o geladinho congelar, o cálculo de preço e mais 4 bônus.
 
 Na tela (eu monto, você não precisa gerar nada): a capa do treinamento → páginas reais do PDF passando → os 4 bônus entrando um a um → "**30 receitas + 4 bônus · acesso imediato**". O preço aparece só numa das versões, para testar.
 
@@ -186,4 +189,4 @@ Na tela (eu monto, você não precisa gerar nada): a capa do treinamento → pá
 1. **Os 25 takes animados** (`T01.mp4` … `T25.mp4`; versões extras como `T05b.mp4`). Qualquer duração entre 5 e 10 s serve.
 2. Se algum take sair com defeito (saquinho virando palito, mão deformada, Bruna diferente), gere de novo só aquele.
 
-Com isso eu entrego **16 vídeos**: os 13 roteiros + 3 versões com CTA estendido, todos em 1080×1920, com narração, trilha original, legendas (onde o roteiro pede), textos de gancho, aviso de moderação e "Clique em Saiba mais" no final.
+Com isso eu entrego **16 vídeos**: os 13 roteiros + 3 versões com o produto por dentro, todos em 1080×1920, com narração, trilha original, legenda, textos de gancho (onde o roteiro pede) e "Clique em Saiba mais" no final.
